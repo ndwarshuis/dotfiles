@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync git repos
+
+[Service]
+Type=oneshot
+ExecStart=%h/.bin/autogit "$REPOS"
+
+[Install]
+WantedBy=multi-user.target

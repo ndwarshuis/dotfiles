@@ -1,0 +1,39 @@
+#!/bin/sh
+
+userresources="$XDG_CONFIG_HOME/X11/xresources"
+
+systemctl --user import-environment PATH
+systemctl --user import-environment DISPLAY
+
+if [ -f "$userresources" ]; then
+    xrdb -merge "$userresources"
+fi
+
+/usr/bin/prime-offload > /dev/null 2>&1
+
+setxkbmap hypermode
+
+KEYS="Control_L=Escape"
+KEYS="$KEYS;Control_R=Return"
+KEYS="$KEYS;Super_L=Tab"
+KEYS="$KEYS;Super_R=backslash"
+KEYS="$KEYS;Alt_R=space"
+KEYS="$KEYS;ISO_Level3_Shift=XF86Search"
+xman -t 500 "$KEYS" "^VirtualBox Machine$" &
+
+greenclip daemon &
+redshift > /dev/null 2>&1 &
+dunst &
+emacs-start &
+seafile-applet > /dev/null 2>&1 &
+nm-applet > /dev/null 2>&1 &
+flameshot > /dev/null 2>&1 &
+rofi-bw -d 3600 &
+
+autorandr --change > /dev/null
+picom --config "$XDG_CONFIG_HOME/picom.conf" -b
+
+numlockx on
+xss-lock --ignore-sleep screenlock &
+
+exec xmonad

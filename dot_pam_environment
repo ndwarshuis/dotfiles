@@ -1,0 +1,72 @@
+#--------------------#
+# XDG Overrides
+#--------------------#
+
+XDG_CONFIG_HOME         DEFAULT=@{HOME}/.config
+XDG_CACHE_HOME          DEFAULT=@{HOME}/.cache
+XDG_DATA_HOME           DEFAULT=@{HOME}/.local/share
+XDG_RUNTIME_DIR         DEFAULT=/run/user/1000
+
+AQBANKING_HOME          DEFAULT=${XDG_CONFIG_HOME}/aqbanking
+ASPELL_CONF             DEFAULT="per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl"
+CCACHE_CONFIGPATH       DEFAULT=${XDG_CONFIG_HOME}/ccache.config
+CCACHE_DIR              DEFAULT=${XDG_CACHE_HOME}/ccache
+CCNET_CONF_DIR          DEFAULT=${XDG_CONFIG_HOME}/ccnet
+
+# NOTE: in order for rootless docker to work on BTRFS, need the
+# user_subvol_rm_allowed mount option on the host filesystem
+
+DOCKER_HOST             DEFAULT=unix://${XDG_RUNTIME_DIR}/docker.sock
+GRIPHOME                DEFAULT=${XDG_CONFIG_HOME}/grip
+GTK2_RC_FILES           DEFAULT=${XDG_CONFIG_HOME}/gtk-2.0/gtkrc
+STACK_ROOT              DEFAULT=${XDG_DATA_HOME}/stack
+IPYTHONDIR              DEFAULT=${XDG_CONFIG_HOME}/ipython
+LESSKEY                 DEFAULT=${XDG_CONFIG_HOME}/less/lesskey
+LESSHISTFILE            DEFAULT=-
+MATLAB_PREFDIR          DEFAULT=${XDG_CONFIG_HOME}/matlab
+MATLAB_LOG_DIR          DEFAULT=${XDG_DATA_HOME}/matlab/log
+MU_HOME                 DEFAULT=${XDG_CACHE_HOME}/mu
+MAILDIR                 DEFAULT=/mnt/data/Mail
+NODE_REPL_HISTORY       DEFAULT=${XDG_DATA_HOME}/npm/node_repl.log
+INPUTRC                 DEFAULT=${XDG_CONFIG_HOME}/readline/inputrc
+PKGDEST                 DEFAULT=/var/cache/pacman/pkg
+PYTHONSTARTUP           DEFAULT=${XDG_CONFIG_HOME}/python/startup.py
+PYLINTHOME		        DEFAULT=${XDG_CACHE_HOME}/pylint
+PYENV_ROOT              DEFAULT=${XDG_DATA_HOME}/pyenv
+R_ENVIRON_USER          DEFAULT=${XDG_CONFIG_HOME}/r/Renviron
+RBENV_ROOT              DEFAULT=${XDG_DATA_HOME}/rbenv
+TEXMFHOME               DEFAULT=${XDG_CONFIG_HOME}/texmf
+RXVT_SOCKET             DEFAULT=${XDG_RUNTIME_DIR}/urxvt/urxvtd-node
+ICEAUTHORITY            DEFAULT=${XDG_CACHE_DIR}/ICEauthority
+XAUTHORITY              DEFAULT=${XDG_RUNTIME_DIR}/Xauthority
+XINITRC                 DEFAULT=${XDG_CONFIG_HOME}/X11/xinitrc
+XMONAD_CACHE_DIR        DEFAULT=${XDG_CACHE_HOME}/xmonad
+XMONAD_CONFIG_DIR       DEFAULT=${XDG_CONFIG_HOME}/xmonad
+XMONAD_DATA_DIR         DEFAULT=${XDG_DATA_HOME}/xmonad
+HISTFILE                DEFAULT=${XDG_DATA_HOME}/zsh_history.log
+HISTSIZE                DEFAULT=1000000
+SAVEHIST                DEFAULT=1000000
+ZDOTDIR                 DEFAULT=${XDG_CONFIG_HOME}/zsh
+
+# store passwords in gnupg directory (and then encrypt the entire thing with veracrypt)
+GNUPGHOME               DEFAULT=${XDG_CONFIG_HOME}/gnupg
+PASSWORD_STORE_DIR      DEFAULT=${GNUPGHOME}/pass
+
+#--------------------#
+# Path
+#--------------------#
+
+PATH OVERRIDE=${RBENV_ROOT}/shims:${PYENV_ROOT}/shims:@{HOME}/.bin:@{HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+
+#--------------------#
+# Applications
+#--------------------#
+EDITOR                  DEFAULT=vim
+GDK_USE_XFT             DEFAULT=1
+QT_XFT                  DEFAULT=true
+SAL_USE_VCLPLUGIN       DEFAULT=gtk
+QT_QPA_PLATFORMTHEME    DEFAULT=qt5ct
+
+# this is needed to make MATLAB work with 
+# xmonad and other godly window managers
+_JAVA_AWT_WM_NONREPARENTING DEFAULT=1

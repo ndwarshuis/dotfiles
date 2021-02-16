@@ -1,0 +1,12 @@
+[Unit]
+Description=Start Taskjuggler 3 Daemon
+After=display-manager.service
+
+[Service]
+Type=forking
+ExecStart=%h/.bin/tj3d --silent
+RemainAfterExit=yes
+ExecStop=%h/.bin/tj3client terminate
+
+[Install]
+WantedBy=default.target

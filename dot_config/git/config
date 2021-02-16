@@ -1,0 +1,11 @@
+[user]
+	name = ndwarshuis
+	email = ndwar@yavin4.ch
+[core]
+	editor = vim
+[merge]
+	tool = vimdiff
+[color]
+	ui = true
+[credential]
+	helper = /usr/lib/git-core/git-credential-libsecret

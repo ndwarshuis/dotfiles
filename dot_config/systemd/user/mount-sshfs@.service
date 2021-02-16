@@ -1,0 +1,7 @@
+[Unit]
+Description=Mount sshfs directory for %i
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/sshfs ${TARGET} ${MOUNTPOINT}
+ExecStop=/usr/bin/fusermount -u ${MOUNTPOINT}

@@ -1,0 +1,9 @@
+[Unit]
+Description=Batmon service
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/batmon
+
+[Install]
+WantedBy=multi-user.target

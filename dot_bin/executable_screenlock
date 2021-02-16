@@ -1,0 +1,45 @@
+#! /bin/bash
+
+## lock the screen using i3lock
+
+# WORKAROUND make the date show up in the right place on 2+ monitor setups
+# I want it to only show up on the primary screen, so use xrandr to get the
+# dimensions and position of the primary monitor and calculate the date position
+# from that
+geometry=$(xrandr | sed -n 's/^.*primary \([0-9]*\)x[0-9]*+\([0-9]\)*+[0-9]* .*/\1 \2/p')
+width=$(echo "$geometry" | cut -f1 -d" ")
+xpos=$(echo "$geometry" | cut -f2 -d" ")
+xoffset=$(("$xpos" + "$width" / 2))
+datepos="$xoffset:600"
+
+i3lock --color=000000 \
+       --pass-media-keys \
+	   --nofork \
+	   --ignore-empty-password \
+	   --screen=0 \
+	   --indicator \
+	   --insidecolor=00000055 \
+	   --insidevercolor=00000055 \
+	   --insidewrongcolor=00000055 \
+	   --ringcolor=555555ff \
+	   --ringwrongcolor=ff3333ff \
+	   --ringvercolor=99ceffff \
+	   --keyhlcolor=99ceffff \
+	   --bshlcolor=9523ffff \
+	   --linecolor=00000000 \
+	   --separatorcolor=00000000 \
+	   --clock \
+	   --verifcolor=99ceffff \
+	   --wrongcolor=ff8282ff \
+	   --timecolor=ffffffff \
+	   --timesize=72 \
+	   --timestr="%H:%M" \
+	   --datecolor=ffffffff \
+	   --datesize=42 \
+	   --datestr="%b %d, %Y" \
+       --date-align 0 \
+       --datepos="$datepos" \
+	   --wrongsize=72 \
+	   --verifsize=72 \
+	   --radius=300 \
+	   --ring-width=25

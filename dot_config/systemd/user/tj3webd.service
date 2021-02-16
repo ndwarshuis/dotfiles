@@ -1,0 +1,10 @@
+[Unit]
+Description=Start Taskjuggler 3 Web Server
+After=display-manager.service
+
+[Service]
+ExecStart=%h/.bin/tj3webd --dont-daemonize
+Restart=always
+
+[Install]
+WantedBy=default.target

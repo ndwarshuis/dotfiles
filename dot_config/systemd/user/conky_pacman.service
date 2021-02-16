@@ -1,0 +1,9 @@
+[Unit]
+Description=Conky Pacman Stats Update Service
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/conky/scripts/pacman_stats
+
+[Install]
+WantedBy=default.target

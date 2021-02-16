@@ -1,0 +1,30 @@
+#! /bin/bash
+
+## with_gpg_mount: call a program after mounting GNUPGHOME
+
+bin="$1"
+shift
+
+## TODO most of this stuff could be more easily done in the rofi-extras
+## haskell code where many of the edge cases that this is hoping to avoid are
+## already strictly/brutally snuffed out by GHC's iron fist
+
+notify_error () {
+    notify-send --icon=dialog-error-symbolic "$1"
+}
+
+notify_info () {
+    notify-send --icon=dialog-information-symbolic "$1"
+}
+
+if ! systemctl --user is-active --quiet mount-veracrypt@gnupg.service; then
+    if systemctl --user --quiet start mount-veracrypt@gnupg.service; then
+        notify_info "Mounted $GNUPGHOME"
+        "$bin" "$@"
+    else
+        notify_error "Could not mount gnupg directory"
+        exit 1
+    fi
+else
+    "$bin" "$@"
+fi
