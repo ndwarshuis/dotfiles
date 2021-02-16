@@ -1,1 +1,3 @@
-sudo yay -S stack-static
+#! /bin/bash
+
+yay -S stack-static
