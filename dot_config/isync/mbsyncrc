@@ -85,17 +85,17 @@ Path /mnt/data/Mail/gmail/
 Inbox /mnt/data/Mail/gmail/inbox
 
 Channel gmail-inbox
-Master :gmail-remote:"INBOX"
-Slave :gmail-local:"inbox"
+Far :gmail-remote:"INBOX"
+Near :gmail-local:"inbox"
 Create Both
-Expunge Master
+Expunge Far
 SyncState *
 
 Channel gmail-all
-Master :gmail-remote:"rxv"
-Slave :gmail-local:"archive"
+Far :gmail-remote:"rxv"
+Near :gmail-local:"archive"
 Create Both
-Expunge Slave
+Expunge Near
 SyncState *
 
 Group gmail
@@ -128,22 +128,22 @@ Path /mnt/data/Mail/gatech/
 Inbox /mnt/data/Mail/gatech/inbox
 
 Channel gatech-inbox
-Master :gatech-remote:"Inbox"
-Slave :gatech-local:"inbox"
+Far :gatech-remote:"INBOX"
+Near :gatech-local:"inbox"
 Create Both
 Expunge Both
 SyncState *
 
 Channel gatech-sent
-Master :gatech-remote:"Sent Items"
-Slave :gatech-local:"sent"
+Far :gatech-remote:"Sent Items"
+Near :gatech-local:"sent"
 Create Both
 Expunge Both
 SyncState *
 
 Channel gatech-archive
-Master :gatech-remote:"Archive"
-Slave :gatech-local:"archive"
+Far :gatech-remote:"Archive"
+Near :gatech-local:"archive"
 Create Both
 Expunge Both
 SyncState *
@@ -176,22 +176,22 @@ Path /mnt/data/Mail/emory/
 Inbox /mnt/data/Mail/emory/inbox
 
 Channel emory-inbox
-Master :emory-remote:"Inbox"
-Slave :emory-local:"inbox"
+Far :emory-remote:"INBOX"
+Near :emory-local:"inbox"
 Create Both
 Expunge Both
 SyncState *
 
 Channel emory-sent
-Master :emory-remote:"Sent Items"
-Slave :emory-local:"sent"
+Far :emory-remote:"Sent Items"
+Near :emory-local:"sent"
 Create Both
 Expunge Both
 SyncState *
 
 Channel emory-archive
-Master :emory-remote:"Archive"
-Slave :emory-local:"archive"
+Far :emory-remote:"Archive"
+Near :emory-local:"archive"
 Create Both
 Expunge Both
 SyncState *
@@ -202,10 +202,9 @@ Channel emory-sent
 Channel emory-archive
 
 ##
-## test email server
+## private email server
 ##
 
-## to eventually be my primary email server
 IMAPAccount yavin4
 Host portnoy4prez.yavin4.ch
 User ndwar@yavin4.ch
@@ -223,22 +222,22 @@ Path /mnt/data/Mail/yavin4/
 Inbox /mnt/data/Mail/yavin4/inbox
 
 Channel yavin4-inbox
-Master :yavin4-remote:"INBOX"
-Slave :yavin4-local:"inbox"
+Far :yavin4-remote:"INBOX"
+Near :yavin4-local:"inbox"
 Create Both
 Expunge Both
 SyncState *
 
 Channel yavin4-sent
-Master :yavin4-remote:"Sent"
-Slave :yavin4-local:"sent"
+Far :yavin4-remote:"Sent"
+Near :yavin4-local:"sent"
 Create Both
 Expunge Both
 SyncState *
 
 Channel yavin4-archive
-Master :yavin4-remote:"Archive"
-Slave :yavin4-local:"archive"
+Far :yavin4-remote:"Archive"
+Near :yavin4-local:"archive"
 Create Both
 Expunge Both
 SyncState *
