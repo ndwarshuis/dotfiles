@@ -48,3 +48,17 @@ yay -S stack-static autorandr feh xorg-server xorg-xset libpulse playerctl \
 
 # zsh
 sudo pacman -S zsh zsh-completions zsh-syntax-highlighting
+
+## local packages
+PKGBUILD_dir="$HOME/.local/share/packages"
+
+cd "$PKGBUILD_dir/clevo-xsm-wmi-dkms"
+makepkg -s -r -i --noconfirm
+
+cd "$PKGBUILD_dir/conky-lua"
+makepkg -s -r -i --noconfirm
+
+cd "$PKGBUILD_dir/xkb-hypermode"
+makepkg -s -r -i --noconfirm
+
+
