@@ -1,0 +1,19 @@
+pkgbase = taskjuggler-git
+	pkgdesc = A project management tool for Linux and UNIX system-based operating systems.
+	pkgver = release.3.5.0.79.gf36b8f44
+	pkgrel = 1
+	url = http://www.taskjuggler.org
+	arch = any
+	license = GPL
+	makedepends = ruby-rake
+	makedepends = ruby-rspec
+	depends = ruby
+	depends = ruby-mail
+	depends = ruby-term-ansicolor
+	depends = ruby-rdoc
+	options = !emptydirs
+	source = git://github.com/taskjuggler/TaskJuggler.git
+	sha1sums = SKIP
+
+pkgname = taskjuggler-git
+

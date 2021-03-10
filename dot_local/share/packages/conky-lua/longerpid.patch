@@ -1,0 +1,12 @@
+diff --unified --recursive --text src/conky-1.11.5/src/top.cc src.new/conky-1.11.5/src/top.cc
+--- src/conky-1.11.5/src/top.cc	2019-08-12 17:53:54.000000000 -0400
++++ src.new/conky-1.11.5/src/top.cc	2020-02-06 13:42:03.645192303 -0500
+@@ -542,7 +542,7 @@
+   }
+ 
+ PRINT_TOP_GENERATOR(cpu, (unsigned int)7, "%6.2f", amount)
+-PRINT_TOP_GENERATOR(pid, (unsigned int)6, "%5i", pid)
++PRINT_TOP_GENERATOR(pid, (unsigned int)8, "%7i", pid)
+ PRINT_TOP_GENERATOR(uid, (unsigned int)6, "%5i", uid)
+ PRINT_TOP_HR_GENERATOR(mem_res, rss, 1)
+ PRINT_TOP_HR_GENERATOR(mem_vsize, vsize, 1)

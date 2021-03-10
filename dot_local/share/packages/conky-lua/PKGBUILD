@@ -1,0 +1,88 @@
+# Maintainer: Bernhard Landauer <oberon@manjaro.org>
+# Maintainer: TidestManager1 < michaelpulliam1 (at) gmail (dot) com > 
+
+pkgname=conky-lua
+_pkgname=conky
+pkgver=1.11.3
+pkgrel=1
+pkgdesc='Lightweight system monitor for X, with Lua support enabled'
+url='http://github.com/brndnmtthws/conky'
+license=('BSD' 'GPL3')
+arch=('i686' 'x86_64')
+options=('!emptydirs')
+makedepends=('cmake')
+    # 'docbook2x'
+    # 'docbook-xml'
+    # 'docbook-xsl'
+    # 'librsvg'
+    # 'libxinerama'
+    # 'libxml2'
+    # 'man-db'
+    # 'perl-xml-libxml')
+depends=('cairo' 'glib2' 'libxml2' 'lua')
+provides=("conky=$pkgver")
+conflicts=('conky')
+backup=('etc/conky/conky.conf' 'etc/conky/conky_no_x11.conf')
+source=("https://github.com/brndnmtthws/${_pkgname}/archive/v${pkgver}.tar.gz"
+        "longerpid.patch")
+sha1sums=('73b607f5d7235ef4c44912b6c6b082dc1cf314e6'
+          '26d0fa6d090fcdab05c76ca8bf8e339462929415')
+
+prepare() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  ## ensure our awesome makepkg flags are used (mostly mnative)
+  sed -i "s/\(CMAKE_C_FLAGS\) \"\(.*\)\"/\1 \"\2 ${CFLAGS}\"/" cmake/ConkyBuildOptions.cmake
+  sed -i "s/\(CMAKE_CXX_FLAGS\) \"\(.*\)\"/\1 \"\2 ${CXXFLAGS}\"/" cmake/ConkyBuildOptions.cmake
+  ## enable longer pids
+  patch --strip=2 --input=${srcdir}/longerpid.patch
+}
+
+build() {
+    cd "${srcdir}/${_pkgname}-${pkgver}"
+
+    cmake \
+            -D CMAKE_INSTALL_PREFIX=/usr \
+            -D MAINTAINER_MODE=OFF \
+            -D BUILD_APCUPSD=OFF \
+            -D BUILD_ARGB=OFF \
+            -D BUILD_BUILTIN_CONFIG=OFF \
+            -D BUILD_CMUS=OFF \
+            -D BUILD_CURL=OFF \
+            -D BUILD_HDDTEMP=OFF \
+            -D BUILD_IBM=OFF \
+            -D BUILD_I18N=OFF \
+            -D BUILD_IOSTATS=OFF \
+            -D BUILD_IPV6=OFF \
+            -D BUILD_LUA_RSVG=OFF \
+            -D BUILD_LUA_CAIRO=ON \
+            -D BUILD_LUA_IMLIB2=OFF \
+            -D BUILD_IMLIB2=OFF \
+            -D BUILD_MATH=OFF \
+            -D BUILD_MOC=OFF \
+            -D BUILD_MPD=OFF \
+            -D BUILD_NCURSES=OFF \
+            -D BUILD_OLD_CONFIG=OFF \
+            -D BUILD_PORT_MONITORS=OFF \
+            -D BUILD_TESTING=OFF \
+            -D BUILD_RSS=OFF \
+            -D BUILD_WEATHER_METAR=OFF \
+            -D BUILD_WEATHER_XOAP=OFF \
+            -D BUILD_XDAMAGE=OFF \
+            -D BUILD_XDBE=ON \
+            -D BUILD_XFT=OFF \
+            -D BUILD_XINERAMA=ON \
+            -D BUILD_XSHAPE=OFF \
+            -D BUILD_WLAN=OFF \
+            .
+
+    make
+}
+ 
+package() {
+    cd "${srcdir}/${_pkgname}-${pkgver}"
+    make DESTDIR="${pkgdir}" install
+    install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    install -Dm644 LICENSE.BSD ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.BSD
+    install -Dm644 extras/vim/syntax/conkyrc.vim "${pkgdir}"/usr/share/vim/vimfiles/syntax/conkyrc.vim
+    install -Dm644 extras/vim/ftdetect/conkyrc.vim "${pkgdir}"/usr/share/vim/vimfiles/ftdetect/conkyrc.vim
+}

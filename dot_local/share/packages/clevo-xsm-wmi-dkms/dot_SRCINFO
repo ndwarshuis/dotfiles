@@ -1,0 +1,29 @@
+pkgbase = clevo-xsm-wmi-dkms
+	pkgdesc = A reverse engineering driver for the Clevo SM series backlight keyboard (DKMS version)
+	pkgver = 1.1
+	pkgrel = 7
+	url = https://bitbucket.org/tuxedocomputers/clevo-xsm-wmi
+	install = clevo-xsm-wmi-dkms.install
+	arch = i686
+	arch = x86_64
+	license = GPL
+	depends = dkms
+	depends = gcc
+	depends = make
+	depends = linux-headers
+	provides = clevo-xsm-wmi
+	conflicts = clevo-xsm-wmi
+	conflicts = tuxedo-wmi
+	conflicts = tuxedo-wmi-dkms
+	options = !emptydirs
+	source = clevo-xsm-wmi-dcf282992eb8.src.tar.gz::https://bitbucket.org/tuxedocomputers/clevo-xsm-wmi/get/dcf282992eb8.tar.gz
+	source = P950ER.patch
+	source = dkms.conf
+	source = Makefile
+	sha256sums = 68d3aa0c73b8cfef237f517d129c730e248de5c3720090f04f0e36f58ea5843a
+	sha256sums = ccd1a9277c055b702eb05662484c0c6b0e62f6fae255030d3a30975984b0c427
+	sha256sums = 0cdf0213692a71d69f54730d1856d9f1e7b3d363d9b2a66a5d6bb363e8d8212f
+	sha256sums = fb20847bde676a305fda41b865b46aff52ae9de60e1262d6e9725a71d72b806b
+
+pkgname = clevo-xsm-wmi-dkms
+

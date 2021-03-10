@@ -1,0 +1,17 @@
+pkgname=xkb-hypermode
+pkgver=0.1
+pkgrel=1
+pkgdesc="custom us keyboard layout with hyper modifiers"
+arch=('any')
+license=('MIT')
+depends=('xkeyboard-config')
+source=("https://github.com/ndwarshuis/xkb-hypermode/archive/v$pkgver.tar.gz")
+md5sums=('42472d8ba0dcccd2426e1c38e61b6f60')
+backup=("etc/X11/xorg.conf.d/10-hyperctrl.conf")
+
+package() {
+	install -Dm644 "$srcdir/$pkgname-$pkgver/10-hyperctrl.conf" "$pkgdir/etc/X11/xorg.conf.d/10-hyperctrl.conf"
+	mkdir -p "$pkgdir/usr/share/X11"
+	cp -r "$srcdir/$pkgname-$pkgver/xkb" "$pkgdir/usr/share/X11"
+	find "$pkgdir/usr/share/X11/xkb/" -type f -exec chmod 644 {} \;
+}
