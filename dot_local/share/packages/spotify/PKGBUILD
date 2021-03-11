@@ -1,0 +1,75 @@
+# Maintainer: Ashley Whetter <(firstname) @ awhetter.co.uk>
+# Contributor: Eothred <yngve.levinsen@gmail.com>
+
+# Local Hacker Pirate: Nate Dwarshuis
+
+# NOTE: This is a modified PKGBUILD from the AUR for this particular spotify
+# version. The main differences are that I hacked out the 32bit parts since Arch
+# doesn't roll like that anymore. The enclosed binary currently works for me,
+# and also just happens to start 10x faster than the later versions...and I can
+# block all the ads with a hosts file. I obviously can't make an "official"
+# package in the AUR, but it's on github in a nonprominent but totally public
+# place ;)
+
+pkgname=spotify
+pkgver=1.0.94.262
+_anotherpkgver=.g3d5c231c
+_amd64_pkgrel=9
+pkgrel=1
+pkgdesc="A proprietary music streaming service"
+arch=('x86_64')
+license=("custom:\"Copyright (c) 2006-2010 Spotify Ltd\"")
+url="http://www.spotify.com"
+options=('!strip')
+
+source=("spotify_x86_64"
+        "spotify.protocol"
+        "LICENSE"
+        "spotify-client_${pkgver}${_anotherpkgver}-${_amd64_pkgrel}_amd64.deb")
+sha256sums=('2a9f88dd80a542e0e9cfeea0b823d7cec54b67b42b402c5efee09d333a1820de'
+            'af54f3b90cac46fa100b3f919a9225d10d847617d24aa9af3d832e7689f482c3'
+            '4e8bea31ca27e16cac9c9dcd8f6ec27e1f82b45de86d6fee7a1e77e23f884b92'
+            '92803d614da2fd4802f801d85da9cf786f34216bbfa6085d5791c3e8350b4f44')
+
+depends=("alsa-lib>=1.0.14"
+         "gconf"
+         "gtk2"
+         "glib2"
+         "nss"
+         "libsystemd"
+         "libxtst"
+         "libx11"
+         "libxss"
+         "openssl-1.0"
+         "desktop-file-utils"
+         "rtmpdump"
+         "libcurl-gnutls")
+optdepends=('ffmpeg-compat-54: Adds support for playback of local files'
+            'zenity: Adds support for importing local files'
+            'libnotify: Desktop notifications')
+
+package() {
+	cd "${srcdir}"
+
+	tar -xzf data.tar.gz -C "${pkgdir}"
+
+	install -D "${pkgdir}"/usr/share/spotify/spotify.desktop "${pkgdir}"/usr/share/applications/spotify.desktop
+	install -D "${pkgdir}"/usr/share/spotify/icons/spotify-linux-512.png "${pkgdir}"/usr/share/pixmaps/spotify-client.png
+
+	for size in 22 24 32 48 64 128 256 512; do
+		install -D "${pkgdir}/usr/share/spotify/icons/spotify-linux-$size.png" \
+			"${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/spotify.png"
+	done
+
+	chmod -R go-w "${pkgdir}"/usr
+
+	# Bin Script
+	rm "${pkgdir}"/usr/bin/spotify
+	install -Dm755 "${srcdir}/spotify_${CARCH}" "${pkgdir}/usr/bin/spotify"
+
+	# Copy protocol file for KDE
+	install -Dm644 "${srcdir}/spotify.protocol" "${pkgdir}/usr/share/kservices5/spotify.protocol"
+
+	# License
+	install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
