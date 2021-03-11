@@ -1,64 +1,45 @@
 #! /bin/bash
 
-## maybe break these apart in separate scripts...it isn't clear why all these
-## things are needed
+## install all packages required for this configuration to function.
+## Configuration is assumed to be handled elsewhere (for now) eg in etckeeper
+## or with ansible
 
-## TODO this is annoying since it runs a bunch of separate commands (if I want
-## to stop all of them I need to spam ctrl-C a zillion times)
-
-## TODO add conky (a custom package)
-
-# dunst
-sudo pacman -S dunst
-
-# emacs
-yay -S emacs mu
-
-# flameshot
-sudo pacman -S flameshot
-
-# gtk
-yay -S stack-static mu zuki-themes optimus-manager
-
-# optimus manager
-yay -S optimus-manager
-
-# R
-sudo pacman -S r docker gcc-fortran texlive-bin tk
-
-# redshift
-sudo pacman -S redshift
-
-# rofi
-yay -S rofi-git bitwarden-cli libnotify rofi-greenclip networkmanager-dmenu-git \
-    veracrypt sshfs jmptfs
-
-# seafile
-yay -S seafile-client
-
-# urxvt
-yay -S urxvt-tabbedex rxvt-unicode urxvt-perls
-
-# xmonad and friends (this isn't fun to look at)
-yay -S stack-static autorandr feh xorg-server xorg-xset libpulse playerctl \
-    wireless_tools acpid ttf-symbola-free ttf-symbola-free ttf-dejavu \
-    awesome-terminal-fonts numlockx picom i3lock-color xorg-xrandr xss-lock
-
-## TODO add xkb_hypermode (a custom package)
-
-# zsh
-sudo pacman -S zsh zsh-completions zsh-syntax-highlighting
-
-## local packages
 PKGBUILD_dir="$HOME/.local/share/packages"
 
-cd "$PKGBUILD_dir/clevo-xsm-wmi-dkms"
-makepkg -s -r -i --noconfirm
+call_makepkg() {
+    cd "$PKGBUILD_dir/$1" || exit
+    makepkg -s -r -i --noconfirm
+}
 
-cd "$PKGBUILD_dir/conky-lua"
-makepkg -s -r -i --noconfirm
+## install packages (those that are either in official repos or AUR)
 
-cd "$PKGBUILD_dir/xkb-hypermode"
-makepkg -s -r -i --noconfirm
+## TODO add template switches to control which of these get installed based
+## on my config
+dunst_pkgs=(dunst)
+emacs_pkgs=(emacs mu)
+flameshot_pkgs=(flameshot)
+gtk_pkgs=(zuki-themes)
+nvidia_pkgs=(optimus-manager)
+r_pkgs=(r docker-rootless-extras-bin gcc-fortran texlive-bin tk)
+redshift_pkgs=(redshift)
+rofi_pkgs=(rofi-git bitwarden-cli libnotify rofi-greenclip
+           networkmanager-dmenu-git veracrypt sshfs jmptfs)
+seafile_pkgs=(seafile)
+urxvt_pkgs=(urxvt-tabbedex rxvt-unicode urxvt-perls)
+xmonad_pkgs=(stack-static autorandr feh xorg-server xorg-xset libpulse playerctl
+             wireless_tools acpid ttf-symbola-free ttf-symbola-free ttf-dejavu
+             awesome-terminal-fonts numlockx picom i3lock-color xorg-xrandr
+             xss-lock)
+zsh_pkgs=(zsh zsh-completions zsh-syntax-highlighting)
 
+yay --noconfirm -S "${dunst_pkgs[@]}" "${emacs_pkgs[@]}" "${flameshot_pkgs[@]}" \
+    "${gtk_pkgs[@]}" "${nvidia_pkgs[@]}" "${nvidia_pkgs[@]}" "${r_pkgs[@]}" \
+    "${redshift_pkgs[@]}" "${rofi_pkgs[@]}" "${seafile_pkgs[@]}" \
+    "${urxvt_pkgs[@]}" "${xmonad_pkgs[@]}" "${zsh_pkgs[@]}"
 
+## install custom packages (eg those for which I have my own PKGBUILDs)
+
+call_makepkg "clevo-xsm-wmi-dkms"
+call_makepkg "conky-lua"
+call_makepkg "spotify"
+call_makepkg "xkb-hypermode"
