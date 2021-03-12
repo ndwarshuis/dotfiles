@@ -8,7 +8,7 @@ PKGBUILD_dir="$HOME/.local/share/packages"
 
 call_makepkg() {
     cd "$PKGBUILD_dir/$1" || exit
-    makepkg -s -r -i --noconfirm
+    makepkg -s -r -i -f --noconfirm
 }
 
 ## install packages (those that are either in official repos or AUR)
@@ -35,10 +35,11 @@ zsh_pkgs=(zsh zsh-completions zsh-syntax-highlighting)
 ## AUR pkgs needed for spotify
 spotify_pkgs=(gconf)
 
-yay --noconfirm -S "${dunst_pkgs[@]}" "${emacs_pkgs[@]}" "${flameshot_pkgs[@]}" \
-    "${gtk_pkgs[@]}" "${nvidia_pkgs[@]}" "${nvidia_pkgs[@]}" "${r_pkgs[@]}" \
-    "${redshift_pkgs[@]}" "${rofi_pkgs[@]}" "${seafile_pkgs[@]}" \
-    "${urxvt_pkgs[@]}" "${xmonad_pkgs[@]}" "${zsh_pkgs[@]}" "${spotify_pkgs[@]}"
+yay --noconfirm -Syy "${dunst_pkgs[@]}" "${emacs_pkgs[@]}" \
+    "${flameshot_pkgs[@]}" "${gtk_pkgs[@]}" "${nvidia_pkgs[@]}" \
+    "${nvidia_pkgs[@]}" "${r_pkgs[@]}" "${redshift_pkgs[@]}" "${rofi_pkgs[@]}" \
+    "${seafile_pkgs[@]}" "${urxvt_pkgs[@]}" "${xmonad_pkgs[@]}" \
+    "${zsh_pkgs[@]}" "${spotify_pkgs[@]}"
 
 ## install custom packages (eg those for which I have my own PKGBUILDs)
 
