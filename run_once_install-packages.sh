@@ -23,7 +23,7 @@ nvidia_pkgs=(optimus-manager)
 r_pkgs=(r docker-rootless-extras-bin gcc-fortran texlive-bin tk)
 redshift_pkgs=(redshift)
 rofi_pkgs=(rofi-git bitwarden-cli libnotify rofi-greenclip
-           networkmanager-dmenu-git veracrypt sshfs jmptfs)
+           networkmanager-dmenu-git veracrypt sshfs jmtpfs)
 seafile_pkgs=(seafile)
 urxvt_pkgs=(urxvt-tabbedex rxvt-unicode urxvt-perls)
 xmonad_pkgs=(stack-static autorandr feh xorg-server xorg-xset libpulse playerctl
@@ -32,10 +32,13 @@ xmonad_pkgs=(stack-static autorandr feh xorg-server xorg-xset libpulse playerctl
              xss-lock)
 zsh_pkgs=(zsh zsh-completions zsh-syntax-highlighting)
 
+## AUR pkgs needed for spotify
+spotify_pkgs=(gconf)
+
 yay --noconfirm -S "${dunst_pkgs[@]}" "${emacs_pkgs[@]}" "${flameshot_pkgs[@]}" \
     "${gtk_pkgs[@]}" "${nvidia_pkgs[@]}" "${nvidia_pkgs[@]}" "${r_pkgs[@]}" \
     "${redshift_pkgs[@]}" "${rofi_pkgs[@]}" "${seafile_pkgs[@]}" \
-    "${urxvt_pkgs[@]}" "${xmonad_pkgs[@]}" "${zsh_pkgs[@]}"
+    "${urxvt_pkgs[@]}" "${xmonad_pkgs[@]}" "${zsh_pkgs[@]}" "${spotify_pkgs[@]}"
 
 ## install custom packages (eg those for which I have my own PKGBUILDs)
 
