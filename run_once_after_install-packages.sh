@@ -4,7 +4,7 @@
 ## Configuration is assumed to be handled elsewhere (for now) eg in etckeeper
 ## or with ansible
 
-sudo "$HOME/.bin/bootstrap_pkgs"
+sudo "$HOME/.bin/bootstrap_pkgs $HOME/.local/share/packages"
 
 # PKGBUILD_dir="$HOME/.local/share/packages"
 
