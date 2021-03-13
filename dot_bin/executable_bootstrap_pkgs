@@ -51,7 +51,7 @@ try_nobody_update() {
 
 call_makepkg() {
     cd "$PKGBUILD_dir/$1" || return 1
-    MAKEFLAGS="-j$(nproc)" sudo -u nobody makepkg -s -r -i -f --noconfirm
+    sudo -u nobody MAKEFLAGS="-j$(nproc)" makepkg -s -r -i -f --noconfirm
 }
 
 run_yay() {
