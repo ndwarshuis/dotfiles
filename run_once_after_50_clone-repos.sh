@@ -23,7 +23,11 @@ run_stack_in_dir () {
     cd "$cur" || return 1
 }
 
-export STACK_ROOT="$XDG_DATA_HOME"/stack
+## TODO not dry
+## TODO could use tmp for this and it would probably be faster and get around
+## the DRY problem, at the expense that build xmonad the first time live will
+## be a PITA
+export STACK_ROOT="$HOME/.local/share/stack"
 
 clone_maybe https://github.com/ndwarshuis/conky.git "$HOME/.config/conky"
 clone_maybe https://github.com/ndwarshuis/.emacs.d.git "$HOME/.config/emacs"
