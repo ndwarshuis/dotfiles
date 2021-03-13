@@ -34,7 +34,7 @@ mk_yaytmp() {
 mk_makepkg_dir() {
     echo "Creating temporary makepkg build directory at $PKGBUILD_dir"
     mkdir -p "$PKGBUILD_dir"
-    cp -r "$PKGSRC_dir"/* "$PKGBUILD_dir"
+    # cp -r "$PKGSRC_dir"/* "$PKGBUILD_dir"
     chown -R nobody:nobody "$PKGBUILD_dir"
 }
 
