@@ -105,17 +105,17 @@ run_makepkg() {
 
 rm_makepkg_dir() {
     echo "Removing temporary makepkg build directory at $PKGBUILD_dir"
-    rm -r "$PKGBUILD_dir"
+    rm -r -f "$PKGBUILD_dir"
 }
 
 rm_yaytmp() {
     echo "Removing temporary build directory for yay at $YAYTMP"
-    rm -f "$YAYTMP"
+    rm -r -f "$YAYTMP"
 }
 
 rm_nobody_perms() {
     echo "Removing user nobody's permission to use pacman without password"
-    rm -r -f "$NOBODY_SUDO_CONF"
+    rm -f "$NOBODY_SUDO_CONF"
 }
 
 clean_up() {
@@ -125,7 +125,7 @@ clean_up() {
     exit
 }
 
-trap 'clean_up' ERR EXIT
+trap 'clean_up' ERR
 
 if [[ ! "$(id -u)" = "0" ]]; then
     echo "This script must be run as root. Exiting"
@@ -137,7 +137,10 @@ try_nobody_update
 
 mk_yaytmp
 run_yay
+rm_yaytmp
 
 mk_makepkg_dir
 run_makepkg
+rm_makepkg_dir
 
+rm_nobody_perms
