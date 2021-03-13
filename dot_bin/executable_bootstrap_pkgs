@@ -15,8 +15,8 @@
 ## 7. remove the pacman sudo privilege for nobody
 
 PKGSRC_dir="$1"
-PKGBUILD_dir=/tmp/makepkg
-YAYTMP=/tmp/something
+PKGBUILD_dir=/tmp/bootstrap-makepkg
+YAYTMP=/tmp/bootstrap-yay
 NOBODY_SUDO="nobody ALL=(root) NOPASSWD: /usr/bin/pacman"
 NOBODY_SUDO_CONF=/etc/sudoers.d/10-nobody-pacman
 
