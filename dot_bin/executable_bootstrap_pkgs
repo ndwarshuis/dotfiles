@@ -35,7 +35,7 @@ mk_makepkg_dir() {
     echo "Creating temporary makepkg build directory at $PKGBUILD_dir"
     mkdir -p "$PKGBUILD_dir"
     echo "Populated with packages from $PKGSRC_dir"
-    # cp -r "$PKGSRC_dir"/* "$PKGBUILD_dir"
+    cp -r "$PKGSRC_dir"/* "$PKGBUILD_dir"
     chown -R nobody:nobody "$PKGBUILD_dir"
 }
 
@@ -133,6 +133,11 @@ if [[ ! "$(id -u)" = "0" ]]; then
     exit 1
 fi
 
+if [ "$#" -ne 1 ]; then
+    echo "Must supply the location of custom packages as sole argument. Exiting"
+    exit 1
+fi
+
 mk_nobody_perms
 try_nobody_update
 
@@ -143,8 +148,5 @@ try_nobody_update
 mk_makepkg_dir
 run_makepkg
 rm_makepkg_dir
-
-echo "$PKGSRC_dir"
-echo "$PKGBUILD_dir"
 
 rm_nobody_perms
