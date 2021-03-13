@@ -16,7 +16,8 @@ clone_maybe () {
 }
 
 run_stack_in_dir () {
-    local cur="pwd$"
+    local cur
+    cur="$(pwd)"
     cd "$1" || return 1
     stack install
     cd "$cur" || return 1
