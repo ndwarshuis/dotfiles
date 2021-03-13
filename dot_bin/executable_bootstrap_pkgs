@@ -14,43 +14,43 @@
 ## 6. remove the temporary HOME for yay
 ## 7. remove the pacman sudo privilege for nobody
 
-PKGBUILD_dir="$HOME/.local/share/packages"
+PKGSRC_dir="$1"
+PKGBUILD_dir=/tmp/makepkg
 YAYTMP=/tmp/something
+NOBODY_SUDO="nobody ALL=(root) NOPASSWD: /usr/bin/pacman"
 NOBODY_SUDO_CONF=/etc/sudoers.d/10-nobody-pacman
 
 mk_nobody_perms() {
-    echo "nobody ALL=(root) NOPASSWD: /usr/bin/pacman" > "$NOBODY_SUDO_CONF"
-}
-
-rm_nobody_perms() {
-    rm "$NOBODY_SUDO_CONF"
+    echo "Giving user nobody permission to use pacman without password"
+    echo "$NOBODY_SUDO" > "$NOBODY_SUDO_CONF"
 }
 
 mk_yaytmp() {
+    echo "Creating temporary build directory for yay at $YAYTMP"
     mkdir "$YAYTMP"
     chown -R nobody:nobody "$YAYTMP"
-    # chgrp nobody "$YAYTMP"
-    # chmod g+ws "$YAYTMP"
-    # setfacl -m u::rwx,g::rwx "$YAYTMP"
-    # setfacl -d --set u::rwx,g::rwx,o::- "$YAYTMP"
 }
 
-rm_yaytmp() {
-    rm -f "$YAYTMP"
-}
-
-call_makepkg() {
-    cd "$PKGBUILD_dir/$1" || exit
-    sudo -u nobody makepkg -s -r -i -f --noconfirm
+mk_makepkg_dir() {
+    echo "Creating temporary makepkg build directory at $PKGBUILD_dir"
+    mkdir -p "$PKGBUILD_dir"
+    cp -r "$PKGSRC_dir"/* "$PKGBUILD_dir"
+    chown -R nobody:nobody "$PKGBUILD_dir"
 }
 
 try_nobody_update() {
     ## Try updating pacman as the nobody user. If this fails then something
     ## went wrong when setting up sudo permissions for nobody
+    echo "Testing pacman permissions for user nobody. Trying to update cache."
     if ! sudo -u nobody -n sudo pacman -Syy; then
         echo "Failed to obtain pacman permissions for user nobody. Exiting."
-        exit 1
+        return 1
     fi
+}
+
+call_makepkg() {
+    cd "$PKGBUILD_dir/$1" || return 1
+    sudo -u nobody makepkg -s -r -i -f --noconfirm
 }
 
 run_yay() {
@@ -103,6 +103,30 @@ run_makepkg() {
     call_makepkg "xkb-hypermode"
 }
 
+rm_makepkg_dir() {
+    echo "Removing temporary makepkg build directory at $PKGBUILD_dir"
+    rm -r "$PKGBUILD_dir"
+}
+
+rm_yaytmp() {
+    echo "Removing temporary build directory for yay at $YAYTMP"
+    rm -f "$YAYTMP"
+}
+
+rm_nobody_perms() {
+    echo "Removing user nobody's permission to use pacman without password"
+    rm -r -f "$NOBODY_SUDO_CONF"
+}
+
+clean_up() {
+    rm_yaytmp
+    rm_makepkg_dir
+    rm_nobody_perms
+    exit
+}
+
+trap 'clean_up' ERR EXIT
+
 if [[ ! "$(id -u)" = "0" ]]; then
     echo "This script must be run as root. Exiting"
     exit 1
@@ -113,8 +137,7 @@ try_nobody_update
 
 mk_yaytmp
 run_yay
-rm_yaytmp
 
+mk_makepkg_dir
 run_makepkg
 
-rm_nobody_perms
