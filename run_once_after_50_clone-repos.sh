@@ -15,9 +15,26 @@ clone_maybe () {
     fi
 }
 
+run_stack_in_dir () {
+    local cur="pwd$"
+    cd "$1" || return 1
+    stack install
+    cd "$cur" || return 1
+}
+
+export STACK_ROOT="$XDG_DATA_HOME"/stack
+
 clone_maybe https://github.com/ndwarshuis/conky.git "$HOME/.config/conky"
 clone_maybe https://github.com/ndwarshuis/.emacs.d.git "$HOME/.config/emacs"
-clone_maybe https://github.com/ndwarshuis/rofi-extras.git "$HOME/.config/rofi-extras"
-clone_maybe https://github.com/ndwarshuis/xman.git "$HOME/.config/xman"
-clone_maybe https://github.com/ndwarshuis/xmonad-config.git "$HOME/.config/xmonad"
 
+rofix_dir="$HOME/.config/rofi-extras"
+clone_maybe https://github.com/ndwarshuis/rofi-extras.git "$rofix_dir"
+run_stack_in_dir "$rofix_dir"
+
+xman_dir="$HOME/.config/xman"
+clone_maybe https://github.com/ndwarshuis/xman.git "$xman_dir"
+run_stack_in_dir "$xman_dir"
+
+xmonad_dir="$HOME/.config/xmonad"
+clone_maybe https://github.com/ndwarshuis/xmonad-config.git "$xmonad_dir"
+run_stack_in_dir "$xmonad_dir"
