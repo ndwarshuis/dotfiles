@@ -14,29 +14,29 @@
 ## 6. remove the temporary HOME for yay
 ## 7. remove the pacman sudo privilege for nobody
 
-PKGSRC_dir="$1"
-PKGBUILD_dir=/tmp/bootstrap-makepkg
-YAYTMP=/tmp/bootstrap-yay
-NOBODY_SUDO="nobody ALL=(root) NOPASSWD: /usr/bin/pacman"
-NOBODY_SUDO_CONF=/etc/sudoers.d/10-nobody-pacman
+pkgsrc_dir="$1"
+makepkg_tmp=/tmp/bootstrap-makepkg
+yaytmp=/tmp/bootstrap-yay
+nobody_sudo_conf="nobody ALL=(root) NOPASSWD: /usr/bin/pacman"
+nobody_sudo_path=/etc/sudoers.d/10-nobody-pacman
 
 mk_nobody_perms() {
     echo "Giving user nobody permission to use pacman without password"
-    echo "$NOBODY_SUDO" > "$NOBODY_SUDO_CONF"
+    echo "$nobody_sudo_conf" > "$nobody_sudo_path"
 }
 
 mk_yaytmp() {
-    echo "Creating temporary build directory for yay at $YAYTMP"
-    mkdir "$YAYTMP"
-    chown -R nobody:nobody "$YAYTMP"
+    echo "Creating temporary build directory for yay at $yaytmp"
+    mkdir "$yaytmp"
+    chown -R nobody:nobody "$yaytmp"
 }
 
 mk_makepkg_dir() {
-    echo "Creating temporary makepkg build directory at $PKGBUILD_dir"
-    mkdir -p "$PKGBUILD_dir"
-    echo "Populated with packages from $PKGSRC_dir"
-    cp -r "$PKGSRC_dir"/* "$PKGBUILD_dir"
-    chown -R nobody:nobody "$PKGBUILD_dir"
+    echo "Creating temporary makepkg build directory at $makepkg_tmp"
+    mkdir -p "$makepkg_tmp"
+    echo "Populated with packages from $pkgsrc_dir"
+    cp -r "$pkgsrc_dir"/* "$makepkg_tmp"
+    chown -R nobody:nobody "$makepkg_tmp"
 }
 
 try_nobody_update() {
@@ -50,7 +50,7 @@ try_nobody_update() {
 }
 
 call_makepkg() {
-    cd "$PKGBUILD_dir/$1" || return 1
+    cd "$makepkg_tmp/$1" || return 1
     sudo -u nobody MAKEFLAGS="-j$(nproc)" makepkg -s -r -i -f --noconfirm
 }
 
@@ -77,7 +77,7 @@ run_yay() {
     ## AUR pkgs needed for spotify
     spotify_pkgs=(gconf)
 
-    sudo -u nobody HOME="$YAYTMP" \
+    sudo -u nobody HOME="$yaytmp" MAKEFLAGS="-j$(nproc)" \
         yay --noconfirm --removemake -S \
         "${dunst_pkgs[@]}" \
         "${emacs_pkgs[@]}" \
@@ -105,18 +105,18 @@ run_makepkg() {
 }
 
 rm_makepkg_dir() {
-    echo "Removing temporary makepkg build directory at $PKGBUILD_dir"
-    rm -r -f "$PKGBUILD_dir"
+    echo "Removing temporary makepkg build directory at $makepkg_tmp"
+    rm -r -f "$makepkg_tmp"
 }
 
 rm_yaytmp() {
-    echo "Removing temporary build directory for yay at $YAYTMP"
-    rm -r -f "$YAYTMP"
+    echo "Removing temporary build directory for yay at $yaytmp"
+    rm -r -f "$yaytmp"
 }
 
 rm_nobody_perms() {
     echo "Removing user nobody's permission to use pacman without password"
-    rm -f "$NOBODY_SUDO_CONF"
+    rm -f "$nobody_sudo_path"
 }
 
 clean_up() {
