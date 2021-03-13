@@ -77,7 +77,7 @@ run_yay() {
     ## AUR pkgs needed for spotify
     spotify_pkgs=(gconf)
 
-    sudo -u nobody HOME="$yaytmp" MAKEFLAGS="-j$(nproc) \
+    sudo -u nobody HOME="$yaytmp" MAKEFLAGS="-j$(nproc)" \
         yay --noconfirm --removemake -S \
         "${dunst_pkgs[@]}" \
         "${emacs_pkgs[@]}" \
