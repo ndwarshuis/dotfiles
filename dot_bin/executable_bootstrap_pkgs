@@ -135,12 +135,15 @@ fi
 mk_nobody_perms
 try_nobody_update
 
-mk_yaytmp
-run_yay
-rm_yaytmp
+# mk_yaytmp
+# run_yay
+# rm_yaytmp
 
 mk_makepkg_dir
 run_makepkg
 rm_makepkg_dir
+
+echo "$PKGSRC_dir"
+echo "$PKGBUILD_dir"
 
 rm_nobody_perms
