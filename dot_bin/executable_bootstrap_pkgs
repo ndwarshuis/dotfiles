@@ -1,0 +1,120 @@
+#! /bin/bash
+
+## Install all required packages for this user. It only needs to be run once
+## when setting up the HOME directory.
+##
+## This script is designed not to ask the user over and over again for their
+## sudo password. Since it uses yay and makepkg to install AUR and custom
+## PKGBUILDs, the somewhat hacky way to do this is as follows:'
+## 1. call this script as root
+## 2. give the nobody user permission to run pacman with no password via sudo
+## 3. set up a custom, temporary HOME directory for yay which is owned by nobody
+## 4. run yay as nobody with HOME set to the directory made in (3)
+## 5. run makepkg as nobody
+## 6. remove the temporary HOME for yay
+## 7. remove the pacman sudo privilege for nobody
+
+PKGBUILD_dir="$HOME/.local/share/packages"
+YAYTMP=/tmp/something
+NOBODY_SUDO_CONF=/etc/sudoers.d/10-nobody-pacman
+
+mk_nobody_perms() {
+    echo "nobody ALL=(root) NOPASSWD: /usr/bin/pacman" > "$NOBODY_SUDO_CONF"
+}
+
+rm_nobody_perms() {
+    rm "$NOBODY_SUDO_CONF"
+}
+
+mk_yaytmp() {
+    mkdir "$YAYTMP"
+    chown -R nobody:nobody "$YAYTMP"
+    # chgrp nobody "$YAYTMP"
+    # chmod g+ws "$YAYTMP"
+    # setfacl -m u::rwx,g::rwx "$YAYTMP"
+    # setfacl -d --set u::rwx,g::rwx,o::- "$YAYTMP"
+}
+
+rm_yaytmp() {
+    rm -f "$YAYTMP"
+}
+
+call_makepkg() {
+    cd "$PKGBUILD_dir/$1" || exit
+    sudo -u nobody makepkg -s -r -i -f --noconfirm
+}
+
+try_nobody_update() {
+    ## Try updating pacman as the nobody user. If this fails then something
+    ## went wrong when setting up sudo permissions for nobody
+    if ! sudo -u nobody -n sudo pacman -Syy; then
+        echo "Failed to obtain pacman permissions for user nobody. Exiting."
+        exit 1
+    fi
+}
+
+run_yay() {
+    ## TODO add template switches to control which of these get installed based
+    ## on my config
+    dunst_pkgs=(dunst)
+    emacs_pkgs=(emacs mu)
+    flameshot_pkgs=(flameshot)
+    gtk_pkgs=(zuki-themes)
+    nvidia_pkgs=(optimus-manager)
+    r_pkgs=(r docker-rootless-extras-bin gcc-fortran texlive-bin tk)
+    redshift_pkgs=(redshift)
+    rofi_pkgs=(rofi-git bitwarden-cli libnotify rofi-greenclip
+            networkmanager-dmenu-git veracrypt sshfs jmtpfs)
+    seafile_pkgs=(seafile)
+    urxvt_pkgs=(urxvt-tabbedex rxvt-unicode urxvt-perls)
+    xmonad_pkgs=(stack-static autorandr feh xorg-server xorg-xset libpulse
+                playerctl wireless_tools acpid ttf-symbola-free ttf-symbola-free
+                ttf-dejavu awesome-terminal-fonts numlockx picom i3lock-color
+                xorg-xrandr xss-lock)
+    zsh_pkgs=(zsh zsh-completions zsh-syntax-highlighting)
+
+    ## AUR pkgs needed for spotify
+    spotify_pkgs=(gconf)
+
+    sudo -u nobody HOME="$YAYTMP" \
+        yay --noconfirm --removemake -S \
+        "${dunst_pkgs[@]}" \
+        "${emacs_pkgs[@]}" \
+        "${flameshot_pkgs[@]}" \
+        "${gtk_pkgs[@]}" \
+        "${nvidia_pkgs[@]}" \
+        "${nvidia_pkgs[@]}" \
+        "${r_pkgs[@]}" \
+        "${redshift_pkgs[@]}" \
+        "${rofi_pkgs[@]}" \
+        "${seafile_pkgs[@]}" \
+        "${urxvt_pkgs[@]}" \
+        "${xmonad_pkgs[@]}" \
+        "${zsh_pkgs[@]}" \
+        "${spotify_pkgs[@]}"
+}
+
+run_makepkg() {
+    ## these are all packages that have some personal customizations and/or are
+    ## not in the AUR
+    call_makepkg "clevo-xsm-wmi-dkms"
+    call_makepkg "conky-lua"
+    call_makepkg "spotify"
+    call_makepkg "xkb-hypermode"
+}
+
+if [[ ! "$(id -u)" = "1" ]]; then
+    echo "This script must be run as root. Exiting"
+    exit 1
+fi
+
+mk_nobody_perms
+try_nobody_update
+
+mk_yaytmp
+run_yay
+rm_yaytmp
+
+run_makepkg
+
+rm_nobody_perms
