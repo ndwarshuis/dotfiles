@@ -52,7 +52,7 @@ sudo "$HOME/.bin/bootstrap_pkgs" "$(whoami)" "$HOME/.local/share/packages" "$ema
 
 IFS=' ' read -r -a emacs_stack_pkgs \
    < <(emacs -batch -l "$emacs_dir/init.el" --eval \
-             '(print (format "phgs: %s" (s-join " " (nd/get-stack-dependencies))))' \
+             '(print (format "pkgs: %s" (s-join " " (nd/get-stack-dependencies))))' \
              2>/dev/null | \
            sed -n -e 's/"pkgs: \(.*\)"/\1/p')
 echo "Emacs requires the following Haskell packages: ${emacs_stack_pkgs[*]}"
