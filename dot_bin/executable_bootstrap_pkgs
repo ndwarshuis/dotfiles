@@ -14,8 +14,9 @@
 ## 6. remove the temporary HOME for yay
 ## 7. remove the pacman sudo privilege for nobody
 
-pkgsrc_dir="$1"
-emacs_dir="$2"
+home_user="$1"
+pkgsrc_dir="$2"
+emacs_dir="$3"
 
 makepkg_tmp=/tmp/bootstrap-makepkg
 yaytmp=/tmp/bootstrap-yay
@@ -62,10 +63,10 @@ run_yay() {
 
     ## packages for emacs (install emacs first to read the config)
     pacman --needed -S emacs
-    emacs -batch -l "$emacs_dir/init.el" --eval \
+    sudo -u "$home_user" emacs -batch -l "$emacs_dir/init.el" --eval \
           '(print (format "pkgs: %s" (s-join " " (nd/get-aur-dependencies t))))'
     IFS=' ' read -r -a emacs_pkgs \
-       < <(emacs -batch -l "$emacs_dir/init.el" --eval \
+       < <(sudo -u "$home_user" emacs -batch -l "$emacs_dir/init.el" --eval \
                  '(print (format "pkgs: %s" (s-join " " (nd/get-aur-dependencies t))))' \
                  2>/dev/null \
                sed -n -e 's/"pkgs: \(.*\)"/\1/p')
@@ -147,8 +148,8 @@ if [[ ! "$(id -u)" = "0" ]]; then
     exit 1
 fi
 
-if [ "$#" -ne 2 ]; then
-    echo "Must supply custom package location and emacs root. Exiting"
+if [ "$#" -ne 3 ]; then
+    echo "Must supply calling user, custom package dir, and emacs dir. Exiting"
     exit 1
 fi
 
