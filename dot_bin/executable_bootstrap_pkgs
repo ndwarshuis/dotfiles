@@ -62,6 +62,8 @@ run_yay() {
 
     ## packages for emacs (install emacs first to read the config)
     pacman --needed -S emacs
+    emacs -batch -l "$emacs_dir/init.el" --eval \
+          '(print (format "pkgs: %s" (s-join " " (nd/get-aur-dependencies t))))'
     IFS=' ' read -r -a emacs_pkgs \
        < <(emacs -batch -l "$emacs_dir/init.el" --eval \
                  '(print (format "pkgs: %s" (s-join " " (nd/get-aur-dependencies t))))' \
