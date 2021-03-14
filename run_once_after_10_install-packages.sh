@@ -46,21 +46,6 @@ clone_maybe https://github.com/ndwarshuis/.emacs.d.git "$emacs_dir"
 
 sudo "$HOME/.bin/bootstrap_pkgs" "$(whoami)" "$HOME/.local/share/packages" "$emacs_dir"
 
-# Install Haskell dependencies for emacs. This is only necessary because some
-# Haskell programs are not packaged as "bin" or "stack" packages, in which case
-# arch will pull in a bunch of crap because dynamic linking
-
-IFS=' ' read -r -a emacs_stack_pkgs \
-   < <(emacs -batch -l "$emacs_dir/init.el" --eval \
-             '(print (format "pkgs: %s" (s-join " " (nd/get-stack-dependencies))))' \
-             2>/dev/null | \
-           sed -n -e 's/"pkgs: \(.*\)"/\1/p')
-echo "Emacs requires the following Haskell packages: ${emacs_stack_pkgs[*]}"
-for p in "${emacs_stack_pkgs[@]}";
-do
-    stack install "$p"
-done
-
 ## CLONE/BUILD HASKELL-BASED REPOS
 
 # TODO not dry (this is in .pam_environment)
