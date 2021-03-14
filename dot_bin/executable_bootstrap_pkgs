@@ -98,7 +98,7 @@ run_yay() {
     spotify_pkgs=(gconf)
 
     sudo -u nobody HOME="$yaytmp" MAKEFLAGS="-j$(nproc)" \
-        yay --needed --noconfirm --removemake -S \
+        yay --needed --noconfirm --norebuild --removemake -S \
         "${dunst_pkgs[@]}" \
         "${emacs_pkgs[@]}" \
         "${flameshot_pkgs[@]}" \
