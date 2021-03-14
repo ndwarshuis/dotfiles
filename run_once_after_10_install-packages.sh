@@ -54,6 +54,7 @@ IFS=' ' read -r -a emacs_stack_pkgs \
    < <(emacs -batch -l "$emacs_dir/init.el" --eval \
              "(print (s-join \" \" (nd/get-stack-dependencies)))" 2>/dev/null | \
            sed -n -e 's/"\(.*\)"/\1/p')
+echo "Emacs requires the following Haskell packages: ${emacs_stack_pkgs[*]}"
 for p in "${emacs_stack_pkgs[@]}";
 do
     stack install "$p"

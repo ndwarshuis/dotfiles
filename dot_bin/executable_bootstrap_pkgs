@@ -70,6 +70,7 @@ run_yay() {
     pacman --needed -S emacs
     IFS=' ' read -r -a emacs_pkgs \
        < <(get_emacs_packages "(nd/get-aur-dependencies t)")
+    echo "Emacs requires the following system pkgs: ${emacs_pkgs[*]}"
 
     ## other packages for random gizmos
     dunst_pkgs=(dunst)
