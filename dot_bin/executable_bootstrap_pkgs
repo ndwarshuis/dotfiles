@@ -56,12 +56,6 @@ call_makepkg() {
     sudo -u nobody MAKEFLAGS="-j$(nproc)" makepkg -s -r -i -f --noconfirm
 }
 
-get_emacs_packages() {
-    emacs -batch -l "$emacs_dir/init.el" --eval \
-          "(print (s-join \" \" $1))" 2>/dev/null | \
-        sed -n -e 's/"\(.*\)"/\1/p'
-}
-
 run_yay() {
     ## TODO add template switches to control which of these get installed based
     ## on my config
@@ -69,7 +63,10 @@ run_yay() {
     ## packages for emacs (install emacs first to read the config)
     pacman --needed -S emacs
     IFS=' ' read -r -a emacs_pkgs \
-       < <(get_emacs_packages "(nd/get-aur-dependencies t)")
+       < <(emacs -batch -l "$emacs_dir/init.el" --eval \
+                 '(print (format "phgs: %s" (s-join " " (nd/get-aur-dependencies t))))' \
+                 2>/dev/null \
+               sed -n -e 's/"pkgs: \(.*\)"/\1/p')
     echo "Emacs requires the following system pkgs: ${emacs_pkgs[*]}"
 
     ## other packages for random gizmos
