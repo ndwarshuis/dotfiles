@@ -44,7 +44,7 @@ clone_maybe https://github.com/ndwarshuis/.emacs.d.git "$emacs_dir"
 # only be used once. Pass the emacs config directory so it can get a list of
 # dependencies for emacs
 
-sudo "$HOME/.bin/bootstrap_pkgs" "$HOME/.local/share/packages" "$emacs_dir"
+sudo "$(id -u)" "$HOME/.bin/bootstrap_pkgs" "$HOME/.local/share/packages" "$emacs_dir"
 
 # Install Haskell dependencies for emacs. This is only necessary because some
 # Haskell programs are not packaged as "bin" or "stack" packages, in which case
