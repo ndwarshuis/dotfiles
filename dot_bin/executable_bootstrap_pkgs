@@ -15,6 +15,8 @@
 ## 7. remove the pacman sudo privilege for nobody
 
 pkgsrc_dir="$1"
+emacs_dir="$2"
+
 makepkg_tmp=/tmp/bootstrap-makepkg
 yaytmp=/tmp/bootstrap-yay
 nobody_sudo_conf="nobody ALL=(root) NOPASSWD: /usr/bin/pacman"
@@ -54,11 +56,23 @@ call_makepkg() {
     sudo -u nobody MAKEFLAGS="-j$(nproc)" makepkg -s -r -i -f --noconfirm
 }
 
+get_emacs_packages() {
+    emacs -batch -l "$emacs_dir/init.el" --eval \
+          "(print (s-join \" \" $1))" 2>/dev/null | \
+        sed -n -e 's/"\(.*\)"/\1/p'
+}
+
 run_yay() {
     ## TODO add template switches to control which of these get installed based
     ## on my config
+
+    ## packages for emacs (install emacs first to read the config)
+    pacman --needed -S emacs
+    IFS=' ' read -r -a emacs_pkgs \
+       < <(get_emacs_packages "(nd/get-aur-dependencies t)")
+
+    ## other packages for random gizmos
     dunst_pkgs=(dunst)
-    emacs_pkgs=(emacs mu)
     flameshot_pkgs=(flameshot)
     gtk_pkgs=(zuki-themes)
     nvidia_pkgs=(optimus-manager)
@@ -78,7 +92,7 @@ run_yay() {
     spotify_pkgs=(gconf)
 
     sudo -u nobody HOME="$yaytmp" MAKEFLAGS="-j$(nproc)" \
-        yay --noconfirm --removemake -S \
+        yay --needed --noconfirm --removemake -S \
         "${dunst_pkgs[@]}" \
         "${emacs_pkgs[@]}" \
         "${flameshot_pkgs[@]}" \
@@ -133,8 +147,8 @@ if [[ ! "$(id -u)" = "0" ]]; then
     exit 1
 fi
 
-if [ "$#" -ne 1 ]; then
-    echo "Must supply the location of custom packages as sole argument. Exiting"
+if [ "$#" -ne 2 ]; then
+    echo "Must supply custom package location and emacs root. Exiting"
     exit 1
 fi
 
