@@ -86,8 +86,8 @@ Some of these are custom wrappers found
 #### Conky
 
 Conky is a super-configurable system monitor that runs on the desktop (your
-nerdiness on fully display). See [here](https://github.com/ndwarshuis/conky) for
-my configuration.
+nerdiness on full display). See [here](https://github.com/ndwarshuis/conky-main)
+for my configuration.
 
 #### Emacs
 
