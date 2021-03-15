@@ -1,0 +1,19 @@
+gtk-theme-name="Zukitre"
+gtk-icon-theme-name="Papirus-Light"
+gtk-cursor-theme-name="Adwaita"
+gtk-font-name="DejaVu Sans 9"
+
+# xft fonts, probably not needed
+# gtk-xft-antialias=1
+# gtk-xft-hinting=1
+# gtk-xft-hintstyle=hintmedium
+# gtk-xft-rgba=rgb
+# gtk-xft-dpi=96
+
+# I hate flashy things
+gtk-enable-event-sounds=0
+gtk-enable-input-feedback-sounds=0
+gtk-cursor-blink=false
+
+# better than default
+# gtk-key-theme-name=Emacs
