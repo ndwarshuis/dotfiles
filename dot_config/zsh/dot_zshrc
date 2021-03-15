@@ -268,6 +268,12 @@ alias gt="git tag"
 alias gnew="git log HEAD@{1}..HEAD@{0}"
 alias ggui="git gui"
 
+alias cze="chezmoi edit"
+alias czea="chezmoi edit --apply"
+alias czd="chezmoi diff"
+alias cza="chezmoi add"
+alias czc="chezmoi cd"
+
 ## --------------------------------------------------
 ## Manly Colors
 ## --------------------------------------------------
