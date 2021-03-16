@@ -1,0 +1,14 @@
+#! /bin/bash
+
+# call the brave browser with some nice flags
+
+brave --process-per-site \
+      --disk-cache-dir="/tmp/brave-cache" \
+      --use-gl=desktop \
+      --enable-accelerated-video-decode \
+      --enable-gpu-rasterization \
+      --enable-zero-copy \
+      --enable-oop-rasterization \
+      --enable-features=VaapiVideoDecoder,WebUIDarkMode \
+      --force-dark-mode
+
