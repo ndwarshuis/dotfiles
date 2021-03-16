@@ -10,5 +10,6 @@ brave --process-per-site \
       --enable-zero-copy \
       --enable-oop-rasterization \
       --enable-features=VaapiVideoDecoder,WebUIDarkMode \
-      --force-dark-mode
+      --force-dark-mode \
+      "$@"
 
