@@ -290,9 +290,18 @@ man() {
 }
 
 ## --------------------------------------------------
-## Python
+## Python/Ruby Virtual Environments
 ## --------------------------------------------------
+
+# both of these languages have similar setups for their virtual envs which
+# involve a) adding a "shims" directory to PATH and then b) adding some shell
+# magic to automatically call the shims
+
 if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init - | sed '/PATH/d' -)"
     eval "$(pyenv virtualenv-init - | sed '/PATH/d' -)"
+fi
+
+if command -v rbenv 1>/dev/null 2>&1; then
+    eval "$(rbenv init - | sed '/PATH/d' -)"
 fi
