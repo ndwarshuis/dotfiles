@@ -1,6 +1,6 @@
 [Unit]
 Description=Mailbox synchronization service
-After=network.target network-online.target dbus.socket mount-veracrypt@gnupg.service
+After=network.target network-online.target dbus.socket
 
 [Service]
 Type=oneshot
