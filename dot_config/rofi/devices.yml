@@ -1,0 +1,78 @@
+# directory for all relative, transitive mountpoints
+mountdir: /tmp/media/ndwar
+
+devices:
+  accounts:
+    type: veracrypt
+    mount:
+      mountpoint: accounts
+    volume: /mnt/data/Documents/personal_records/financial/acnt.crypt
+    password:
+      bitwarden:
+        key: Veracrypt (accounts)
+  gnupg:
+    type: veracrypt
+    mount:
+      mountpoint: /home/ndwar/.config/gnupg
+    volume: /mnt/data/Documents/crypt/gnupg
+    password:
+      bitwarden:
+        key: Veracrypt (gpg)
+  ssh:
+    type: veracrypt
+    mount:
+      mountpoint: /home/ndwar/.ssh
+    volume: /mnt/data/Documents/crypt/ssh-config
+    password:
+      bitwarden:
+        key: Veracrypt (ssh)
+  ansible_pki:
+    type: veracrypt
+    mount:
+      mountpoint: ansible-pki
+    volume: /home/ndwar/.ansible/openvpn.vcrypt
+    password:
+      bitwarden:
+        key: Veracrypt (Ansible PKI)
+  call_logs:
+    type: veracrypt
+    mount:
+      mountpoint: call-logs
+    volume: /mnt/data/Documents/personal_records/call_logs
+    password: 
+      bitwarden:
+        key: Veracrypt (ACR)
+  music:
+    type: sshfs
+    mount:
+      mountpoint: /mnt/data/Music
+    remote: portnoy4prez:/mnt/data/home/Music
+    depends:
+      - ssh
+  videos:
+    type: sshfs
+    mount:
+      mountpoint: /mnt/data/Videos
+    remote: portnoy4prez:/mnt/data/home/Videos
+    depends:
+      - ssh
+  roylab:
+    type: cifs
+    mount:
+      mountpoint: Roylab
+    remote: //ad.gatech.edu/bme/labs/roy-lab
+    password:
+      libsecret:
+        attributes:
+          user: ndwarshuis3@gatech.edu
+          host: outlook.office365.com
+  mc3m:
+    type: cifs
+    mount:
+      mountpoint: MC3M
+    remote: //ad.gatech.edu/bme/labs/mc3m
+    password:
+      libsecret:
+        attributes:
+          user: ndwarshuis3@gatech.edu
+          host: outlook.office365.com
