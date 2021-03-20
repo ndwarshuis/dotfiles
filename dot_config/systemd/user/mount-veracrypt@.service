@@ -1,7 +1,0 @@
-[Unit]
-Description=Mount veracrypt volume for %i
-
-[Service]
-Type=forking
-ExecStart=%h/.bin/mount.veracrypt ${BW_NAME} ${VOLUME} ${MOUNTPOINT}
-ExecStop=%h/.bin/umount.veracrypt ${MOUNTPOINT}
