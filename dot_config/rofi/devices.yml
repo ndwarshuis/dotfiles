@@ -1,5 +1,6 @@
 # directory for all relative, transitive mountpoints
 mountdir: /tmp/media/ndwar
+verbose: false
 
 devices:
   accounts:
@@ -22,6 +23,7 @@ devices:
     type: veracrypt
     mount:
       mountpoint: /home/ndwar/.ssh
+      label: ssh
     volume: /mnt/data/Documents/crypt/ssh-config
     password:
       bitwarden:
@@ -60,7 +62,14 @@ devices:
     type: cifs
     mount:
       mountpoint: Roylab
+    # sudo: true
     remote: //ad.gatech.edu/bme/labs/roy-lab
+    # options:
+    #   username: ndwarshuis3
+    #   workgroup: ad
+    #   iocharset: utf8
+    #   uid: 1000
+    #   gid: 1000
     password:
       libsecret:
         attributes:
@@ -70,6 +79,7 @@ devices:
     type: cifs
     mount:
       mountpoint: MC3M
+    sudo: true
     remote: //ad.gatech.edu/bme/labs/mc3m
     password:
       libsecret:
