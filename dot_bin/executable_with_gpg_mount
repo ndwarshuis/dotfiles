@@ -7,5 +7,8 @@ shift
 
 alias="gnupg"
 
-rofi-dev -c "$XDG_CONFIG_HOME/rofi/devices.yml" -m "$alias" \
-    && "$bin" "$@" || echo "Could not mount $alias"
+if rofi-dev -c "$XDG_CONFIG_HOME/rofi/devices.yml" -m "$alias"; then
+    "$bin" "$@"
+else
+    echo "Could not mount $alias"
+fi
