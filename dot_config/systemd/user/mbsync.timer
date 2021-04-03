@@ -1,8 +1,0 @@
-[Unit]
-Description=Mailbox synchronization timer
-
-[Timer]
-OnUnitActiveSec=5m
-
-[Install]
-WantedBy=timers.target
