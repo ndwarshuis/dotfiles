@@ -17,6 +17,8 @@ CCNET_CONF_DIR          DEFAULT=${XDG_CONFIG_HOME}/ccnet
 # user_subvol_rm_allowed mount option on the host filesystem
 
 DOCKER_HOST             DEFAULT=unix://${XDG_RUNTIME_DIR}/docker.sock
+GEM_HOME                DEFAULT=${XDG_DATA_HOME}/gem
+GEM_SPEC_CACHE          DEFAULT=${XDG_CACHE_HOME}/gem
 GRIPHOME                DEFAULT=${XDG_CONFIG_HOME}/grip
 GTK2_RC_FILES           DEFAULT=${XDG_CONFIG_HOME}/gtk-2.0/gtkrc
 STACK_ROOT              DEFAULT=${XDG_DATA_HOME}/stack

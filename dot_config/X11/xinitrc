@@ -5,6 +5,10 @@ userresources="$XDG_CONFIG_HOME/X11/xresources"
 systemctl --user import-environment PATH
 systemctl --user import-environment DISPLAY
 
+# add gempath to PATH
+gempaths="$(/usr/bin/gem env gempath):"
+export PATH="${gempaths//:/\/bin:}/bin:$PATH"
+
 if [ -f "$userresources" ]; then
     xrdb -merge "$userresources"
 fi
