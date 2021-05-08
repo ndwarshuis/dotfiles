@@ -67,10 +67,10 @@ run_yay() {
     # call emacs once to initialize it
     if sudo -u "$home_user" emacs -batch -l "$emacs_dir/init.el"; then
         IFS=' ' read -r -a emacs_pkgs \
-           < <(sudo -u "$home_user" emacs -batch -l "$emacs_dir/init.el" --eval \
-                    '(print (format "pkgs: %s" (s-join " " (nd/get-aur-dependencies t))))' \
-                    2>/dev/null | \
-                   sed -n -e 's/"pkgs: \(.*\)"/\1/p')
+            < <(sudo -u "$home_user" emacs -batch -l "$emacs_dir/init.el" --eval \
+                '(print (format "pkgs: %s" (s-join " " (nd/get-dependencies (list :pacman :aur)))))' \
+	        2>/dev/null | \
+	        sed -n -e 's/"pkgs: \(.*\)"/\1/p')
         echo "Emacs requires the following system pkgs: ${emacs_pkgs[*]}"
     else
         echo "Could not get list of emacs dependencies. Install them later."
