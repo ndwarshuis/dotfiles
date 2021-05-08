@@ -32,6 +32,7 @@ MU_HOME                 DEFAULT=${XDG_CACHE_HOME}/mu
 MAILDIR                 DEFAULT=/mnt/data/Mail
 NODE_REPL_HISTORY       DEFAULT=${XDG_DATA_HOME}/npm/node_repl.log
 INPUTRC                 DEFAULT=${XDG_CONFIG_HOME}/readline/inputrc
+PAGER                   DEFAULT=less
 PKGDEST                 DEFAULT=/var/cache/pacman/pkg
 PYTHONSTARTUP           DEFAULT=${XDG_CONFIG_HOME}/python/startup.py
 PYLINTHOME		DEFAULT=${XDG_CACHE_HOME}/pylint
