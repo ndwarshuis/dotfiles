@@ -11,5 +11,6 @@ brave --process-per-site \
       --enable-oop-rasterization \
       --enable-features=VaapiVideoDecoder,WebUIDarkMode \
       --force-dark-mode \
+      --use-vulkan \
       "$@"
 
