@@ -7,7 +7,7 @@ systemctl --user import-environment DISPLAY
 
 # add gempath to PATH
 gempaths="$(/usr/bin/gem env gempath):"
-export PATH="${gempaths//:/\/bin:}/bin:$PATH"
+export PATH="${gempaths//:/\/bin:}:$PATH"
 
 if [ -f "$userresources" ]; then
     xrdb -merge "$userresources"
