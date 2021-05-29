@@ -7,7 +7,7 @@ devices:
     type: veracrypt
     mount:
       mountpoint: accounts
-    volume: /mnt/data/Documents/personal_records/financial/acnt.crypt
+    volume: /mnt/data/Documents/crypt/accounts
     password:
       bitwarden:
         key: Veracrypt (accounts)
@@ -32,7 +32,7 @@ devices:
     type: veracrypt
     mount:
       mountpoint: ansible-pki
-    volume: /home/ndwar/.ansible/openvpn.vcrypt
+    volume: /mnt/data/Documents/crypt/ansible
     password:
       bitwarden:
         key: Veracrypt (Ansible PKI)
@@ -40,18 +40,10 @@ devices:
     type: veracrypt
     mount:
       mountpoint: call-logs
-    volume: /mnt/data/Documents/personal_records/call_logs
+    volume: /mnt/data/Documents/crypt/call_logs
     password: 
       bitwarden:
         key: Veracrypt (ACR)
-  call_logs2:
-    type: veracrypt
-    mount:
-      mountpoint: call-logs2
-    volume: /mnt/data/Documents/personal_records/call_logs_bigger
-    password: 
-      bitwarden:
-        key: Veracrypt (ACR 2)
   music:
     type: sshfs
     mount:
