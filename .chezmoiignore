@@ -8,6 +8,9 @@ dot_config
 
 dot_local
 
+# the install scripts are for desktop-specific configs (emacs, xmonad, etc)
+run_once_after_10_install-packages.sh
+
 # this is linked; allow VirtualBox to configure by itself
 VirtualBox.xml
 
