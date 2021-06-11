@@ -7,6 +7,7 @@ XDG_CACHE_HOME          DEFAULT=@{HOME}/.cache
 XDG_DATA_HOME           DEFAULT=@{HOME}/.local/share
 XDG_RUNTIME_DIR         DEFAULT=/run/user/1000
 
+{{- if eq .chezmoi.hostname "petrucci4prez" }}
 AQBANKING_HOME          DEFAULT=${XDG_CONFIG_HOME}/aqbanking
 ANSIBLE_VAULT_PASSWORD_FILE 	DEFAULT=@{HOME}/.bin/ansible-vault-pass-client
 ANSIBLE_VAULT_IDENTITY	DEFAULT=ansible/vault
@@ -23,24 +24,19 @@ GEM_HOME                DEFAULT=${XDG_DATA_HOME}/gem
 GEM_SPEC_CACHE          DEFAULT=${XDG_CACHE_HOME}/gem
 GRIPHOME                DEFAULT=${XDG_CONFIG_HOME}/grip
 GTK2_RC_FILES           DEFAULT=${XDG_CONFIG_HOME}/gtk-2.0/gtkrc
-STACK_ROOT              DEFAULT=${XDG_DATA_HOME}/stack
 IPYTHONDIR              DEFAULT=${XDG_CONFIG_HOME}/ipython
 LEIN_HOME               DEFAULT=${XDG_DATA_HOME}/lein
-LESSKEY                 DEFAULT=${XDG_CONFIG_HOME}/less/lesskey
-LESSHISTFILE            DEFAULT=-
 MATLAB_PREFDIR          DEFAULT=${XDG_CONFIG_HOME}/matlab
 MATLAB_LOG_DIR          DEFAULT=${XDG_DATA_HOME}/matlab/log
 MU_HOME                 DEFAULT=${XDG_CACHE_HOME}/mu
 MAILDIR                 DEFAULT=/mnt/data/Mail
-NODE_REPL_HISTORY       DEFAULT=${XDG_DATA_HOME}/npm/node_repl.log
-INPUTRC                 DEFAULT=${XDG_CONFIG_HOME}/readline/inputrc
 PAGER                   DEFAULT=less
 PKGDEST                 DEFAULT=/var/cache/pacman/pkg
-PYTHONSTARTUP           DEFAULT=${XDG_CONFIG_HOME}/python/startup.py
-PYLINTHOME		DEFAULT=${XDG_CACHE_HOME}/pylint
+PYLINTHOME		        DEFAULT=${XDG_CACHE_HOME}/pylint
 PYENV_ROOT              DEFAULT=${XDG_DATA_HOME}/pyenv
 R_ENVIRON_USER          DEFAULT=${XDG_CONFIG_HOME}/r/Renviron
 RBENV_ROOT              DEFAULT=${XDG_DATA_HOME}/rbenv
+STACK_ROOT              DEFAULT=${XDG_DATA_HOME}/stack
 TEXMFHOME               DEFAULT=${XDG_CONFIG_HOME}/texmf
 RXVT_SOCKET             DEFAULT=${XDG_RUNTIME_DIR}/urxvt/urxvtd-node
 ICEAUTHORITY            DEFAULT=${XDG_CACHE_DIR}/ICEauthority
@@ -49,6 +45,13 @@ XINITRC                 DEFAULT=${XDG_CONFIG_HOME}/X11/xinitrc
 XMONAD_CACHE_DIR        DEFAULT=${XDG_CACHE_HOME}/xmonad
 XMONAD_CONFIG_DIR       DEFAULT=${XDG_CONFIG_HOME}/xmonad
 XMONAD_DATA_DIR         DEFAULT=${XDG_DATA_HOME}/xmonad
+{{- end }}
+
+INPUTRC                 DEFAULT=${XDG_CONFIG_HOME}/readline/inputrc
+NODE_REPL_HISTORY       DEFAULT=${XDG_DATA_HOME}/npm/node_repl.log
+PYTHONSTARTUP           DEFAULT=${XDG_CONFIG_HOME}/python/startup.py
+LESSKEY                 DEFAULT=${XDG_CONFIG_HOME}/less/lesskey
+LESSHISTFILE            DEFAULT=-
 HISTFILE                DEFAULT=${XDG_DATA_HOME}/zsh_history.log
 HISTSIZE                DEFAULT=1000000
 SAVEHIST                DEFAULT=1000000
@@ -62,7 +65,7 @@ PASSWORD_STORE_DIR      DEFAULT=${GNUPGHOME}/pass
 # Path
 #--------------------#
 
-PATH OVERRIDE=${RBENV_ROOT}/shims:${PYENV_ROOT}/shims:@{HOME}/.bin:@{HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+PATH OVERRIDE={{- if eq .chezmoi.hostname "petrucci4prez" }}${RBENV_ROOT}/shims:${PYENV_ROOT}/shims:{{- end }}@{HOME}/.bin:@{HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
 
 #--------------------#
 # Applications

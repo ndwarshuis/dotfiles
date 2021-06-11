@@ -48,7 +48,7 @@ bindkey '\e[A' up-line-or-beginning-search
 bindkey '\eOB' down-line-or-beginning-search
 bindkey '\e[B' down-line-or-beginning-search
 
-
+{{- if eg .chezmoi.hostname "petrucci4prez" }}
 ## --------------------------------------------------
 # enable x11 clipboard sync
 ## --------------------------------------------------
@@ -87,8 +87,8 @@ local paste_widgets=(
 )
 x11-clip-wrap-widgets copy $copy_widgets
 x11-clip-wrap-widgets paste  $paste_widgets
- 
 
+{{- if eg .chezmoi.hostname "petrucci4prez" }}
 ## --------------------------------------------------
 ## PROMPT 
 ## --------------------------------------------------
@@ -289,6 +289,7 @@ man() {
     man "$@"
 }
 
+{{- if eg .chezmoi.hostname "petrucci4prez" }}
 ## --------------------------------------------------
 ## Python/Ruby Virtual Environments
 ## --------------------------------------------------
@@ -305,3 +306,4 @@ fi
 if command -v rbenv 1>/dev/null 2>&1; then
     eval "$(rbenv init - | sed '/PATH/d' -)"
 fi
+{{- end }}
