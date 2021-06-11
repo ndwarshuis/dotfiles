@@ -1,13 +1,13 @@
 {{- if ne .chezmoi.hostname "petrucci4prez" }}
-dot_bin
+.bin
 
-dot_config
-!dot_config/private_gnupg
-!dot_config/python
-!dot_config/zsh
-dot_config/zsh/dot_zprofile
+.config
+!.config/private_gnupg
+!.config/python
+!.config/zsh
+.config/zsh/dot_zprofile
 
-dot_local
+.local
 
 # the install scripts are for desktop-specific configs (emacs, xmonad, etc)
 run_once_after_10_install-packages.sh
