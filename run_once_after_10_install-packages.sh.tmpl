@@ -11,6 +11,7 @@
 # Configuration is assumed to be handled elsewhere (for now) eg in etckeeper
 # or with ansible.
 
+{{- if eq .chezmoi.hostname "petrucci4prez" }}
 clone_maybe () {
     if [ ! -d "$2" ]; then
         echo cloning git repo: "$1"
@@ -69,3 +70,4 @@ run_stack_in_dir "$xmonad_dir"
 ## CLONE OTHER REPOS
 
 clone_maybe https://github.com/ndwarshuis/conky.git "$HOME/.config/conky"
+{{- end }}
