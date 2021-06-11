@@ -14,32 +14,32 @@ datepos="$xoffset:600"
 
 i3lock --color=000000 \
        --pass-media-keys \
-	   --nofork \
-	   --ignore-empty-password \
-	   --screen=0 \
-	   --indicator \
-	   --insidecolor=00000055 \
-	   --insidevercolor=00000055 \
-	   --insidewrongcolor=00000055 \
-	   --ringcolor=555555ff \
-	   --ringwrongcolor=ff3333ff \
-	   --ringvercolor=99ceffff \
-	   --keyhlcolor=99ceffff \
-	   --bshlcolor=9523ffff \
-	   --linecolor=00000000 \
-	   --separatorcolor=00000000 \
-	   --clock \
-	   --verifcolor=99ceffff \
-	   --wrongcolor=ff8282ff \
-	   --timecolor=ffffffff \
-	   --timesize=72 \
-	   --timestr="%H:%M" \
-	   --datecolor=ffffffff \
-	   --datesize=42 \
-	   --datestr="%b %d, %Y" \
+       --nofork \
+       --ignore-empty-password \
+       --screen=0 \
+       --indicator \
+       --inside-color=00000055 \
+       --insidever-color=00000055 \
+       --insidewrong-color=00000055 \
+       --ring-color=555555ff \
+       --ringwrong-color=ff3333ff \
+       --ringver-color=99ceffff \
+       --keyhl-color=99ceffff \
+       --bshl-color=9523ffff \
+       --line-color=00000000 \
+       --separator-color=00000000 \
+       --clock \
+       --verif-color=99ceffff \
+       --wrong-color=ff8282ff \
+       --time-color=ffffffff \
+       --time-size=72 \
+       --time-str="%H:%M" \
+       --date-color=ffffffff \
+       --date-size=42 \
+       --date-str="%b %d, %Y" \
        --date-align 0 \
-       --datepos="$datepos" \
-	   --wrongsize=72 \
-	   --verifsize=72 \
-	   --radius=300 \
-	   --ring-width=25
+       --date-pos="$datepos" \
+       --wrong-size=72 \
+       --verif-size=72 \
+       --radius=300 \
+       --ring-width=25
