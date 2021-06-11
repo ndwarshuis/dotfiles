@@ -5,6 +5,7 @@ dot_config
 !dot_config/private_gnupg
 !dot_config/python
 !dot_config/zsh
+dot_config/zsh/dot_zprofile
 
 dot_local
 
