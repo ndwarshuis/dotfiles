@@ -5,7 +5,7 @@
 !.config/gnupg
 !.config/python
 !.config/zsh
-.config/zsh/dot_zprofile
+.config/zsh/.zprofile
 
 .local
 

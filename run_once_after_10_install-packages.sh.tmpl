@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.hostname "petrucci4prez" }}
 #! /bin/bash
 
 
@@ -11,7 +12,6 @@
 # Configuration is assumed to be handled elsewhere (for now) eg in etckeeper
 # or with ansible.
 
-{{- if eq .chezmoi.hostname "petrucci4prez" }}
 clone_maybe () {
     if [ ! -d "$2" ]; then
         echo cloning git repo: "$1"
