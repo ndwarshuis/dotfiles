@@ -48,7 +48,7 @@ bindkey '\e[A' up-line-or-beginning-search
 bindkey '\eOB' down-line-or-beginning-search
 bindkey '\e[B' down-line-or-beginning-search
 
-{{- if eg .chezmoi.hostname "petrucci4prez" }}
+{{- if eq .chezmoi.hostname "petrucci4prez" }}
 ## --------------------------------------------------
 # enable x11 clipboard sync
 ## --------------------------------------------------
@@ -289,7 +289,7 @@ man() {
     man "$@"
 }
 
-{{- if eg .chezmoi.hostname "petrucci4prez" }}
+{{- if eq .chezmoi.hostname "petrucci4prez" }}
 ## --------------------------------------------------
 ## Python/Ruby Virtual Environments
 ## --------------------------------------------------
