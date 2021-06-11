@@ -1,8 +1,8 @@
 {{- if ne .chezmoi.hostname "petrucci4prez" }}
 .bin
 
-.config
-!.config/private_gnupg
+.config/**
+!.config/gnupg
 !.config/python
 !.config/zsh
 .config/zsh/dot_zprofile
