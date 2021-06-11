@@ -8,6 +8,8 @@ XDG_DATA_HOME           DEFAULT=@{HOME}/.local/share
 XDG_RUNTIME_DIR         DEFAULT=/run/user/1000
 
 AQBANKING_HOME          DEFAULT=${XDG_CONFIG_HOME}/aqbanking
+ANSIBLE_VAULT_PASSWORD_FILE 	DEFAULT=@{HOME}/.bin/ansible-vault-pass-client
+ANSIBLE_VAULT_IDENTITY	DEFAULT=ansible/vault
 ASPELL_CONF             DEFAULT="per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl"
 CCACHE_CONFIGPATH       DEFAULT=${XDG_CONFIG_HOME}/ccache.config
 CCACHE_DIR              DEFAULT=${XDG_CACHE_HOME}/ccache
