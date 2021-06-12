@@ -1,116 +1,71 @@
 #! /bin/bash
 
-## Install all required packages for this user. It only needs to be run once
-## when setting up the HOME directory.
-##
-## This script is designed not to ask the user over and over again for their
-## sudo password. Since it uses yay and makepkg to install AUR and custom
-## PKGBUILDs, the somewhat hacky way to do this is as follows:'
-## 1. call this script as root
-## 2. give the nobody user permission to run pacman with no password via sudo
-## 3. set up a custom, temporary HOME directory for yay which is owned by nobody
-## 4. run yay as nobody with HOME set to the directory made in (3)
-## 5. run makepkg as nobody
-## 6. remove the temporary HOME for yay
-## 7. remove the pacman sudo privilege for nobody
+# Install all required packages for this user. It only needs to be run once
+# when setting up the HOME directory.
 
-home_user="$1"
-pkgsrc_dir="$2"
-emacs_dir="$3"
+# ASSUME
+# - git repos referenced here are pulled/updated
+# - makepkg is installed/configured
+# - yay is installed/configured
 
+# NOTE to run without a sudo prompt, call with a user that has pacman
+# permissions in sudoers.
+
+pkgsrc_dir="$1"
 makepkg_tmp=/tmp/bootstrap-makepkg
-yaytmp=/tmp/bootstrap-yay
-nobody_sudo_conf="nobody ALL=(root) NOPASSWD: /usr/bin/pacman"
-nobody_sudo_path=/etc/sudoers.d/10-nobody-pacman
-
-mk_nobody_perms() {
-    echo "Giving user nobody permission to use pacman without password"
-    echo "$nobody_sudo_conf" > "$nobody_sudo_path"
-}
-
-mk_yaytmp() {
-    echo "Creating temporary build directory for yay at $yaytmp"
-    mkdir "$yaytmp"
-    chown -R nobody:nobody "$yaytmp"
-}
 
 mk_makepkg_dir() {
     echo "Creating temporary makepkg build directory at $makepkg_tmp"
     mkdir -p "$makepkg_tmp"
     echo "Populated with packages from $pkgsrc_dir"
     cp -r "$pkgsrc_dir"/* "$makepkg_tmp"
-    chown -R nobody:nobody "$makepkg_tmp"
 }
 
-try_nobody_update() {
-    ## Try updating pacman as the nobody user. If this fails then something
-    ## went wrong when setting up sudo permissions for nobody
-    echo "Testing pacman permissions for user nobody. Trying to update cache."
-    if ! sudo -u nobody -n sudo pacman -Syy; then
-        echo "Failed to obtain pacman permissions for user nobody. Exiting."
+try_update() {
+    if ! pacman -Syy; then
+        echo "Failed to update pacman cache as user $(whoami). Exiting."
         return 1
     fi
 }
 
 call_makepkg() {
     cd "$makepkg_tmp/$1" || return 1
-    sudo -u nobody MAKEFLAGS="-j$(nproc)" makepkg -s -r -i -f --noconfirm
+    MAKEFLAGS="-j$(nproc)" makepkg -s -r -i -f --noconfirm
+}
+
+run_install_scripts() {
+    ~/.config/rofi-extras/install_deps
+    ~/.config/xmonad/install_deps
 }
 
 run_yay() {
-    ## TODO add template switches to control which of these get installed based
-    ## on my config
-
-    ## packages for emacs (install emacs first to read the config)
-    pacman --needed -S emacs
-
-    # call emacs once to initialize it
-    if sudo -u "$home_user" emacs -batch -l "$emacs_dir/init.el"; then
-        IFS=' ' read -r -a emacs_pkgs \
-            < <(sudo -u "$home_user" emacs -batch -l "$emacs_dir/init.el" --eval \
-                '(print (format "pkgs: %s" (s-join " " (nd/get-dependencies (list :pacman :aur)))))' \
-	        2>/dev/null | \
-	        sed -n -e 's/"pkgs: \(.*\)"/\1/p')
-        echo "Emacs requires the following system pkgs: ${emacs_pkgs[*]}"
-    else
-        echo "Could not get list of emacs dependencies. Install them later."
-        emacs_pkgs=()
-    fi
-
-    ## other packages for random gizmos
     dunst_pkgs=(dunst)
-    flameshot_pkgs=(flameshot)
+    emacs_pkgs=(emacs)
     gtk_pkgs=(zuki-themes)
-    nvidia_pkgs=(optimus-manager)
-    r_pkgs=(r docker-rootless-extras-bin gcc-fortran texlive-bin tk)
+    ## TODO this requires some system-level config and thus should be an
+    ## ansible role
+    # nvidia_pkgs=(optimus-manager)
+    ## TODO docker rootless should be an ansible role since it needs some
+    ## systemwide configuration
+    # r_pkgs=(r docker-rootless-extras-bin gcc-fortran texlive-bin tk)
+    r_pkgs=(r gcc-fortran texlive-bin tk)
     redshift_pkgs=(redshift)
-    rofi_pkgs=(rofi-git bitwarden-cli libnotify rofi-greenclip
-            networkmanager-dmenu-git veracrypt sshfs jmtpfs)
-    seafile_pkgs=(seafile)
+    seafile_pkgs=(seafile-client)
     urxvt_pkgs=(urxvt-tabbedex rxvt-unicode urxvt-perls)
-    xmonad_pkgs=(stack-static autorandr feh xorg-server xorg-xset libpulse
-                playerctl wireless_tools acpid ttf-symbola-free ttf-symbola-free
-                ttf-dejavu awesome-terminal-fonts numlockx picom i3lock-color
-                xorg-xrandr xss-lock)
     zsh_pkgs=(zsh zsh-completions zsh-syntax-highlighting)
 
     ## AUR pkgs needed for spotify
     spotify_pkgs=(gconf)
 
-    sudo -u nobody HOME="$yaytmp" MAKEFLAGS="-j$(nproc)" \
+    MAKEFLAGS="-j$(nproc)" \
         yay --needed --noconfirm --norebuild --removemake -S \
         "${dunst_pkgs[@]}" \
         "${emacs_pkgs[@]}" \
-        "${flameshot_pkgs[@]}" \
         "${gtk_pkgs[@]}" \
-        "${nvidia_pkgs[@]}" \
-        "${nvidia_pkgs[@]}" \
         "${r_pkgs[@]}" \
         "${redshift_pkgs[@]}" \
-        "${rofi_pkgs[@]}" \
         "${seafile_pkgs[@]}" \
         "${urxvt_pkgs[@]}" \
-        "${xmonad_pkgs[@]}" \
         "${zsh_pkgs[@]}" \
         "${spotify_pkgs[@]}"
 }
@@ -129,44 +84,22 @@ rm_makepkg_dir() {
     rm -r -f "$makepkg_tmp"
 }
 
-rm_yaytmp() {
-    echo "Removing temporary build directory for yay at $yaytmp"
-    rm -r -f "$yaytmp"
-}
-
-rm_nobody_perms() {
-    echo "Removing user nobody's permission to use pacman without password"
-    rm -f "$nobody_sudo_path"
-}
-
 clean_up() {
-    rm_yaytmp
     rm_makepkg_dir
-    rm_nobody_perms
     exit
 }
 
 trap 'clean_up' ERR
 
-if [[ ! "$(id -u)" = "0" ]]; then
-    echo "This script must be run as root. Exiting"
+if [ "$#" -ne 2 ]; then
+    echo "Must supply custom package dir. Exiting"
     exit 1
 fi
 
-if [ "$#" -ne 3 ]; then
-    echo "Must supply calling user, custom package dir, and emacs dir. Exiting"
-    exit 1
-fi
+try_update
 
-mk_nobody_perms
-try_nobody_update
-
-mk_yaytmp
 run_yay
-rm_yaytmp
 
 mk_makepkg_dir
 run_makepkg
 rm_makepkg_dir
-
-rm_nobody_perms

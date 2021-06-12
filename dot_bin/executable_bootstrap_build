@@ -1,0 +1,20 @@
+#! /bin/bash
+
+# Build any binaries in necessary for my config to run at full capacity.
+
+# ASSUME that stack is installed and that all repos with build scripts
+# referenced here are already cloned.
+
+run_stack_in_dir () {
+    local cur
+    cur="$(pwd)"
+    cd "$1" || return 1
+    stack install
+    cd "$cur" || return 1
+}
+
+export STACK_ROOT=~/.local/share/stack
+
+run_stack_in_dir ~/.config/rofi-extras
+run_stack_in_dir ~/.config/xmonad
+run_stack_in_dir ~/.config/xman
