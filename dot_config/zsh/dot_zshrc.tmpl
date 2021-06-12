@@ -197,9 +197,15 @@ alias ls='ls --color'
 alias grep='grep --color=auto'
 alias sudo='sudo '
 alias diff=colordiff
-alias ll='exa -alhg --group-directories-first'
-alias llt='exa -T'
-alias llg='ll --git'
+
+if [ -e /bin/exa ]; then
+    alias ll='exa -alhg --group-directories-first'
+    alias llt='exa -T'
+    alias llg='ll --git'
+else
+    alias ll='ls -alh'
+    [ -e /bin/tree ] && alias llt='tree'
+fi
 
 setopt autopushd
 
