@@ -22,7 +22,7 @@ mk_makepkg_dir() {
 }
 
 try_update() {
-    if ! pacman -Syy; then
+    if ! yay -Syy; then
         echo "Failed to update pacman cache as user $(whoami). Exiting."
         return 1
     fi
@@ -30,7 +30,7 @@ try_update() {
 
 call_makepkg() {
     cd "$makepkg_tmp/$1" || return 1
-    MAKEFLAGS="-j$(nproc)" makepkg -s -r -i -f --noconfirm
+    makepkg -s -r -i -f --noconfirm
 }
 
 run_install_scripts() {
