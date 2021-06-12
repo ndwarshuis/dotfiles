@@ -97,7 +97,7 @@ clean_up() {
 
 trap 'clean_up' ERR
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ge 1 ] && [ "$#" -le 2 ]; then
     echo "Usage: bootstrap_pkgs CUSTOM_PKGBUILD_SRC [INSTALL_ROOT]"
     exit 1
 fi
