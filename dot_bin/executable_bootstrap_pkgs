@@ -91,8 +91,8 @@ clean_up() {
 
 trap 'clean_up' ERR
 
-if [ "$#" -ne 2 ]; then
-    echo "Must supply custom package dir. Exiting"
+if [ "$#" -ne 1 ]; then
+    echo "Usage: bootstrap_pkgs [CUSTOM_PKGBUILD_SRC]"
     exit 1
 fi
 
