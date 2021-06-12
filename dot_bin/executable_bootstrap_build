@@ -8,8 +8,8 @@
 run_stack_in_dir () {
     local cur
     cur="$(pwd)"
-    echo "building binaries in $cur"
     cd "$1" || return 1
+    echo "building binaries in $1"
     stack install
     cd "$cur" || return 1
 }
