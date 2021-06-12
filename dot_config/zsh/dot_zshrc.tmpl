@@ -192,11 +192,17 @@ precmd () { echo -ne "\033]0;urxvt: ${PWD}\007" }
 
 alias als='alias | grep'
 alias hs='history 1 | grep'
-alias ls='ls --color'
 
 alias grep='grep --color=auto'
 alias sudo='sudo '
-alias diff=colordiff
+
+if [ -e /bin/colordiff ]; then
+    alias diff=colordiff
+else
+    alias diff='diff --color'
+fi
+
+alias ls='ls --color'
 
 if [ -e /bin/exa ]; then
     alias ll='exa -alhg --group-directories-first'
@@ -246,39 +252,43 @@ alias scus="systemctl --user start"
 alias scut="systemctl --user stop"
 alias scur="systemctl --user restart"
 
-alias g='git'
-alias gcl='git clone'
-alias ga='git add'
-alias grm='git rm'
-alias ga='git add'
-alias gus='git reset HEAD'
-alias gm="git merge"
-alias gmv='git mv'
-alias gs='git status -s -b'
-alias gp='git push'
-alias gpo='git push origin'
-alias gpom='git push origin master'
-alias gr='git remote'
-alias gd='git diff'
-alias gc='git commit -v'
-alias gca='git commit -v -a'
-alias gcm='git commit -v -m'
-alias gcam="git commit -v -am"
-alias gci='git commit --interactive'
-alias gb='git branch'
-alias gco='git checkout'
-alias gg="git log --graph --pretty=format:'%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%C(cyan)\\ [%cn]' --abbrev-commit --date=relative"
-alias ggs="gg --stat"
-alias gw="git whatchanged"
-alias gt="git tag"
-alias gnew="git log HEAD@{1}..HEAD@{0}"
-alias ggui="git gui"
+if [ -e /bin/git ]; then
+    alias g='git'
+    alias gcl='git clone'
+    alias ga='git add'
+    alias grm='git rm'
+    alias ga='git add'
+    alias gus='git reset HEAD'
+    alias gm="git merge"
+    alias gmv='git mv'
+    alias gs='git status -s -b'
+    alias gp='git push'
+    alias gpo='git push origin'
+    alias gpom='git push origin master'
+    alias gr='git remote'
+    alias gd='git diff'
+    alias gc='git commit -v'
+    alias gca='git commit -v -a'
+    alias gcm='git commit -v -m'
+    alias gcam="git commit -v -am"
+    alias gci='git commit --interactive'
+    alias gb='git branch'
+    alias gco='git checkout'
+    alias gg="git log --graph --pretty=format:'%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%C(cyan)\\ [%cn]' --abbrev-commit --date=relative"
+    alias ggs="gg --stat"
+    alias gw="git whatchanged"
+    alias gt="git tag"
+    alias gnew="git log HEAD@{1}..HEAD@{0}"
+    alias ggui="git gui"
+fi
 
-alias cze="chezmoi edit"
-alias czea="chezmoi edit --apply"
-alias czd="chezmoi diff"
-alias cza="chezmoi add"
-alias czc="chezmoi cd"
+if [ -e /bin/chezmoi ]; then
+    alias cze="chezmoi edit"
+    alias czea="chezmoi edit --apply"
+    alias czd="chezmoi diff"
+    alias cza="chezmoi add"
+    alias czc="chezmoi cd"
+fi
 
 ## --------------------------------------------------
 ## Manly Colors
