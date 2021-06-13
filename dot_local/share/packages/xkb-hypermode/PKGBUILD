@@ -1,12 +1,12 @@
 pkgname=xkb-hypermode
-pkgver=0.1
+pkgver=0.2
 pkgrel=1
 pkgdesc="custom us keyboard layout with hyper modifiers"
 arch=('any')
 license=('MIT')
 depends=('xkeyboard-config')
 source=("https://github.com/ndwarshuis/xkb-hypermode/archive/v$pkgver.tar.gz")
-md5sums=('42472d8ba0dcccd2426e1c38e61b6f60')
+md5sums=('80e0a58fd121567b33bbf8ef67833feb')
 backup=("etc/X11/xorg.conf.d/10-hyperctrl.conf")
 
 package() {
