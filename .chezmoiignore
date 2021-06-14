@@ -4,6 +4,7 @@
 .config/*
 !.config/gnupg
 !.config/python
+!.config/tmux
 !.config/zsh
 .config/zsh/.zprofile
 
