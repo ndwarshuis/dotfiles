@@ -3,17 +3,29 @@ unbind C-b
 set -g prefix C-f
 bind C-f send-prefix
 
+# actual escape key
+set -sg escape-time 0
+
 # reload
 bind r source-file $XDG_CONFIG_HOME/tmux/tmux.conf \; display "Config Reloaded"
 
+# session/client
+bind q detach-client
+bind l list-sessions
+
 # window creation
 bind n new-window
-bind | split-window -v
-bind - split-window -h
+bind N command-prompt -I "#{window_name}" "rename-window '%%'"
+bind S command-prompt -I "#{session_name}" "rename-session '%%'"
+bind - split-window -v
+bind | split-window -h
 
 # window navigation
-bind Tab next-window
-bind BTab previous-window
+bind -n M-Tab next-window
+bind -n M-BTab previous-window
+
+bind -n M-| choose-window "join-pane -h -t '%%'"
+bind -n M-- choose-window "join-pane -v -t '%%'"
 
 # pane navigation
 bind -n M-l select-pane -R
@@ -21,12 +33,25 @@ bind -n M-h select-pane -L
 bind -n M-k select-pane -U
 bind -n M-j select-pane -D
 bind -n M-o last-pane
+bind o display-panes
+bind H swap-pane -U
+bind L swap-pane -D
+
+set -g display-panes-time 5000
 
 # pane resizing
 bind -r C-l resize-pane -R 2
 bind -r C-h resize-pane -L 2
 bind -r C-k resize-pane -U
 bind -r C-j resize-pane -D
+
+# copy-mode (vim-like)
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
+
+# clipboard integration
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xsel -i -p && xsel -o -p | xsel -i -b"
+bind-key p run "xsel -o | tmux load-buffer - ; tmux paste-buffer"
 
 # pane selection (mouse)
 # set -g mouse utf8 on
@@ -35,45 +60,59 @@ set -g mouse on
 # copy-mode
 bind C-c copy-mode
 
-# nested sessions
-#Variables
-color_status_text="color245"
-color_window_off_status_bg="color238"
-color_light="white" #color015
-color_dark="color232" # black= color232
-color_window_off_status_current_bg="color254"
+# theme
 
-# window-status-current-format and window-status-current-style control how the
-# status bar looks and the window label in it
-# "root" is the default key table, and "key-table" (the variable) is set to
-# "off" which is a different table
-# the if statement send the cancel command to exit copy mode if we are in
-# copy mode
-# set prefix to None to "turn off" the root keymap
+status_sep="#[fg=#888888]|#[default]"
+
+set -g status-interval 1
+set -g status-left "#h:#S $status_sep "
+set -g status-left-length 32
+set -g status-style "fg=#cccccc,bg=#444444"
+set -g window-status-style "fg=#9f9f9f"
+set -g window-status-activity-style "fg=#9f9f9f"
+set -g window-status-current-style "fg=#000000 bold,bg=#00ff00"
+set -g window-status-separator " "
+
+set -g window-status-format "#{?window_activity_flag,##,}#I-#W"
+set -g window-status-current-format " #I-#W "
+
+set -g visual-activity off
+set -g monitor-activity on
+
+set -g pane-border-style "fg=#444444"
+set -g pane-active-border-style "fg=#aaaaaa"
+
+set -g pane-border-lines heavy
+
+set -g message-style "fg=#ffffaa,bg=#666600"
+
+set -g pane-border-status off
+
+set -g copy-mode-current-match-style "fg=#000000,bg=#ffffff"
+set -g copy-mode-match-style "fg=#000000,bg=#aa00aa"
+
+# pressing F12 turns the current prefix key/keymap "OFF" and allows keypresses
+# to go to a nested session if running
 bind -T root F12  \
   set prefix None \;\
   set key-table off \;\
-  set status-style "fg=$color_status_text,bg=$color_window_off_status_bg" \;\
-  set window-status-current-format "#[fg=$color_window_off_status_bg,bg=$color_window_off_status_current_bg]$separator_powerline_right#[default] #I:#W# #[fg=$color_window_off_status_current_bg,bg=$color_window_off_status_bg]$separator_powerline_right#[default]" \;\
-  set window-status-current-style "fg=$color_dark,bold,bg=$color_window_off_status_current_bg" \;\
+  set status-style "fg=#aaaaaa,bg=#666666" \;\
+  set window-status-style "fg=#777777" \;\
+  set window-status-current-style "fg=#666666 bold,bg=#999999" \;\
   if -F '#{pane_in_mode}' 'send-keys -X cancel' \;\
   refresh-client -S \;\
 
-# in the "off" map, pressing F12 unsets all the stuff from above
 bind -T off F12 \
   set -u prefix \;\
   set -u key-table \;\
   set -u status-style \;\
+  set -u window-status-style \;\
   set -u window-status-current-style \;\
-  set -u window-status-current-format \;\
   refresh-client -S
-  
-# a string that shows the keymap is "off"
-wg_is_keys_off="#[fg=$color_light,bg=$color_window_off_indicator]#([ $(tmux show-option -qv key-table) = 'off' ] && echo 'OFF')#[default]"
 
-# a status indicator to the right (which shows nothing, and idk if I really care about)
-# the sysstat stuff comes from a plugin (https://github.com/samoshkin/tmux-plugin-sysstat)
-set -g status-right "$wg_is_keys_off #{sysstat_cpu} | #{sysstat_mem} | #{sysstat_loadavg} | $wg_user_host"
+mem_perc="free | grep Mem | awk '{ printf(\"%.2f%%\", $3/$2 * 100.0) }'"
+
+set -g status-right "CPU: #($XDG_CONFIG_HOME/tmux/plugins/cpu_perc) $status_sep RAM: #($mem_perc) "
 
 {{- if eq .chezmoi.hostname "petrucci4prez" }}
 set -g status-position top
