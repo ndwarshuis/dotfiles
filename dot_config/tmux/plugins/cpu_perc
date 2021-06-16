@@ -1,0 +1,41 @@
+#!/bin/bash
+
+cache_vals(){
+    echo "$1" > "$3"
+    echo -n "$2" >> "$3"
+}
+
+cached_eval(){
+    local dir
+    local a0
+    local t0
+    local a1
+    local t1
+    dir="/tmp/tmux_cpu_perc"
+    a1="$1"
+    t1="$2"
+    if [ -f "$dir" ]; then
+        a0="$(head -n1 "$dir")"
+        t0="$(tail -n+2 "$dir")"
+        cache_vals "$a1" "$t1" "$dir"
+        awk -v a1="$a1" \
+            -v t1="$t1" \
+            -v a0="$a0" \
+            -v t0="$t0" \
+            'BEGIN {print 100*(a1-a0)/(t1-t0)}'
+    else
+        cache_vals "$a1" "$t1" "$dir"
+        echo -n 0
+    fi
+}
+
+get_cpu(){
+    grep 'cpu ' /proc/stat | \
+        awk '{a=($2+$4)}; {t=($2+$4+$5)} END {printf("%s %s", a, t)}'
+}
+
+cpu_percentage_format="%.2f%%"
+
+cached_eval $(get_cpu) \
+    | awk -v f="$cpu_percentage_format" \
+          '{usage=$NF} END {printf(f, usage)}'
