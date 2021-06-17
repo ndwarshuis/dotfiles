@@ -125,21 +125,8 @@ set -g status-right ""
 set -g status-right-length 0
 {{- else }}
 
-# TODO this is super annoying
-{{- if eq .chezmoi.hostname "portnoy4prez" }}
-iface="enp0s31f6"
-{{- else if eq .chezmoi.hostname "mangini4mayor" }}
-iface="enp3s0"
-{{- else if eq .chezmoi.hostname "harrison4hegemon" }}
-iface="eth0"
-{{- else if eq .chezmoi.hostname "peart4prez" }}
-iface="ens3"
-{{- else if eq .chezmoi.hostname "myung4mayor" }}
-iface="extern1"
-{{- end }}
-
-down="#($XDG_CONFIG_HOME/tmux/plugins/network $iface down)"
-up="#($XDG_CONFIG_HOME/tmux/plugins/network $iface up)"
+down="#($XDG_CONFIG_HOME/tmux/plugins/network down)"
+up="#($XDG_CONFIG_HOME/tmux/plugins/network up)"
 net="NET(↑/↓): $up$down"
 cpu="CPU: #($XDG_CONFIG_HOME/tmux/plugins/cpu_perc)"
 mem="RAM: #($XDG_CONFIG_HOME/tmux/plugins/mem_perc)"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-iface="$1"
-cmd="$2"
+cmd="$1"
+iface="$(ip route show default | head -n 1 | awk '{print $5}')"
 
 net_format="%3d"
 
