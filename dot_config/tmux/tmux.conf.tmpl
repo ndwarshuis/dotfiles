@@ -26,10 +26,10 @@ bind - split-window -v
 bind | split-window -h
 
 # window navigation
-bind -n C-] next-window
-bind -n C-[ previous-window
-bind -n M-] swap-window -t +1 \; next-window
-bind -n M-[ swap-window -t -1 \; previous-window
+bind -n M-Tab next-window
+bind -n M-BTab previous-window
+bind -n C-M-Tab swap-window -t +1 \; next-window
+bind -n C-M-BTab swap-window -t -1 \; previous-window
 
 bind -n M-| choose-window "join-pane -h -t '%%'"
 bind -n M-- choose-window "join-pane -v -t '%%'"
