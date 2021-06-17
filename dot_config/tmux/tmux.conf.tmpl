@@ -121,6 +121,8 @@ bind -T off F12 \
 # stats that the local machine already has via conky
 {{- if eq .chezmoi.hostname "petrucci4prez" }}
 set -g status-position top
+set -g status-right ""
+set -g status-right-length 0
 {{- else }}
 
 # TODO this is super annoying
