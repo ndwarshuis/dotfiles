@@ -1,0 +1,16 @@
+#!/bin/bash
+
+session_name=0
+
+if [[ -z "$1" ]]; then
+    echo "Need a command to perform"
+    exit 1
+elif [[ "$1" == "start" ]]; then
+    tmux new-session -s "$session_name" -d
+elif [[ "$1" == "stop" ]]; then
+    tmux kill-session -t "$session_name"
+else
+    echo 'Command must be either "start" or "stop"'
+    exit 1
+fi
+    
