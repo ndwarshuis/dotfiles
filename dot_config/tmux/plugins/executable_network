@@ -1,0 +1,44 @@
+#!/bin/bash
+
+iface="$1"
+cmd="$2"
+
+net_format="%3d"
+
+this_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$this_dir/common"
+
+get_bits() {
+    awk '{print($1*8)}' "$1"
+}
+
+get_down(){
+    get_bits "/sys/class/net/$iface/statistics/rx_bytes"
+}
+
+get_up(){
+    get_bits "/sys/class/net/$iface/statistics/tx_bytes"
+}
+
+get_time() {
+  date +%s.%N
+}
+
+if [[ "$cmd" == "down" ]]; then
+    bits="$(get_down)"
+elif [[ "$cmd" == "up" ]]; then
+    bits="$(get_up)"
+else
+    echo "Invalid command"
+    exit 1
+fi
+
+cached_eval "network_$cmd" "$bits" "$(get_time)" \
+    | awk -v f="$net_format" \
+          "$(printf '%s' \
+                   '{x=$1} END { '\
+                   'if (x>=1073741824) printf(f " Gib/s", x/1073741824); '\
+                   'else if (x>=1048576) printf(f " Mib/s", x/1048576); '\
+                   'else if (x>=1024) printf(f " Kib/s", x/1024); '\
+                   'else printf(f " bit/s", x)'\
+                   '}')"

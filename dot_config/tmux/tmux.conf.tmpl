@@ -28,8 +28,8 @@ bind | split-window -h
 # window navigation
 bind -n M-Tab next-window
 bind -n M-BTab previous-window
-bind -n C-M-Tab swap-window -t +1 \; next-window
-bind -n C-M-BTab swap-window -t -1 \; previous-window
+bind -n M-] swap-window -t +1 \; next-window
+bind -n M-[ swap-window -t -1 \; previous-window
 
 bind -n M-| choose-window "join-pane -h -t '%%'"
 bind -n M-- choose-window "join-pane -v -t '%%'"
@@ -117,12 +117,33 @@ bind -T off F12 \
   set -u window-status-current-style \;\
   refresh-client -S
 
-mem_perc="free | grep Mem | awk '{ printf(\"%.2f%%\", $3/$2 * 100.0) }'"
-
-set -g status-right "CPU: #($XDG_CONFIG_HOME/tmux/plugins/cpu_perc) $status_sep RAM: #($mem_perc) "
-
+# if on local machine, put bar at top, if not put bar at bottom with some nice
+# stats that the local machine already has via conky
 {{- if eq .chezmoi.hostname "petrucci4prez" }}
 set -g status-position top
 {{- else }}
+
+# TODO this is super annoying
+{{- if eq .chezmoi.hostname "portnoy4prez" }}
+iface="enp0s31f6"
+{{- else if eq .chezmoi.hostname "mangini4mayor" }}
+iface="enp3s0"
+{{- else if eq .chezmoi.hostname "harrison4hegemon" }}
+iface="eth0"
+{{- else if eq .chezmoi.hostname "peart4prez" }}
+iface="ens3"
+{{- else if eq .chezmoi.hostname "myung4mayor" }}
+iface="extern1"
+{{- end }}
+
+down="#($XDG_CONFIG_HOME/tmux/plugins/network $iface down)"
+up="#($XDG_CONFIG_HOME/tmux/plugins/network $iface up)"
+net="NET(↑/↓): $up$down"
+cpu="CPU: #($XDG_CONFIG_HOME/tmux/plugins/cpu_perc)"
+mem="RAM: #($XDG_CONFIG_HOME/tmux/plugins/mem_perc)"
+
 set -g status-position bottom
+set -g status-right-length 64
+set -g status-right "$net $status_sep $cpu $status_sep $mem "
+
 {{ end }}

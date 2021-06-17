@@ -1,0 +1,6 @@
+#!/bin/bash
+
+this_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$this_dir/common"
+
+free | grep Mem | awk '{ printf("%.5f", $3/$2) }' | fmt_percent
