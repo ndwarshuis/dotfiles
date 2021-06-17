@@ -58,7 +58,7 @@ run_yay() {
     r_pkgs=(r gcc-fortran texlive-bin tk)
     redshift_pkgs=(redshift)
     seafile_pkgs=(seafile-client)
-    urxvt_pkgs=(urxvt-tabbedex rxvt-unicode urxvt-perls)
+    urxvt_pkgs=(rxvt-unicode urxvt-perls)
     zsh_pkgs=(zsh zsh-completions zsh-syntax-highlighting)
 
     ## AUR pkgs needed for spotify
@@ -79,6 +79,7 @@ run_yay() {
 run_makepkg() {
     ## these are all packages that have some personal customizations and/or are
     ## not in the AUR
+    ## TODO the clevo thingy requires a systemd file to turn on/off
     call_makepkg "clevo-xsm-wmi-dkms"
     call_makepkg "conky-lua"
     call_makepkg "spotify"

@@ -16,17 +16,20 @@ bind r source-file $XDG_CONFIG_HOME/tmux/tmux.conf \; display "Config Reloaded"
 # session/client
 bind q detach-client
 bind l list-sessions
+set -g destroy-unattached off
 
 # window creation
-bind n new-window
+bind -n C-t new-window
 bind N command-prompt -I "#{window_name}" "rename-window '%%'"
 bind S command-prompt -I "#{session_name}" "rename-session '%%'"
 bind - split-window -v
 bind | split-window -h
 
 # window navigation
-bind -n M-Tab next-window
-bind -n M-BTab previous-window
+bind -n C-] next-window
+bind -n C-[ previous-window
+bind -n M-] swap-window -t +1 \; next-window
+bind -n M-[ swap-window -t -1 \; previous-window
 
 bind -n M-| choose-window "join-pane -h -t '%%'"
 bind -n M-- choose-window "join-pane -v -t '%%'"
