@@ -2,6 +2,10 @@
 set -g status-keys vi
 set -g mode-keys vi
 
+# enable extended keys
+set -s extended-keys on
+set -as terminal-features 'xterm*:extkeys'
+
 # change prefix
 unbind C-b
 set -g prefix C-f
@@ -26,10 +30,10 @@ bind - split-window -v
 bind | split-window -h
 
 # window navigation
-bind -n M-Tab next-window
-bind -n M-BTab previous-window
-bind -n M-] swap-window -t +1 \; next-window
-bind -n M-[ swap-window -t -1 \; previous-window
+bind -n C-Tab next-window
+bind -n BTab previous-window # idk if there is even an extended sequence for Shift-Tab
+bind C-Tab swap-window -t +1 \; next-window
+bind BTab swap-window -t -1 \; previous-window
 
 bind -n M-| choose-window "join-pane -h -t '%%'"
 bind -n M-- choose-window "join-pane -v -t '%%'"
