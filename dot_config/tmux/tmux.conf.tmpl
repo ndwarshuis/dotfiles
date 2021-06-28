@@ -31,9 +31,9 @@ bind | split-window -h
 
 # window navigation
 bind -n C-Tab next-window
-bind -n BTab previous-window # idk if there is even an extended sequence for Shift-Tab
+bind -n M-F12 previous-window # use this since BTab = S-Esc (even in extended keys)
 bind C-Tab swap-window -t +1 \; next-window
-bind BTab swap-window -t -1 \; previous-window
+bind M-F12 swap-window -t -1 \; previous-window
 
 bind -n M-| choose-window "join-pane -h -t '%%'"
 bind -n M-- choose-window "join-pane -v -t '%%'"
