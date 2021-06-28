@@ -89,4 +89,6 @@ URxvt.keysym.Control-B:        perl:clipboard:paste_escaped
 ! The main reason for this is that I really really wanted to use C-Tab in tmux
 ! but also did not want to use xterm since urxvt is lighter and awesome-r
 URxvt.keysym.C-Tab:                     \033[27;5;9~
-URxvt.keysym.C-ISO_Left_Tab:            \033[Z
+! make shift-tab send M-F12 since I there appears to not be anything for this
+! even in extended keys from xterm
+URxvt.keysym.C-ISO_Left_Tab:            \033\033[24~
