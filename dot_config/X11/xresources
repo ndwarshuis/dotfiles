@@ -42,12 +42,6 @@ URxvt.font: 		    	xft:DejaVu Sans Mono:size=11:autohint=false
 URxvt.boldfont:		    	xft:DejaVu Sans Mono Bold:size=11:autohint=false
 URxvt.fontItalic:	    	xft:DejaVu Sans Mono Oblique:size=11:autohint=false
 URxvt.fontBoldItalic:   	xft:DejaVu Sans Mono Bold Oblique:size=11:autohint=false
-! URxvt.tabbedex.tabbar-fg: 	15
-! URxvt.tabbedex.tabbar-bg: 	0
-! URxvt.tabbedex.tab-fg:    	0
-! URxvt.tabbedex.tab-bg:    	15
-! URxvt.tabbedex.autohide:	true
-! URxvt.tabbedex.title:		false
 
 URxvt.imLocale:         	en_US.UTF-8
 
@@ -63,7 +57,6 @@ URxvt.meta8:            	False
 
 URxvt.scrollBar:        	False
 
-! URxvt.perl-ext-common:  	default,matcher,tabbedex,keyboard-select,selection-to-clipboard
 URxvt.perl-ext-common:  	default,matcher,keyboard-select,selection-to-clipboard
 
 URxvt.url-launcher:     	/usr/bin/xdg-open
@@ -75,14 +68,6 @@ URxvt.keyboard-select.clipboard: True;
 URxvt.keysym.Control-C:        perl:clipboard:copy
 URxvt.keysym.Control-V:        perl:clipboard:paste
 URxvt.keysym.Control-B:        perl:clipboard:paste_escaped
-
-! URxvt.keysym.Control-t: 			perl:tabbedex:new_tab
-! URxvt.keysym.Control-Tab: 			perl:tabbedex:next_tab
-! URxvt.keysym.Control-ISO_Left_Tab: 	perl:tabbedex:prev_tab
-! URxvt.keysym.Control-Shift-Left: 	perl:tabbedex:move_tab_left
-! URxvt.keysym.Control-Shift-Right: 	perl:tabbedex:move_tab_right
-! URxvt.keysym.Control-Shift-R: 		perl:tabbedex:rename_tab
-! URxvt.tabbed.no-tabbedex-keys: 		true
 
 ! because C-Tab does not actually exist in terminals, bind them to something
 ! random that I can use in tmux (in this case M-F11 and M-F12)
