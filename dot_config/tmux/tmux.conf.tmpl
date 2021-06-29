@@ -2,10 +2,6 @@
 set -g status-keys vi
 set -g mode-keys vi
 
-# enable extended keys
-set -s extended-keys on
-set -as terminal-features 'xterm*:extkeys'
-
 # change prefix
 unbind C-b
 set -g prefix C-f
@@ -30,10 +26,10 @@ bind - split-window -v
 bind | split-window -h
 
 # window navigation
-bind -n C-Tab next-window
-bind -n M-F12 previous-window # use this since BTab = S-Esc (even in extended keys)
-bind C-Tab swap-window -t +1 \; next-window
-bind M-F12 swap-window -t -1 \; previous-window
+bind -n M-F12 next-window # use this since C-Tab doesn't exist in most terminals
+bind -n M-F11 previous-window # use this since BTab = S-Esc
+bind M-F12 swap-window -t +1 \; next-window
+bind M-F11 swap-window -t -1 \; previous-window
 
 bind -n M-| choose-window "join-pane -h -t '%%'"
 bind -n M-- choose-window "join-pane -v -t '%%'"

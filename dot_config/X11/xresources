@@ -84,11 +84,7 @@ URxvt.keysym.Control-B:        perl:clipboard:paste_escaped
 ! URxvt.keysym.Control-Shift-R: 		perl:tabbedex:rename_tab
 ! URxvt.tabbed.no-tabbedex-keys: 		true
 
-! WARNING: this is a giant hack to enable extended keys support (like xterm has).
-! See here: http://www.leonerd.org.uk/hacks/fixterms/
-! The main reason for this is that I really really wanted to use C-Tab in tmux
-! but also did not want to use xterm since urxvt is lighter and awesome-r
-URxvt.keysym.C-Tab:                     \033[27;5;9~
-! make shift-tab send M-F12 since I there appears to not be anything for this
-! even in extended keys from xterm
-URxvt.keysym.C-ISO_Left_Tab:            \033\033[24~
+! because C-Tab does not actually exist in terminals, bind them to something
+! random that I can use in tmux (in this case M-F11 and M-F12)
+URxvt.keysym.C-Tab:                     \033\033[24~
+URxvt.keysym.C-ISO_Left_Tab:            \033\033[23~
