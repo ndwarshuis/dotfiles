@@ -1,0 +1,43 @@
+# zuki themes with purple instead of blue trim colors
+
+pkgname=puki-themes
+_pkgname=zuki-themes
+pkgver=3.38_1
+pkgrel=1
+pkgdesc="Zuki themes...but purple"
+arch=('any')
+url="https://github.com/lassekongo83/zuki-themes"
+license=(GPL3)
+depends=(gtk-engine-murrine gtk-engines)
+makedepends=(ninja meson sassc)
+optdepends=(ttf-roboto)
+source=("$_pkgname-$pkgver.tar.gz::https://github.com/lassekongo83/zuki-themes/archive/v${pkgver//_/-}.tar.gz")
+sha256sums=('a3923b169cd550fffc437cf5f098b8a1f84ab0cad5c07b1b6fa25b0e80439893')
+
+prepare() {
+    cd $_pkgname-${pkgver//_/-}
+    # tiny tina says: make it rain (purple)!!!
+    sed -i 's/Zuki/Puki/' meson.build
+    # TODO add gtk4 path when available
+    sed -i 's/#4a79c7/#7f66ff/' gtk/src/Zukitre/gtk-3.0/_colors.scss
+    sed -i 's/#4a79c7/#7f66ff/' gtk/src/Zukitre/gtk-2.0/gtkrc
+    find gtk/src/Zuki*/gtk-2.0/assets -type f \
+        \( \
+            -name "*-unchecked-hover.png" -o \
+            -name "*-checked.png" -o \
+            -name "*-mixed.png" \
+        \) \
+        -exec convert {} -define modulate:colorspace=HSB \
+            -modulate 128.2,99.5,118.11 {} \;
+}
+
+build() {
+    cd $_pkgname-${pkgver//_/-}
+    meson --prefix /usr --buildtype=plain build
+    ninja -C build
+}
+
+package(){
+    cd $_pkgname-${pkgver//_/-}
+    DESTDIR="$pkgdir" ninja -C build install
+}
