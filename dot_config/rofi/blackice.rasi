@@ -14,7 +14,7 @@
     urgent-foreground: @foreground;
     normal-background: transparent;
     urgent-background: transparent;
-    active-background: #cb91ff66;
+    active-background: #4A4080;
 
     alternate-normal-foreground: @foreground;
     alternate-urgent-foreground: @urgent-foreground;
@@ -26,9 +26,9 @@
     selected-normal-foreground: @foreground; 
     selected-urgent-foreground: @foreground;
     selected-active-foreground: @foreground;
-    selected-normal-background: #3399ff;
+    selected-normal-background: #7f66ff;
     selected-urgent-background: #ff8282;
-    selected-active-background: #9523ff;
+    selected-active-background: @selected-normal-background;
 
     red: rgba ( 220, 50, 47, 100 % );
     blue: rgba ( 51, 139, 210, 100 % );
