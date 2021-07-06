@@ -21,7 +21,7 @@
     alternate-active-foreground: @active-foreground;
     alternate-normal-background: white / 8%;
     alternate-urgent-background: red / 8%;
-    alternate-active-background: purple / 8%;
+    alternate-active-background: @active-background;
 
     selected-normal-foreground: @foreground; 
     selected-urgent-foreground: @foreground;
