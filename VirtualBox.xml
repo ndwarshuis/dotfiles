@@ -9,10 +9,12 @@
   <Global>
     <ExtraData>
       <ExtraDataItem name="GUI/Details/Elements" value="general,system,preview,display,storage,audio,network,usb,sharedFolders,description"/>
-      <ExtraDataItem name="GUI/GroupDefinitions/" value="n=GLOBAL,m=240651f8-4242-4dfb-bcd3-e78c7926b30d,m=cd2fec0c-f0ed-4835-b849-254e41e6e803,m=21cc0d91-59fa-4e4e-80ff-56a451fe551f"/>
+      <ExtraDataItem name="GUI/GroupDefinitions/" value="n=GLOBAL,m=240651f8-4242-4dfb-bcd3-e78c7926b30d,m=cd2fec0c-f0ed-4835-b849-254e41e6e803,m=21cc0d91-59fa-4e4e-80ff-56a451fe551f,m=00e5d5dd-91f1-470a-adac-f2b2fe3e28c6"/>
       <ExtraDataItem name="GUI/Input/HostKeyCombination" value="65027,65517"/>
       <ExtraDataItem name="GUI/LastItemSelected" value="m=win8raw"/>
-      <ExtraDataItem name="GUI/LastWindowPosition" value="1,21,1920,1036"/>
+      <ExtraDataItem name="GUI/LastWindowPosition" value="1920,20,1920,1060"/>
+      <ExtraDataItem name="GUI/RecentFolderCD" value="/mnt/data/Dvl/archiso/juggernaut/out"/>
+      <ExtraDataItem name="GUI/RecentListCD" value="/mnt/data/Dvl/archiso/juggernaut/out/archlinux-2021.07.01-x86_64.iso"/>
       <ExtraDataItem name="GUI/SplitterSizes" value="634,1285"/>
       <ExtraDataItem name="GUI/SuppressMessages" value="confirmGoingFullscreen,remindAboutMouseIntegration,remindAboutAutoCapture"/>
       <ExtraDataItem name="GUI/Toolbar" value="false"/>
@@ -22,6 +24,7 @@
       <MachineEntry uuid="{240651f8-4242-4dfb-bcd3-e78c7926b30d}" src="/home/ndwar/VirtualBox VMs/win8raw/win8raw.vbox"/>
       <MachineEntry uuid="{cd2fec0c-f0ed-4835-b849-254e41e6e803}" src="/home/ndwar/VirtualBox VMs/win7 stable/win7 stable.vbox"/>
       <MachineEntry uuid="{21cc0d91-59fa-4e4e-80ff-56a451fe551f}" src="/home/ndwar/VirtualBox VMs/Kali-Linux-2020.2a-vbox-amd64/Kali-Linux-2020.2a-vbox-amd64.vbox"/>
+      <MachineEntry uuid="{00e5d5dd-91f1-470a-adac-f2b2fe3e28c6}" src="/home/ndwar/VirtualBox VMs/live linux/live linux.vbox"/>
     </MachineRegistry>
     <NetserviceRegistry>
       <DHCPServers>
