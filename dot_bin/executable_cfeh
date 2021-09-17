@@ -1,0 +1,5 @@
+#! /bin/bash
+
+## run feh with conversion (for svg and friends)
+
+feh --conversion-timeout 1 "$1"
