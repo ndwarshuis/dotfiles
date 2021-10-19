@@ -7,7 +7,7 @@ devices:
     type: veracrypt
     mount:
       mountpoint: accounts
-    volume: /mnt/data/Documents/crypt/accounts
+    volume: /mnt/data/Documents/.crypt/accounts
     password:
       bitwarden:
         key: Veracrypt (accounts)
@@ -15,7 +15,7 @@ devices:
     type: veracrypt
     mount:
       mountpoint: /home/ndwar/.config/gnupg
-    volume: /mnt/data/Documents/crypt/gnupg
+    volume: /mnt/data/Documents/.crypt/gnupg
     password:
       bitwarden:
         key: Veracrypt (gpg)
@@ -24,7 +24,7 @@ devices:
     mount:
       mountpoint: /home/ndwar/.ssh
       label: ssh
-    volume: /mnt/data/Documents/crypt/ssh-config
+    volume: /mnt/data/Documents/.crypt/ssh-config
     password:
       bitwarden:
         key: Veracrypt (ssh)
@@ -32,7 +32,7 @@ devices:
     type: veracrypt
     mount:
       mountpoint: ansible-pki
-    volume: /mnt/data/Documents/crypt/ansible
+    volume: /mnt/data/Documents/.crypt/ansible
     password:
       bitwarden:
         key: Veracrypt (Ansible PKI)
@@ -40,7 +40,7 @@ devices:
     type: veracrypt
     mount:
       mountpoint: call-logs
-    volume: /mnt/data/Documents/crypt/call_logs
+    volume: /mnt/data/Documents/.crypt/call_logs
     password: 
       bitwarden:
         key: Veracrypt (ACR)
