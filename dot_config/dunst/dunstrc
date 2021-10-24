@@ -32,14 +32,20 @@
 
     padding = 8
     horizontal_padding = 8
-    text_icon_padding = 8
+    text_icon_padding = 12
+
+    progress_bar = true
+    progress_bar_height = 10
+    progress_bar_min_width = 140
+    progress_bar_min_width = 280
+    progress_bar_frame_width = 1
 
     ### Text ###
 
     font = DejaVu Sans 10
     line_height = 0
     markup = full
-    format = "<b>%s</b>\n%b"
+    format = "<b>%s</b>\n%b\n%p"
     vertical_alignment = center
     show_age_threshold = 60
     ignore_newline = no
@@ -53,7 +59,7 @@
 
     icon_position = left
     min_icon_size = 32
-    max_icon_size = 32
+    max_icon_size = 64
     icon_path = /usr/share/icons/Papirus/32x32/status/:/usr/share/icons/Papirus/16x16/status/:/usr/share/icons/Papirus/32x32/devices/:/usr/share/icons/Papirus/16x16/devices/:/usr/share/icons/Papirus/symbolic/status/:/usr/share/icons/Papirus/symbolic/devices/:/usr/share/icons/hicolor/scalable/apps
 
     ### History ###
