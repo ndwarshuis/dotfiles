@@ -58,12 +58,31 @@ x11-clip-wrap-widgets paste  $paste_widgets
 # involve a) adding a "shims" directory to PATH and then b) adding some shell
 # magic to automatically call the shims
 
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init - | sed '/PATH/d' -)"
-    eval "$(pyenv virtualenv-init - | sed '/PATH/d' -)"
-fi
+zsh-pyenv () {
+    if command -v pyenv 1>/dev/null 2>&1; then
+        echo "Activating pyenv"
+        eval "$(pyenv init - | sed '/PATH/d' -)"
+        eval "$(pyenv virtualenv-init - | sed '/PATH/d' -)"
+    else
+        echo "pyenv not installed"
+    fi
+}
 
-if command -v rbenv 1>/dev/null 2>&1; then
-    eval "$(rbenv init - | sed '/PATH/d' -)"
-fi
+
+zsh-rbenv () {
+    if command -v rbenv 1>/dev/null 2>&1; then
+        echo "Activating rbenv"
+        eval "$(rbenv init - | sed '/PATH/d' -)"
+    else
+        echo "rbenv not installed"
+    fi
+}
+
+zsh-conda () {
+    if [[ -x $XDG_DATA_HOME/mambaforge/bin/conda ]]; then
+        eval "$($XDG_DATA_HOME/mambaforge/bin/conda shell.zsh hook)"
+    else
+        echo "conda installation not found"
+    fi
+}
 {{- end }}
