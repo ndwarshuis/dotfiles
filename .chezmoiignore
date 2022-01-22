@@ -7,6 +7,7 @@
 !.config/tmux
 !.config/zsh
 .config/zsh/.zprofile
+.config/zsh/.zlogout
 
 .local
 {{- end }}
