@@ -68,7 +68,7 @@ PASSWORD_STORE_DIR      DEFAULT=${GNUPGHOME}/pass
 # Path
 #--------------------#
 
-PATH OVERRIDE={{- if eq .chezmoi.hostname "petrucci4prez" }}${RBENV_ROOT}/shims:${PYENV_ROOT}/shims:{{- end }}@{HOME}/.bin:@{HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+PATH OVERRIDE=@{HOME}/.bin:@{HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
 
 #--------------------#
 # Applications

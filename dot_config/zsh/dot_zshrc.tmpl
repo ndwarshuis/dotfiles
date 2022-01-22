@@ -59,6 +59,8 @@ x11-clip-wrap-widgets paste  $paste_widgets
 # magic to automatically call the shims
 
 zsh-pyenv () {
+    export PATH=$PYENV_ROOT/shims:$PATH
+
     if command -v pyenv 1>/dev/null 2>&1; then
         echo "Activating pyenv"
         eval "$(pyenv init - | sed '/PATH/d' -)"
@@ -70,6 +72,10 @@ zsh-pyenv () {
 
 
 zsh-rbenv () {
+    gempaths="$(/usr/bin/gem env gempath):"
+    export PATH="${gempaths//:/\/bin:}:$PATH"
+    export PATH=$RBENV_ROOT/shims:$PATH
+
     if command -v rbenv 1>/dev/null 2>&1; then
         echo "Activating rbenv"
         eval "$(rbenv init - | sed '/PATH/d' -)"
