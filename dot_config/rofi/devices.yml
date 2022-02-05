@@ -58,6 +58,16 @@ devices:
     remote: portnoy4prez:/mnt/data/home/Videos
     depends:
       - ssh
+  ebm_snakemake:
+    type: sshfs
+    mount:
+      mountpoint: ebm_snakemake
+      label: EBM
+    remote: nisaba:/aigenomics/EBM_dev/snakemake
+    password:
+      prompt: {}
+    depends:
+      - ssh
   roylab:
     type: cifs
     mount:
