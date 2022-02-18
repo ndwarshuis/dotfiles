@@ -62,7 +62,9 @@ ZDOTDIR                 DEFAULT=${XDG_CONFIG_HOME}/zsh
 
 # store passwords in gnupg directory (and then encrypt the entire thing with veracrypt)
 GNUPGHOME               DEFAULT=${XDG_CONFIG_HOME}/gnupg
+{{- if eq .chezmoi.hostname "petrucci4prez" }}
 PASSWORD_STORE_DIR      DEFAULT=${GNUPGHOME}/pass
+{{- end }}
 
 #--------------------#
 # Path
