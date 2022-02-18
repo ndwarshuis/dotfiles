@@ -65,6 +65,18 @@ if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
 	HOSTNAME="@%M"
 fi	
 
+## git prompt
+
+zsh-git-off () {
+    export ZSH_USE_GIT=0
+}
+
+zsh-git-on () {
+    export ZSH_USE_GIT=1
+}
+
+zsh-git-on
+
 PROMPT=""
 RPROMPT=""
 
@@ -123,7 +135,11 @@ git_info() {
 }
 
 function zle-line-init zle-keymap-select {
-    GIT=$(git_info)
+    if [[ "$ZSH_USE_GIT" -eq 1 ]]; then
+       GIT=$(git_info)
+    else;
+       GIT=""
+    fi
     NORMAL="%F{yellow}N%f"
     INSERT="%F{cyan}I%f"
     VIMODE="─%B(${${KEYMAP/vicmd/$NORMAL}/(main|viins)/$INSERT})%b"
