@@ -7,14 +7,14 @@ XDG_CACHE_HOME          DEFAULT=@{HOME}/.cache
 XDG_DATA_HOME           DEFAULT=@{HOME}/.local/share
 XDG_RUNTIME_DIR         DEFAULT=/run/user/1000
 
+AWS_SHARED_CREDENTIALS_FILE DEFAULT=${XDG_CONFIG_HOME}/aws/credentials
+AWS_CONFIG_FILE         DEFAULT=${XDG_CONFIG_HOME}/aws/config
+
 {{- if eq .chezmoi.hostname "petrucci4prez" }}
 AQBANKING_HOME          DEFAULT=${XDG_CONFIG_HOME}/aqbanking
 ANSIBLE_VAULT_PASSWORD_FILE 	DEFAULT=@{HOME}/.bin/ansible-vault-pass-client
 ANSIBLE_VAULT_IDENTITY	DEFAULT=ansible/vault
 ASPELL_CONF             DEFAULT="per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl"
-
-AWS_SHARED_CREDENTIALS_FILE DEFAULT=${XDG_CONFIG_HOME}/aws/credentials
-AWS_CONFIG_FILE         DEFAULT=${XDG_CONFIG_HOME}/aws/config
 
 BUNDLE_USER_CONFIG      DEFAULT=${XDG_CONFIG_HOME}/bundle
 BUNDLE_USER_CACHE       DEFAULT=${XDG_CACHE_HOME}/bundle
