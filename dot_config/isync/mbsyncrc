@@ -154,54 +154,6 @@ Channel gatech-sent
 Channel gatech-archive
 
 ##
-## emory office365 server
-##
-
-## identical to gatech server except different credentials
-
-IMAPAccount emory
-Host outlook.office365.com
-User ndwarsh@emory.edu
-PassCmd "pass email/ndwarsh@emory.edu/plain"
-AuthMechs PLAIN
-SSLType IMAPS
-CertificateFile /etc/ssl/certs/ca-certificates.crt
-PipelineDepth 1
-
-IMAPStore emory-remote
-Account emory
-
-MailDirStore emory-local
-Path /mnt/data/Mail/emory/
-Inbox /mnt/data/Mail/emory/inbox
-
-Channel emory-inbox
-Far :emory-remote:"INBOX"
-Near :emory-local:"inbox"
-Create Both
-Expunge Both
-SyncState *
-
-Channel emory-sent
-Far :emory-remote:"Sent Items"
-Near :emory-local:"sent"
-Create Both
-Expunge Both
-SyncState *
-
-Channel emory-archive
-Far :emory-remote:"Archive"
-Near :emory-local:"archive"
-Create Both
-Expunge Both
-SyncState *
-
-Group emory
-Channel emory-inbox
-Channel emory-sent
-Channel emory-archive
-
-##
 ## private email server
 ##
 
