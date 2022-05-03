@@ -1,0 +1,45 @@
+{
+  "name": "Zukitre Brave",
+  "version": "1.0",
+  "description": "The Zukitre Theme Ported to Brave",
+  "manifest_version": 2,
+  "theme": {
+    "colors": {
+      "frame": [214, 214, 214],
+      "frame_inactive": [214, 214, 214],
+
+      "toolbar": [214, 214, 214],
+      "toolbar_button_icon": [44, 44, 44],
+
+      "tab_text": [44, 44, 44],
+      "tab_background_text": [44, 44, 44],
+      "tab_background_text_inactive": [44, 44, 44],
+      "tab_background_text_incognito": [44, 44, 44],
+      "tab_background_text_incognito_inactive": [44, 44, 44],
+
+      "omnibox_background": [247, 247, 247],
+      "omnibox_text": [44, 44, 44],
+
+      "button_background": [0, 255, 0],
+
+      "bookmark_text": [44, 44, 44],
+
+      "ntp_header": [0, 255, 0],
+      "ntp_background": [0, 0, 0],
+      "ntp_text": [255, 255, 255],
+      "ntp_link": [74, 144, 226]
+    },
+    "tints": {
+      "buttons": [0, 0, 1],
+
+      "frame_inactive": [-1, -1, -1],
+      "frame_incognito": [-1, -1, -1],
+      "frame_incognito_inactive": [-1, -1, -1]
+    },
+    "properties": {
+      "ntp_background_alignment": "bottom",
+      "ntp_background_repeat": "no-repeat",
+      "ntp_logo_alternate": 0
+    }
+  }
+}
