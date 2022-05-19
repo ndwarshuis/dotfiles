@@ -1,3 +1,8 @@
+# Version-specific commands [grumble, grumble]
+# See: https://github.com/tmux/tmux/blob/master/CHANGES
+run-shell 'tmux setenv -g TMUX_VERSION $(tmux -V | \
+                sed -En "s/^tmux[^0-9]*([.0-9]+).*/\1/p")'
+
 # use vi bindings
 set -g status-keys vi
 set -g mode-keys vi
@@ -89,14 +94,16 @@ set -g monitor-activity on
 set -g pane-border-style "fg=#444444"
 set -g pane-active-border-style "fg=#aaaaaa"
 
-set -g pane-border-lines heavy
+if-shell -b '[ "$(echo "$TMUX_VERSION >= 3.2" | bc)" = 1 ]' \
+  "set -g pane-border-lines heavy"
 
 set -g message-style "fg=#ffffaa,bg=#666600"
 
 set -g pane-border-status off
 
-set -g copy-mode-current-match-style "fg=#000000,bg=#ffffff"
-set -g copy-mode-match-style "fg=#000000,bg=#aa00aa"
+if-shell -b '[ "$(echo "$TMUX_VERSION >= 3.2" | bc)" = 1 ]' ' \
+  set -g copy-mode-current-match-style "fg=#000000,bg=#ffffff" \
+  set -g copy-mode-match-style "fg=#000000,bg=#aa00aa"'
 
 # pressing F12 turns the current prefix key/keymap "OFF" and allows keypresses
 # to go to a nested session if running
