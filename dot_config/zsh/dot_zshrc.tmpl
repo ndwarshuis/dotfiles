@@ -162,33 +162,47 @@ export KEYTIMEOUT=1
 precmd () { echo -ne "\033]0;urxvt: ${PWD}\007" }
 
 ## --------------------------------------------------
+## Alias helper functions
+## --------------------------------------------------
+
+exists () {
+    command -v "$1" &> /dev/null
+}
+
+alias_if_N () {
+    while [ "$1" != "--" ]; do
+         exists "$1" || return 1
+         shift
+    done
+    shift
+    for a in "$@"; do
+	alias "$a"
+    done
+}
+
+alias_if () {
+    alias_if_N "$1" -- "${@:2}"
+}
+
+alias_if_else () {
+    if ! alias_if_N "$1" -- "$2"; then
+        alias "$3"
+    fi
+}
+
+alias_if_sudo () {
+    alias_if_N "$1" -- "${@:2}"
+}
+
+## --------------------------------------------------
 ## Aliases 
 ## --------------------------------------------------
 
-alias als='alias | grep'
-alias hs='history 1 | grep'
+setopt autopushd
 
-alias grep='grep --color=auto'
-alias sudo='sudo '
-
-if [ -e /bin/colordiff ]; then
-    alias diff=colordiff
-else
-    alias diff='diff --color'
-fi
+## ASSUME these will always exist
 
 alias ls='ls --color'
-
-if [ -e /bin/exa ]; then
-    alias ll='exa -alhg --group-directories-first'
-    alias llt='exa -T'
-    alias llg='ll --git'
-else
-    alias ll='ls -alh'
-    [ -e /bin/tree ] && alias llt='tree'
-fi
-
-setopt autopushd
 
 alias d='dirs -v | head -10'
 alias d1='cd -'
@@ -207,63 +221,82 @@ alias uuu='cd ../../..'
 alias uuuu='cd ../../../..'
 alias uuuuu='cd ../../../../..'
 
-alias reboot='sudo /sbin/reboot'
-alias poweroff='sudo /sbin/poweroff'
-alias halt='sudo /sbin/halt'
-alias shutdown='sudo /sbin/shutdown'
+## don't assume the rest of these will exist
 
-alias sc="sudo systemctl"
-alias sce="sudo systemctl enable"
-alias scd="sudo systemctl disable"
-alias scs="sudo systemctl start"
-alias sct="sudo systemctl stop"
-alias scr="sudo systemctl restart"
-alias sca="systemctl status"
+alias_if grep \
+    grep='grep --color=auto' \
+    als='alias | grep' \
+    hs='history 1 | grep'
 
-alias scu="systemctl --user"
-alias scue="systemctl --user enable"
-alias scud="systemctl --user disable"
-alias scus="systemctl --user start"
-alias scut="systemctl --user stop"
-alias scur="systemctl --user restart"
+alias_if sudo sudo='sudo '
 
-if [ -e /bin/git ]; then
-    alias g='git'
-    alias gcl='git clone'
-    alias ga='git add'
-    alias grm='git rm'
-    alias ga='git add'
-    alias gus='git reset HEAD'
-    alias gm="git merge"
-    alias gmv='git mv'
-    alias gs='git status -s -b'
-    alias gp='git push'
-    alias gpo='git push origin'
-    alias gpom='git push origin master'
-    alias gr='git remote'
-    alias gd='git diff'
-    alias gc='git commit -v'
-    alias gca='git commit -v -a'
-    alias gcm='git commit -v -m'
-    alias gcam="git commit -v -am"
-    alias gci='git commit --interactive'
-    alias gb='git branch'
-    alias gco='git checkout'
-    alias gg="git log --graph --pretty=format:'%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%C(cyan)\\ [%cn]' --abbrev-commit --date=relative"
-    alias ggs="gg --stat"
-    alias gw="git whatchanged"
-    alias gt="git tag"
-    alias gnew="git log HEAD@{1}..HEAD@{0}"
-    alias ggui="git gui"
+alias_if_else colordiff diff=colordiff 'diff --color'
+
+if ! alias_if exa \
+        ll='exa -alhg --group-directories-first' \
+        llt='exa -T' \
+        llg='ll --git'; then
+    alias ll='ls -alh'
+    alias_if tree llt='tree'
 fi
 
-if [ -e /bin/chezmoi ]; then
-    alias cze="chezmoi edit"
-    alias czea="chezmoi edit --apply"
-    alias czd="chezmoi diff"
-    alias cza="chezmoi add"
-    alias czc="chezmoi cd"
-fi
+alias_if_sudo reboot reboot='sudo reboot'
+alias_if_sudo poweroff poweroff='sudo poweroff'
+alias_if_sudo halt halt='sudo halt'
+alias_if_sudo shutdown shutdown='sudo shutdown'
+
+alias_if_sudo systemctl \
+    sc="sudo systemctl" \
+    sce="sudo systemctl enable" \
+    scd="sudo systemctl disable" \
+    scs="sudo systemctl start" \
+    sct="sudo systemctl stop" \
+    scr="sudo systemctl restart"
+
+alias_if systemctl \
+    sca="systemctl status" \
+    scu="systemctl --user" \
+    scue="systemctl --user enable" \
+    scud="systemctl --user disable" \
+    scus="systemctl --user start" \
+    scut="systemctl --user stop" \
+    scur="systemctl --user restart"
+
+alias_if git \
+    g='git' \
+    gcl='git clone' \
+    ga='git add' \
+    grm='git rm' \
+    ga='git add' \
+    gus='git reset HEAD' \
+    gm="git merge" \
+    gmv='git mv' \
+    gs='git status -s -b' \
+    gp='git push' \
+    gpo='git push origin' \
+    gpom='git push origin master' \
+    gr='git remote' \
+    gd='git diff' \
+    gc='git commit -v' \
+    gca='git commit -v -a' \
+    gcm='git commit -v -m' \
+    gcam="git commit -v -am" \
+    gci='git commit --interactive' \
+    gb='git branch' \
+    gco='git checkout' \
+    gg="git log --graph --pretty=format:'%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%C(cyan)\\ [%cn]' --abbrev-commit --date=relative" \
+    ggs="gg --stat" \
+    gw="git whatchanged" \
+    gt="git tag" \
+    gnew="git log HEAD@{1}..HEAD@{0}" \
+    ggui="git gui"
+
+alias_if chezmoi \
+    cze="chezmoi edit" \
+    czea="chezmoi edit --apply" \
+    czd="chezmoi diff" \
+    cza="chezmoi add" \
+    czc="chezmoi cd"
 
 ## --------------------------------------------------
 ## Manly Colors
