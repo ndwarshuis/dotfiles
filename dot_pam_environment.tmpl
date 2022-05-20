@@ -2,10 +2,10 @@
 # XDG Overrides
 #--------------------#
 
-XDG_CONFIG_HOME         DEFAULT=@{HOME}/.config
-XDG_CACHE_HOME          DEFAULT=@{HOME}/.cache
-XDG_DATA_HOME           DEFAULT=@{HOME}/.local/share
-XDG_RUNTIME_DIR         DEFAULT=/run/user/1000
+XDG_CONFIG_HOME         DEFAULT={{ .chezmoi.homeDir }}/.config
+XDG_CACHE_HOME          DEFAULT={{ .chezmoi.homeDir }}/.cache
+XDG_DATA_HOME           DEFAULT={{ .chezmoi.homeDir }}/.local/share
+XDG_RUNTIME_DIR         DEFAULT=/run/user/{{ output "id" "-u" | trim }}
 
 AWS_SHARED_CREDENTIALS_FILE DEFAULT=${XDG_CONFIG_HOME}/aws/credentials
 AWS_CONFIG_FILE         DEFAULT=${XDG_CONFIG_HOME}/aws/config
@@ -70,7 +70,7 @@ PASSWORD_STORE_DIR      DEFAULT=${GNUPGHOME}/pass
 # Path
 #--------------------#
 
-PATH OVERRIDE=@{HOME}/.bin:@{HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+PATH OVERRIDE={{ .chezmoi.homeDir }}/.bin:{{ .chezmoi.homeDir }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin
 
 #--------------------#
 # Applications
