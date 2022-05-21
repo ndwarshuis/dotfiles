@@ -47,7 +47,7 @@ run_install_scripts() {
 
 run_yay() {
     dunst_pkgs=(dunst)
-    emacs_pkgs=(emacs)
+    emacs_pkgs=(emacs-nativecomp)
     gtk_pkgs=(zuki-themes)
     redshift_pkgs=(redshift)
     seafile_pkgs=(seafile-client)
