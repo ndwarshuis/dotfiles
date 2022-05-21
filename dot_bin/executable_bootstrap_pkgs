@@ -61,7 +61,6 @@ run_yay() {
         "${dunst_pkgs[@]}" \
         "${emacs_pkgs[@]}" \
         "${gtk_pkgs[@]}" \
-        "${r_pkgs[@]}" \
         "${redshift_pkgs[@]}" \
         "${seafile_pkgs[@]}" \
         "${urxvt_pkgs[@]}" \
