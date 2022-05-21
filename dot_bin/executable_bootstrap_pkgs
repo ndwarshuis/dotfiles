@@ -49,7 +49,6 @@ run_yay() {
     dunst_pkgs=(dunst)
     emacs_pkgs=(emacs)
     gtk_pkgs=(zuki-themes)
-    r_pkgs=(r gcc-fortran texlive-bin tk)
     redshift_pkgs=(redshift)
     seafile_pkgs=(seafile-client)
     urxvt_pkgs=(rxvt-unicode urxvt-perls)
