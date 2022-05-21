@@ -221,6 +221,13 @@ alias uuu='cd ../../..'
 alias uuuu='cd ../../../..'
 alias uuuuu='cd ../../../../..'
 
+## diff is weird; only use color if ver >= 3.4
+
+diffver="$(diff -v | grep -o '\([0-9]\+\.[0-9]\+\)')"
+if [ ${diffver//\.*/} -ge 3 ] && [ ${diffver//*\./} -ge 4 ]; then
+    alias diff='diff --color'
+fi
+
 ## don't assume the rest of these will exist
 
 alias_if grep \
@@ -230,7 +237,6 @@ alias_if grep \
 
 alias_if sudo sudo='sudo '
 
-alias_if_else colordiff diff=colordiff 'diff --color'
 
 if ! alias_if exa \
         ll='exa -alhg --group-directories-first' \
