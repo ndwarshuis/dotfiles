@@ -49,12 +49,6 @@ run_yay() {
     dunst_pkgs=(dunst)
     emacs_pkgs=(emacs)
     gtk_pkgs=(zuki-themes)
-    ## TODO this requires some system-level config and thus should be an
-    ## ansible role
-    # nvidia_pkgs=(optimus-manager)
-    ## TODO docker rootless should be an ansible role since it needs some
-    ## systemwide configuration
-    # r_pkgs=(r docker-rootless-extras-bin gcc-fortran texlive-bin tk)
     r_pkgs=(r gcc-fortran texlive-bin tk)
     redshift_pkgs=(redshift)
     seafile_pkgs=(seafile-client)
