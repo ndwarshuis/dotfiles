@@ -103,57 +103,6 @@ Channel gmail-inbox
 Channel gmail-all
 
 ##
-## gatech office365 server
-##
-
-## this is very similar to the gmail setup except that the sent
-## folder must by synced as outlook does not group sent mail
-## automagically in the inbox as gmail does (as a consequence of the
-## "all mail" folder behavior?)
-
-IMAPAccount gatech
-Host outlook.office365.com
-User ndwarshuis3@gatech.edu
-PassCmd "oauth-refresh ndwarshuis3@gatech.edu"
-AuthMechs XOAUTH2
-SSLType IMAPS
-CertificateFile /etc/ssl/certs/ca-certificates.crt
-PipelineDepth 1
-
-IMAPStore gatech-remote
-Account gatech
-
-MailDirStore gatech-local
-Path /mnt/data/Mail/gatech/
-Inbox /mnt/data/Mail/gatech/inbox
-
-Channel gatech-inbox
-Far :gatech-remote:"INBOX"
-Near :gatech-local:"inbox"
-Create Both
-Expunge Both
-SyncState *
-
-Channel gatech-sent
-Far :gatech-remote:"Sent Items"
-Near :gatech-local:"sent"
-Create Both
-Expunge Both
-SyncState *
-
-Channel gatech-archive
-Far :gatech-remote:"Archive"
-Near :gatech-local:"archive"
-Create Both
-Expunge Both
-SyncState *
-
-Group gatech
-Channel gatech-inbox
-Channel gatech-sent
-Channel gatech-archive
-
-##
 ## private email server
 ##
 
