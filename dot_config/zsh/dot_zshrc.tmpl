@@ -8,16 +8,37 @@ bindkey -v '^?' backward-delete-char
 ## --------------------------------------------------
 # autocompletion
 ## --------------------------------------------------
-# Highlight the current autocomplete option
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
+# load stuff (order matters)
+zmodload zsh/complist
 autoload -Uz compinit && compinit -i
 autoload -Uz bashcompinit && bashcompinit
+
+# use menu for selecting completion
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+zstyle ':completion:*' menu select
+
+# add nice colors for descriptions/warnings/messages
+zstyle ':completion:*:*:*:*:descriptions' format '%F{green}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+
+# use sane grouping
+zstyle ':completion:*' group-name ''
+
+# make file lists useful by showing relevant info
+zstyle ':completion:*' file-list all
+
+# Highlight the current autocomplete option
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # ignore full hostnames in ssh config file
 # the default ssh function does not seem to differentiate b/t
 # HOST and HOSTNAME directives
-zstyle ':completion:*:(ssh|scp|rsync|sshfs):*:hosts' ignored-patterns '*.yavin4.ch'
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
 
 ## --------------------------------------------------
 # syntax highlighting a la fish
