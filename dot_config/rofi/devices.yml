@@ -64,8 +64,6 @@ devices:
       mountpoint: ebm_snakemake
       label: EBM
     remote: nisaba:/aigenomics/EBM_dev/snakemake
-    password:
-      prompt: {}
     depends:
       - ssh
   roylab:
