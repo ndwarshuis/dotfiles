@@ -14,11 +14,16 @@ zmodload zsh/complist
 autoload -Uz compinit && compinit -i
 autoload -Uz bashcompinit && bashcompinit
 
-# use menu for selecting completion
+# use vi-like menu for selection
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'gg' beginning-of-history
+bindkey -M menuselect 'G' end-of-history
+bindkey -M menuselect 'gj' vi-forward-blank-word
+bindkey -M menuselect 'gk' vi-backward-blank-word
+bindkey -M menuselect '^[[Z' reverse-menu-complete
 zstyle ':completion:*' menu select
 
 # add nice colors for descriptions/warnings/messages
@@ -33,7 +38,7 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' file-list all
 
 # Highlight the current autocomplete option
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # ignore full hostnames in ssh config file
 # the default ssh function does not seem to differentiate b/t
