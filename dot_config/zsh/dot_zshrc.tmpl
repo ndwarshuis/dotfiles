@@ -323,6 +323,11 @@ alias_if git \
     gnew="git log HEAD@{1}..HEAD@{0}" \
     ggui="git gui"
 
+alias_if tmux |
+    tls='tmux ls' \
+    tks='tmux kill-session -t' \
+    tas='tmux attach-session -t'
+
 alias_if chezmoi \
     cze="chezmoi edit" \
     czea="chezmoi edit --apply" \
