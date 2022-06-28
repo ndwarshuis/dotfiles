@@ -47,7 +47,6 @@ run_install_scripts() {
 
 run_yay() {
     dunst_pkgs=(dunst)
-    emacs_pkgs=(emacs-nativecomp)
     gtk_pkgs=(zuki-themes)
     redshift_pkgs=(redshift)
     seafile_pkgs=(seafile-client)
@@ -59,7 +58,6 @@ run_yay() {
 
     yay --needed --noconfirm --norebuild --removemake -S \
         "${dunst_pkgs[@]}" \
-        "${emacs_pkgs[@]}" \
         "${gtk_pkgs[@]}" \
         "${redshift_pkgs[@]}" \
         "${seafile_pkgs[@]}" \
