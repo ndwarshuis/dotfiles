@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# WIP, idea is to use this get request to pull a key manually without using gpg itself...seems to work better
+curl -L -o test.key 'https://keyserver.ubuntu.com/pks/lookup?search=0xC5705533DA4F78D8664B5DC0575159689BEFB442&op=get'
+
