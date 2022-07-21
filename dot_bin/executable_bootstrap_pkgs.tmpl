@@ -46,33 +46,32 @@ run_install_scripts() {
 }
 
 run_yay() {
-    dunst_pkgs=(dunst)
-    gtk_pkgs=(zuki-themes)
-    redshift_pkgs=(redshift)
-    seafile_pkgs=(seafile-client)
-    urxvt_pkgs=(rxvt-unicode urxvt-perls)
-    zsh_pkgs=(zsh zsh-completions zsh-syntax-highlighting)
+    # notifications
+    pkgs=(dunst)
+    # gtk
+    pkgs+=(zuki-themes)
+    # sleep enhancement
+    pkgs+=(redshift)
+    {{ if .features.seafile -}}
+    # seafile
+    pkgs+=(seafile-client)
+    {{- end }}
+    # elegant terminal
+    pkgs+=(rxvt-unicode urxvt-perls)
+    # shell
+    pkgs+=(zsh zsh-completions zsh-syntax-highlighting)
 
-    ## AUR pkgs needed for spotify
-    spotify_pkgs=(gconf)
-
-    yay --needed --noconfirm --norebuild --removemake -S \
-        "${dunst_pkgs[@]}" \
-        "${gtk_pkgs[@]}" \
-        "${redshift_pkgs[@]}" \
-        "${seafile_pkgs[@]}" \
-        "${urxvt_pkgs[@]}" \
-        "${zsh_pkgs[@]}" \
-        "${spotify_pkgs[@]}"
+    yay --needed --noconfirm --norebuild --removemake -S "${pkgs[@]}"
 }
 
 run_makepkg() {
     ## these are all packages that have some personal customizations and/or are
     ## not in the AUR
     ## TODO the clevo thingy requires a systemd file to turn on/off
+    {{ if .features.clevo -}}
     call_makepkg "clevo-xsm-wmi-dkms"
+    {{- end }}
     call_makepkg "conky-lua"
-    call_makepkg "spotify"
     call_makepkg "xkb-hypermode"
 }
 

@@ -1,18 +1,22 @@
-{{- if eq .chezmoi.hostname "petrucci4prez" }}
+{{- if .development.emacs }}
 .config/emacs:
   type: git-repo
   url: https://github.com/ndwarshuis/.emacs.d.git
+{{- end }}
+{{- if .desktop }}
 .config/rofi-extras:
   type: git-repo
   url: https://github.com/ndwarshuis/rofi-extras.git
-.config/xman:
-  type: git-repo
-  url: https://github.com/ndwarshuis/xman.git
 .config/xmonad:
   type: git-repo
   url: https://github.com/ndwarshuis/xmonad-config.git
 .config/conky:
   type: git-repo
-  url: https://github.com/ndwarshuis/conky.git
+  url: https://github.com/ndwarshuis/universal-conky.git
   clone-args: --recurse-submodules
+{{- end }}
+{{- if .features.virtualbox }}
+.config/xman:
+  type: git-repo
+  url: https://github.com/ndwarshuis/xman.git
 {{- end }}

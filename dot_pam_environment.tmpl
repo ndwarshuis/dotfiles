@@ -2,10 +2,10 @@
 PATH OVERRIDE={{ .chezmoi.homeDir }}/.bin:{{ .chezmoi.homeDir }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin
 
 # default directories
-XDG_CONFIG_HOME         DEFAULT={{ .chezmoi.homeDir }}/.config
-XDG_CACHE_HOME          DEFAULT={{ .chezmoi.homeDir }}/.cache
-XDG_DATA_HOME           DEFAULT={{ .chezmoi.homeDir }}/.local/share
-XDG_RUNTIME_DIR         DEFAULT=/run/user/{{ output "id" "-u" | trim }}
+XDG_CONFIG_HOME         DEFAULT={{ .paths.config }}
+XDG_CACHE_HOME          DEFAULT={{ .paths.cache }}
+XDG_DATA_HOME           DEFAULT={{ .paths.data }}
+XDG_RUNTIME_DIR         DEFAULT={{ .paths.runtime }}
 
 # super common tools
 PAGER                   DEFAULT=less

@@ -14,8 +14,10 @@ run_stack_in_dir () {
     cd "$cur" || return 1
 }
 
-export STACK_ROOT=~/.local/share/stack
+export STACK_ROOT={{ .paths.stack }}
 
 run_stack_in_dir ~/.config/rofi-extras
 run_stack_in_dir ~/.config/xmonad
+{{ if .features.virtualbox -}}
 run_stack_in_dir ~/.config/xman
+{{- end }}

@@ -2,9 +2,15 @@ diff:
   args: --color
   pager: less -r
 
-{{- $desktop := promptBool "desktop" false }}
-{{- $laptop := and $desktop (promptBool "laptop" false) }}
-{{- $emacs := and $desktop (promptBool "emacs" true) }}
+{{  $desktop := promptBool "desktop" false -}}
+{{- $laptop := and $desktop (promptBool "laptop" false) -}}
+{{- $emacs := and $desktop (promptBool "emacs" true) -}}
+
+{{- $xdg_config_home := .chezmoi.homeDir | printf "%s/.config" -}}
+{{- $xdg_cache_home := .chezmoi.homeDir | printf "%s/.cache" -}}
+{{- $xdg_data_home := .chezmoi.homeDir | printf "%s/.local/share" -}}
+{{- $xdg_runtime_dir := output "id" "-u" | trim | printf "/run/user/%s" -}}
+
 data:
   desktop: {{ $desktop }}
   laptop:  {{ $laptop }}
@@ -17,15 +23,23 @@ data:
     f5vpn: {{ and $desktop (promptBool "f5vpn" false) }}
     seafile: {{ and $desktop (promptBool "seafile" false) }}
   development:
-{{- /* emacs implies that most development options are true */}}
+
+    {{- /* emacs implies that most development options are true */}}
     emacs: {{ $emacs }}
-    ruby: {{ or $emacs promptBool "ruby development" true }}
-    python: {{ or $emacs promptBool "python development" true }}
-    rust: {{ or $emacs promptBool "rust development" true }}
-    clojure: {{ or $emacs promptBool "clojure development" true }}
-    latex: {{ or $emacs promptBool "LaTeX development" true }}
-    r: {{ or $emacs promptBool "R development" true }}
+    ruby: {{ or $emacs promptBool "ruby" true }}
+    python: {{ or $emacs promptBool "python" true }}
+    rust: {{ or $emacs promptBool "rust" true }}
+    clojure: {{ or $emacs promptBool "clojure" true }}
+    latex: {{ or $emacs promptBool "LaTeX" true }}
+    r: {{ or $emacs promptBool "R" true }}
     conda: {{ or $emacs promptBool "conda" true }}
-{{- /* these aren't implied by emacs */}}
-    matlab: {{ or $emacs promptBool "MATLAB development" true }}
-    github: {{ promptBool "GitHub development" true }}
+
+    {{- /* these aren't implied by emacs */}}
+    matlab: {{ or $emacs promptBool "MATLAB" true }}
+    github: {{ promptBool "GitHub" true }}
+  paths:
+    config: {{ $xdg_config_home }}
+    cache: {{ $xdg_cache_home }}
+    data: {{ $xdg_data_home }}
+    runtime: {{ $xdg_runtime_dir }}
+    stack: {{ $xdg_data_home }}/stack
