@@ -124,9 +124,9 @@ bind -T off F12 \
   set -u window-status-current-style \;\
   refresh-client -S
 
-# if on local machine, put bar at top, if not put bar at bottom with some nice
-# stats that the local machine already has via conky
-{{- if eq .chezmoi.hostname "petrucci4prez" }}
+{{/* for bar position, local -> top, remote -> bottom */ -}}
+{{- /* TODO make this dynamic, in case I want to log into a desktop */ -}}
+{{- if .desktop }}
 set -g status-position top
 set -g status-right ""
 set -g status-right-length 0
@@ -142,4 +142,4 @@ set -g status-position bottom
 set -g status-right-length 64
 set -g status-right "$net $status_sep $cpu $status_sep $mem "
 
-{{ end }}
+{{- end }}
