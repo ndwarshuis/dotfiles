@@ -15,7 +15,6 @@ fi
 
 setxkbmap hypermode
 
-{{ if .features.virtualbox -}}
 KEYS="Control_L=Escape"
 KEYS="$KEYS;Control_R=Return"
 KEYS="$KEYS;Super_L=Tab"
@@ -23,7 +22,6 @@ KEYS="$KEYS;Super_R=backslash"
 KEYS="$KEYS;Alt_R=space"
 KEYS="$KEYS;ISO_Level3_Shift=XF86Search"
 xman -t 500 "$KEYS" "^VirtualBox Machine$" &
-{{- end }}
 
 # TODO put xmonad-specific stuff in its own script
 tmuxctl start

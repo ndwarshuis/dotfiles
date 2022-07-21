@@ -10,14 +10,12 @@
 .config/xmonad:
   type: git-repo
   url: https://github.com/ndwarshuis/xmonad-config.git
+.config/xman:
+  type: git-repo
+  url: https://github.com/ndwarshuis/xman.git
 {{- end }}
 {{- if ne .features.conky_alias "none" }}
 .config/conky:
   type: git-repo
   url: https://github.com/ndwarshuis/universal-conky.git
-{{- end }}
-{{- if .features.virtualbox }}
-.config/xman:
-  type: git-repo
-  url: https://github.com/ndwarshuis/xman.git
 {{- end }}
