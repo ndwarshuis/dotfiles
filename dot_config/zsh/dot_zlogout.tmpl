@@ -1,0 +1,4 @@
+{{ if .features.optimus }}
+# ASSUME this command is whitelisted in sudoers
+sudo /usr/bin/prime-switch > /dev/null 2>&1
+{{- end}}

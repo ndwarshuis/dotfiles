@@ -105,12 +105,14 @@ PYLINTHOME              DEFAULT=${XDG_CACHE_HOME}/pylint
 PYENV_ROOT              DEFAULT=${XDG_DATA_HOME}/pyenv
 {{- end }}
 
+{{ if .features.seafile -}}
+# seafile
+CCNET_CONF_DIR          DEFAULT=${XDG_CONFIG_HOME}/ccnet
+{{- end }}
+
 {{ if .desktop -}}
 # gnucash
 AQBANKING_HOME          DEFAULT=${XDG_CONFIG_HOME}/aqbanking
-
-# seafile
-CCNET_CONF_DIR          DEFAULT=${XDG_CONFIG_HOME}/ccnet
 
 # gtk2
 GTK2_RC_FILES           DEFAULT=${XDG_CONFIG_HOME}/gtk-2.0/gtkrc
