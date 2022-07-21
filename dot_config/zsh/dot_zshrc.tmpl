@@ -350,7 +350,7 @@ man() {
     man "$@"
 }
 
-{{- if eq .chezmoi.hostname "petrucci4prez" }}
+{{- if .desktop }}
 
 ## --------------------------------------------------
 # enable x11 clipboard sync
@@ -391,6 +391,8 @@ local paste_widgets=(
 x11-clip-wrap-widgets copy $copy_widgets
 x11-clip-wrap-widgets paste  $paste_widgets
 
+{{- end }}
+
 ## --------------------------------------------------
 ## Python/Ruby Virtual Environments
 ## --------------------------------------------------
@@ -399,6 +401,7 @@ x11-clip-wrap-widgets paste  $paste_widgets
 # involve a) adding a "shims" directory to PATH and then b) adding some shell
 # magic to automatically call the shims
 
+{{ if .development.python -}}
 zsh-pyenv () {
     export PATH=$PYENV_ROOT/shims:$PATH
 
@@ -410,8 +413,9 @@ zsh-pyenv () {
         echo "pyenv not installed"
     fi
 }
+{{- end }}
 
-
+{{ if .development.ruby -}}
 zsh-rbenv () {
     gempaths="$(/usr/bin/gem env gempath):"
     export PATH="${gempaths//:/\/bin:}:$PATH"
@@ -424,7 +428,9 @@ zsh-rbenv () {
         echo "rbenv not installed"
     fi
 }
+{{- end }}
 
+{{ if .development.conda -}}
 zsh-conda () {
     if [[ -x $XDG_DATA_HOME/mambaforge/bin/conda ]]; then
         eval "$($XDG_DATA_HOME/mambaforge/bin/conda shell.zsh hook)"
