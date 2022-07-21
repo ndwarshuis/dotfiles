@@ -1,3 +1,27 @@
 diff:
   args: --color
   pager: less -r
+
+{{- $desktop := promptBool "desktop" false }}
+data:
+  desktop: {{ $desktop }}
+  features:
+{{- if $desktop }}
+    ansible: {{ promptBool "ansible" true }}
+{{- end }}
+  development:
+{{- if $desktop }}
+{{- $emacs := promptBool "emacs" true }}
+{{- /* emacs implies that most development options are true */}}
+    emacs: {{ $emacs }}
+    ruby: {{ or $emacs promptBool "ruby development" true }}
+    python: {{ or $emacs promptBool "python development" true }}
+    rust: {{ or $emacs promptBool "rust development" true }}
+    clojure: {{ or $emacs promptBool "clojure development" true }}
+    latex: {{ or $emacs promptBool "LaTeX development" true }}
+    r: {{ or $emacs promptBool "R development" true }}
+    conda: {{ or $emacs promptBool "conda" true }}
+{{- /* these aren't implied by emacs */}}
+    matlab: {{ or $emacs promptBool "MATLAB development" true }}
+    github: {{ promptBool "GitHub development" true }}
+{{- end }}

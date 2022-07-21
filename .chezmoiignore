@@ -1,4 +1,4 @@
-{{- if ne .chezmoi.hostname "petrucci4prez" }}
+{{- if not .desktop }}
 .bin
 
 .config/*

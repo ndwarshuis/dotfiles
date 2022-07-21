@@ -1,89 +1,139 @@
-#--------------------#
-# XDG Overrides
-#--------------------#
+# path (include ~/.bin and ~/.local/bin)
+PATH OVERRIDE={{ .chezmoi.homeDir }}/.bin:{{ .chezmoi.homeDir }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin
 
+# default directories
 XDG_CONFIG_HOME         DEFAULT={{ .chezmoi.homeDir }}/.config
 XDG_CACHE_HOME          DEFAULT={{ .chezmoi.homeDir }}/.cache
 XDG_DATA_HOME           DEFAULT={{ .chezmoi.homeDir }}/.local/share
 XDG_RUNTIME_DIR         DEFAULT=/run/user/{{ output "id" "-u" | trim }}
 
+# super common tools
+PAGER                   DEFAULT=less
+INPUTRC                 DEFAULT=${XDG_CONFIG_HOME}/readline/inputrc
+LESSKEY                 DEFAULT=${XDG_CONFIG_HOME}/less/lesskey
+LESSHISTFILE            DEFAULT=-
+GNUPGHOME               DEFAULT=${XDG_CONFIG_HOME}/gnupg
+EDITOR                  DEFAULT=vim
+
+# AWS (all will suffer...)
 AWS_SHARED_CREDENTIALS_FILE DEFAULT=${XDG_CONFIG_HOME}/aws/credentials
 AWS_CONFIG_FILE         DEFAULT=${XDG_CONFIG_HOME}/aws/config
 
-{{- if eq .chezmoi.hostname "petrucci4prez" }}
-AQBANKING_HOME          DEFAULT=${XDG_CONFIG_HOME}/aqbanking
-ANSIBLE_VAULT_PASSWORD_FILE 	DEFAULT=@{HOME}/.bin/ansible-vault-pass-client
-ANSIBLE_VAULT_IDENTITY	DEFAULT=ansible/vault
-ASPELL_CONF             DEFAULT="per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl"
-
-BUNDLE_USER_CONFIG      DEFAULT=${XDG_CONFIG_HOME}/bundle
-BUNDLE_USER_CACHE       DEFAULT=${XDG_CACHE_HOME}/bundle
-BUNDLE_USER_PLUGIN      DEFAULT=${XDG_DATA_HOME}/bundle
-CARGO_HOME              DEFAULT=${XDG_DATA_HOME}/cargo
+# cache compiled bits; highly recommended for makepkg
 CCACHE_CONFIGPATH       DEFAULT=${XDG_CONFIG_HOME}/ccache.config
 CCACHE_DIR              DEFAULT=${XDG_CACHE_HOME}/ccache
-CCNET_CONF_DIR          DEFAULT=${XDG_CONFIG_HOME}/ccnet
-CONDARC                 DEFAULT=${XDG_CONFIG_HOME}/conda/condarc
-GEM_HOME                DEFAULT=${XDG_DATA_HOME}/gem
-GEM_SPEC_CACHE          DEFAULT=${XDG_CACHE_HOME}/gem
-GRIPHOME                DEFAULT=${XDG_CONFIG_HOME}/grip
-GTK2_RC_FILES           DEFAULT=${XDG_CONFIG_HOME}/gtk-2.0/gtkrc
-IPYTHONDIR              DEFAULT=${XDG_CONFIG_HOME}/ipython
-LEIN_HOME               DEFAULT=${XDG_DATA_HOME}/lein
-MATLAB_PREFDIR          DEFAULT=${XDG_CONFIG_HOME}/matlab
-MATLAB_LOG_DIR          DEFAULT=${XDG_DATA_HOME}/matlab/log
-MU_HOME                 DEFAULT=${XDG_CACHE_HOME}/mu
-MAILDIR                 DEFAULT=/mnt/data/Mail
-PAGER                   DEFAULT=less
-PYLINTHOME		        DEFAULT=${XDG_CACHE_HOME}/pylint
-PYENV_ROOT              DEFAULT=${XDG_DATA_HOME}/pyenv
-R_ENVIRON_USER          DEFAULT=${XDG_CONFIG_HOME}/r/Renviron
-RBENV_ROOT              DEFAULT=${XDG_DATA_HOME}/rbenv
-STACK_ROOT              DEFAULT=${XDG_DATA_HOME}/stack
-TEXMFHOME               DEFAULT=${XDG_CONFIG_HOME}/texmf
-RXVT_SOCKET             DEFAULT=${XDG_RUNTIME_DIR}/urxvt/urxvtd-node
-XINITRC                 DEFAULT=${XDG_CONFIG_HOME}/X11/xinitrc
-XMONAD_CACHE_DIR        DEFAULT=${XDG_CACHE_HOME}/xmonad
-XMONAD_CONFIG_DIR       DEFAULT=${XDG_CONFIG_HOME}/xmonad
-XMONAD_DATA_DIR         DEFAULT=${XDG_DATA_HOME}/xmonad
-{{- end }}
 
-INPUTRC                 DEFAULT=${XDG_CONFIG_HOME}/readline/inputrc
+# REPL stuff
 NODE_REPL_HISTORY       DEFAULT=${XDG_DATA_HOME}/npm/node_repl.log
 PYTHONSTARTUP           DEFAULT=${XDG_CONFIG_HOME}/python/startup.py
-LESSKEY                 DEFAULT=${XDG_CONFIG_HOME}/less/lesskey
-LESSHISTFILE            DEFAULT=-
+
+# shell stuff
 HISTFILE                DEFAULT=${XDG_DATA_HOME}/zsh_history.log
 HISTSIZE                DEFAULT=1000000
 SAVEHIST                DEFAULT=1000000
-ICEAUTHORITY            DEFAULT=${XDG_CACHE_DIR}/ICEauthority
-XAUTHORITY              DEFAULT=${XDG_RUNTIME_DIR}/Xauthority
 ZDOTDIR                 DEFAULT=${XDG_CONFIG_HOME}/zsh
 
-# store passwords in gnupg directory (and then encrypt the entire thing with veracrypt)
-GNUPGHOME               DEFAULT=${XDG_CONFIG_HOME}/gnupg
-{{- if eq .chezmoi.hostname "petrucci4prez" }}
-PASSWORD_STORE_DIR      DEFAULT=${GNUPGHOME}/pass
+# X11 forwarding (required even without a full X11 server)
+ICEAUTHORITY            DEFAULT=${XDG_CACHE_DIR}/ICEauthority
+XAUTHORITY              DEFAULT=${XDG_RUNTIME_DIR}/Xauthority
+
+{{ if .features.ansible -}}
+# ansible
+ANSIBLE_VAULT_PASSWORD_FILE 	DEFAULT=@{HOME}/.bin/ansible-vault-pass-client
+ANSIBLE_VAULT_IDENTITY	DEFAULT=ansible/vault
 {{- end }}
 
-#--------------------#
-# Path
-#--------------------#
+{{ if .development.emacs -}}
+# emacs
+MU_HOME                 DEFAULT=${XDG_CACHE_HOME}/mu
+MAILDIR                 DEFAULT=/mnt/data/Mail
+ASPELL_CONF             DEFAULT="per-conf ${XDG_CONFIG_HOME}/aspell/aspell.conf; personal ${XDG_CONFIG_HOME}/aspell/en.pws; repl ${XDG_CONFIG_HOME}/aspell/en.prepl"
+{{- end }}
 
-PATH OVERRIDE={{ .chezmoi.homeDir }}/.bin:{{ .chezmoi.homeDir }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin
+{{ if .development.ruby -}}
+# ruby development
+RBENV_ROOT              DEFAULT=${XDG_DATA_HOME}/rbenv
+BUNDLE_USER_CONFIG      DEFAULT=${XDG_CONFIG_HOME}/bundle
+BUNDLE_USER_CACHE       DEFAULT=${XDG_CACHE_HOME}/bundle
+BUNDLE_USER_PLUGIN      DEFAULT=${XDG_DATA_HOME}/bundle
+GEM_HOME                DEFAULT=${XDG_DATA_HOME}/gem
+GEM_SPEC_CACHE          DEFAULT=${XDG_CACHE_HOME}/gem
+{{- end }}
 
-#--------------------#
-# Applications
-#--------------------#
-EDITOR                  DEFAULT=vim
+{{ if .development.rust -}}
+# rust development
+CARGO_HOME              DEFAULT=${XDG_DATA_HOME}/cargo
+{{- end }}
 
-{{- if eq .chezmoi.hostname "petrucci4prez" }}
+{{ if .development.clojure -}}
+# clojure development
+LEIN_HOME               DEFAULT=${XDG_DATA_HOME}/lein
+{{- end }}
+
+{{ if .development.matlab -}}
+# matlab development (if I must...)
+MATLAB_PREFDIR          DEFAULT=${XDG_CONFIG_HOME}/matlab
+MATLAB_LOG_DIR          DEFAULT=${XDG_DATA_HOME}/matlab/log
+# required for matlab's silly GUI to work with xmonad
+_JAVA_AWT_WM_NONREPARENTING DEFAULT=1
+{{- end }}
+
+{{ if .development.r -}}
+# R development
+R_ENVIRON_USER          DEFAULT=${XDG_CONFIG_HOME}/r/Renviron
+{{- end }}
+
+{{ if .development.latex -}}
+# LaTeX writing...I mean...development
+TEXMFHOME               DEFAULT=${XDG_CONFIG_HOME}/texmf
+{{- end }}
+
+{{ if .development.github -}}
+# Github development (for READMEs)
+GRIPHOME                DEFAULT=${XDG_CONFIG_HOME}/grip
+{{- end }}
+
+{{ if .development.conda -}}
+# conda development
+CONDARC                 DEFAULT=${XDG_CONFIG_HOME}/conda/condarc
+{{- end }}
+
+{{ if .development.python -}}
+# python development
+IPYTHONDIR              DEFAULT=${XDG_CONFIG_HOME}/ipython
+PYLINTHOME              DEFAULT=${XDG_CACHE_HOME}/pylint
+PYENV_ROOT              DEFAULT=${XDG_DATA_HOME}/pyenv
+{{- end }}
+
+{{ if .desktop -}}
+# gnucash
+AQBANKING_HOME          DEFAULT=${XDG_CONFIG_HOME}/aqbanking
+
+# seafile
+CCNET_CONF_DIR          DEFAULT=${XDG_CONFIG_HOME}/ccnet
+
+# gtk2
+GTK2_RC_FILES           DEFAULT=${XDG_CONFIG_HOME}/gtk-2.0/gtkrc
+
+# xft fonts
 GDK_USE_XFT             DEFAULT=1
 QT_XFT                  DEFAULT=true
-SAL_USE_VCLPLUGIN       DEFAULT=gtk
+
+# QT (which should look like gtk)
 QT_QPA_PLATFORMTHEME    DEFAULT=qt5ct
 
-# this is needed to make MATLAB work with 
-# xmonad and other godly window managers
-_JAVA_AWT_WM_NONREPARENTING DEFAULT=1
+# libreoffice?
+SAL_USE_VCLPLUGIN       DEFAULT=gtk
+
+# store passwords in gnupg directory (which is then encrypted)
+PASSWORD_STORE_DIR      DEFAULT=${GNUPGHOME}/pass
+
+# X11
+XINITRC                 DEFAULT=${XDG_CONFIG_HOME}/X11/xinitrc
+
+# xmonad (and haskell)
+STACK_ROOT              DEFAULT=${XDG_DATA_HOME}/stack
+XMONAD_CACHE_DIR        DEFAULT=${XDG_CACHE_HOME}/xmonad
+XMONAD_CONFIG_DIR       DEFAULT=${XDG_CONFIG_HOME}/xmonad
+XMONAD_DATA_DIR         DEFAULT=${XDG_DATA_HOME}/xmonad
 {{- end }}
