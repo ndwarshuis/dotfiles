@@ -1,0 +1,114 @@
+bootstrap:
+  update_interval: 1
+  dimensions: [1920, 1080]
+modules:
+  filesystem:
+    show_smart: true
+    fs_paths:
+      - {path: /,           name: root}
+      - {path: /boot,       name: boot}
+      - {path: /home,       name: home}
+      - {path: /mnt/data,   name: data}
+      - {path: /mnt/dcache, name: dcache}
+      - {path: /tmp,        name: tmpfs}
+  graphics:
+    dev_power: /sys/bus/pci/devices/0000:01:00.0/power/control
+    show_temp: true
+    show_clock: true
+    show_gpu_util: true
+    show_mem_util: true
+    show_vid_util: true
+  memory:
+    show_stats: true
+    show_swap: true
+    show_plot: true
+    table_rows: 5
+  power:
+    battery: BAT0
+    rapl_specs:
+      - {name: PKG0, address: intel-rapl:0}
+      - {name: DRAM, address: intel-rapl:0:2}
+  processor:
+    core_rows: 1
+    core_padding: 0
+    show_stats: true
+    show_plot: true
+    table_rows: 5
+  readwrite:
+    devices: [sda, nvme0n1]
+
+layout:
+  anchor: [12, 11]
+  panels:
+    - columns:
+        - {blocks: [system, 19, graphics, 16, processor], width: 436}
+      margins: [20, 10]
+    - 10
+    - columns:
+        - {blocks: [readwrite], width: 436}
+        - 20
+        - {blocks: [network], width: 436}
+      margins: [20, 10]
+    - 10
+    - columns:
+        - {blocks: [pacman, 24, filesystem, 23, power, 19, memory], width: 436}
+      margins: [20, 10]
+
+theme:
+  font:
+    family: Neuropolitical
+    sizes:
+      normal: 13
+      plot_label: 8
+      table: 11
+      header: 15
+  geometry:
+    plot:
+      seconds: 90
+      ticks: [9, 4]
+    table:
+      name_chars: 8
+      padding: [6, 15]
+      header_padding: 20
+      row_spacing: 13
+    header:
+      underline_offset: 26
+      padding: 19
+  patterns:
+    header: 0xefefef
+    panel:
+      bg: {color: 0x121212, alpha: 0.7}
+    text:
+      active: 0xbfe1ff
+      inactive: 0xc8c8c8
+      critical: 0xff8282
+    border: 0x888888
+    plot:
+      grid: 0x666666
+      outline: 0x777777
+      data:
+        border: 
+          gradient:
+            - {stop: 0, color: 0x003f7c}
+            - {stop: 1, color: 0x1e90ff}
+        fill:
+          gradient_alpha:
+            - {stop: 0.2, color: 0x316ece, alpha: 0.5}
+            - {stop: 1, color: 0x8cc7ff, alpha: 1.0}
+    indicator:
+      bg:
+        gradient:
+          - {stop: 0, color: 0x565656}
+          - {stop: 0.5, color: 0xbfbfbf}
+          - {stop: 1, color: 0x565656}
+      fg:
+        active:
+          gradient:
+            - {stop: 0, color: 0x316BA6}
+            - {stop: 0.5, color: 0x99CEFF}
+            - {stop: 1, color: 0x316BA6}
+        critical:
+          gradient:
+            - {stop: 0, color: 0xFF3333}
+            - {stop: 0.5, color: 0xFFB8B8}
+            - {stop: 1, color: 0xFF3333}

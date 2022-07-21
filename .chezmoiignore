@@ -12,5 +12,9 @@
 .local
 {{- end }}
 
+{{- if not .features.conky_alias }}
+.config/conky.yml
+{{- end }}
+
 # this is linked; allow VirtualBox to configure by itself
 VirtualBox.xml
