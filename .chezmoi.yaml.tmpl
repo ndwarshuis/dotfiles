@@ -3,15 +3,19 @@ diff:
   pager: less -r
 
 {{- $desktop := promptBool "desktop" false }}
+{{- $laptop := and $desktop (promptBool "laptop" false) }}
+{{- $emacs := and $desktop (promptBool "emacs" true) }}
 data:
   desktop: {{ $desktop }}
+  laptop:  {{ $laptop }}
   features:
-{{- if $desktop }}
-    ansible: {{ promptBool "ansible" true }}
-{{- end }}
+    ansible: {{ and $desktop (promptBool "ansible" true) }}
+    clevo: {{ and $laptop (promptBool "clevo keyboard" false) }}
+    optimus: {{ and $laptop (promptBool "optimus" false) }}
+    virtualbox: {{ and $desktop (promptBool "virtualbox" false) }}
+    xsane: {{ and $desktop (promptBool "xsane" false) }}
+    f5vpn: {{ and $desktop (promptBool "f5vpn" false) }}
   development:
-{{- if $desktop }}
-{{- $emacs := promptBool "emacs" true }}
 {{- /* emacs implies that most development options are true */}}
     emacs: {{ $emacs }}
     ruby: {{ or $emacs promptBool "ruby development" true }}
@@ -24,4 +28,3 @@ data:
 {{- /* these aren't implied by emacs */}}
     matlab: {{ or $emacs promptBool "MATLAB development" true }}
     github: {{ promptBool "GitHub development" true }}
-{{- end }}
