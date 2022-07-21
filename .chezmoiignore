@@ -10,10 +10,12 @@
 .local
 {{- end }}
 
+.symlinks
+
 {{ if ne .features.conky_alias "none" -}}
-.symlinks/conky-configs
+.config/conky.yml
 {{- end }}
 
 {{ if not .features.virtualbox -}}
-.symlinks/VirtualBox.xml
+.config/VirtualBox/VirtualBox.xml
 {{- end }}
