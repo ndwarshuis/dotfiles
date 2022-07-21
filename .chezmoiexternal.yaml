@@ -10,10 +10,11 @@
 .config/xmonad:
   type: git-repo
   url: https://github.com/ndwarshuis/xmonad-config.git
+{{- end }}
+{{- if ne .features.conky_alias "none" }}
 .config/conky:
   type: git-repo
   url: https://github.com/ndwarshuis/universal-conky.git
-  clone-args: --recurse-submodules
 {{- end }}
 {{- if .features.virtualbox }}
 .config/xman:

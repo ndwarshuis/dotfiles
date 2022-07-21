@@ -22,7 +22,7 @@ data:
     xsane: {{ and $desktop (promptBool "xsane" false) }}
     f5vpn: {{ and $desktop (promptBool "f5vpn" false) }}
     seafile: {{ and $desktop (promptBool "seafile" false) }}
-    conky_alias: {{ and $desktop (promptString "conky" "null") }}
+    conky_alias: {{ and $desktop (promptString "conky" "none") }}
   development:
 
     {{- /* emacs implies that most development options are true */}}

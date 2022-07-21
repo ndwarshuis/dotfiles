@@ -1,9 +1,0 @@
-channels:
-  - conda-forge
-  - bioconda
-
-envs_dirs:
-  - ~/.local/share/conda/envs
-
-pkgs_dirs:
-  - ~/.local/share/conda/pkgs

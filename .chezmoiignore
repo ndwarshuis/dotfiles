@@ -6,15 +6,14 @@
 !.config/python
 !.config/tmux
 !.config/zsh
-.config/zsh/.zprofile
-.config/zsh/.zlogout
 
 .local
 {{- end }}
 
-{{- if not .features.conky_alias }}
-.config/conky.yml
+{{ if ne .features.conky_alias "none" -}}
+.symlinks/conky-configs
 {{- end }}
 
-# this is linked; allow VirtualBox to configure by itself
-VirtualBox.xml
+{{ if not .features.virtualbox -}}
+.symlinks/VirtualBox.xml
+{{- end }}

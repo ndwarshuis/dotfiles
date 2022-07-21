@@ -47,7 +47,7 @@ run_install_scripts() {
 
 run_yay() {
     # notifications
-    pkgs=(dunst)
+    pkgs=(dunst papirus-icon-theme)
     # gtk
     pkgs+=(zuki-themes)
     # sleep enhancement
@@ -71,7 +71,9 @@ run_makepkg() {
     {{ if .features.clevo -}}
     call_makepkg "clevo-xsm-wmi-dkms"
     {{- end }}
+    {{ if ne .features.conky_alias "none" -}}
     call_makepkg "conky-lua"
+    {{- end }}
     call_makepkg "xkb-hypermode"
 }
 
