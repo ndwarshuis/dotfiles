@@ -5,12 +5,12 @@ modules:
   filesystem:
     show_smart: true
     fs_paths:
-      - {path: /,           name: root}
-      - {path: /boot,       name: boot}
-      - {path: /home,       name: home}
-      - {path: /mnt/data,   name: data}
-      - {path: /mnt/dcache, name: dcache}
-      - {path: /tmp,        name: tmpfs}
+      - {path: /,              name: root}
+      - {path: /boot,          name: boot}
+      - {path: /home,          name: home}
+      - {path: /mnt/data,      name: data0}
+      - {path: /mnt/more_data, name: data1}
+      - {path: /tmp,           name: tmpfs}
   graphics:
     dev_power: /sys/bus/pci/devices/0000:01:00.0/power/control
     show_temp: true
@@ -24,14 +24,13 @@ modules:
     show_plot: true
     table_rows: 5
   power:
-    battery: BAT0
+    battery: ''
     rapl_specs:
       - {name: PKG0, address: intel-rapl:0}
-      - {name: DRAM, address: intel-rapl:0:2}
   processor:
-    core_rows: 1
+    core_rows: 2
     core_padding: 0
-    show_stats: true
+    show_stats: false
     show_plot: true
     table_rows: 5
   readwrite:
@@ -41,7 +40,7 @@ layout:
   anchor: [12, 11]
   panels:
     - columns:
-        - {blocks: [system, 19, graphics, 16, processor], width: 436}
+        - {blocks: [system, 19, graphics, 16, memory], width: 436}
       margins: [20, 10]
     - 10
     - columns:
@@ -51,7 +50,7 @@ layout:
       margins: [20, 10]
     - 10
     - columns:
-        - {blocks: [pacman, 24, filesystem, 23, power, 19, memory], width: 436}
+        - {blocks: [pacman, 24, filesystem, 23, processor], width: 436}
       margins: [20, 10]
 
 theme:
