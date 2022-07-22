@@ -3,7 +3,7 @@ features:
   optimus: {{ .features.optimus }}
   vpn: true
   bluetooth: true
-  intel_backlight: true
+  intel_backlight: {{ .laptop }}
   clevo_backlight: {{ .features.clevo }}
   wireless: {{ .laptop }}
   virtualbox: {{ .features.virtualbox }}
