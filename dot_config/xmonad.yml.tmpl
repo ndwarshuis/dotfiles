@@ -1,7 +1,7 @@
-loglevel: Debug
+loglevel: Warn
 features:
   optimus: {{ .features.optimus }}
-  vpn: true
+  vpn: {{ .features.vpn }}
   bluetooth: true
   intel_backlight: {{ .laptop }}
   clevo_backlight: {{ .features.clevo }}
@@ -9,4 +9,4 @@ features:
   virtualbox: {{ .features.virtualbox }}
   xsane: {{ .features.xsane }}
   battery: {{ .laptop }}
-  f5vpn: {{ .features.f5vpn }}
+  f5vpn: {{ .features.vpn }}
