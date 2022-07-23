@@ -1,31 +1,134 @@
-#! /bin/bash
+#!/bin/env python3
 
-create_entry() {
-	local -n params=$1
-	efibootmgr -q -b $bootNumber -B
-	efibootmgr -q -b $bootNumber -d "${params[device]}" -p "${params[part]}" -c -L "${params[label]}" -l "${params[loader]}" -u "${params[args]}"
-	if [ $bootNumber -ne 0 ]; then bootOrder+=",$bootNumber"; else bootOrder+="0"; fi
-	((bootNumber+=1))
-}
+"""Update EFI boot entries for Linux kernels configured with EFISTUB.
 
-# must disable KMS for nvidia else X does not start :/
+Requires root access.
 
-root="root=/dev/mapper/vg1-root rw rootfstype=btrfs rootflags=noatime,compress-force,ssd,space_cache,subvolid=5,subvol=/"
-opts="resume=/dev/nvme0n1p2 systemd.unified_cgroup_hierarchy=1 libahci.ignore_sss=1 nmi_watchdog=0 vt.global_cursor_default=0 acpi_osi=\"Windows 2019\" quiet loglevel=3 rd.systemd.show_status=0 rd.udev.log-priority=3 initrd=/intel-ucode.img"
+USAGE: efi-update PATH
 
-declare -A arch_lts=( ["device"]="/dev/nvme0n1" ["part"]=1 ["label"]="Arch Linux (LTS)" ["loader"]="/vmlinuz-linux-lts" ["args"]="$root $opts elevator=deadline initrd=/initramfs-linux-lts.img")
-declare -A arch_lts_native=( ["device"]="/dev/nvme0n1" ["part"]=1 ["label"]="Arch Linux (LTS-native)" ["loader"]="/vmlinuz-linux-lts-native" ["args"]="$root $opts pcie_aspm=force elevator=deadline initrd=/initramfs-linux-lts-native.img")
-#~ declare -A win10=( ["device"]="/dev/nvme0n1" ["part"]=2 ["label"]="Windows 10" ["loader"]="\EFI\MICROSOFT\BOOT\BOOTMGFW.EFI" ["args"]="")
+PATH points to a JSON file which holds the boot entries to insert. This file is
+an array of objects where each object is one boot entry and the order of each
+entry determines its order in the boot sequence.
 
-declare -a entries
+Each entry follows this schema:
+- label: the name of this entry (as it should appear in the boot menu)
+- device: the path to the device holding the kernel to boot
+- partition: the partition on the device (above) holding the kernel
+- kernel: the name of the kernel to boot (something like "linux-lts")
+- root: and object like:
+  - path: the device path of the root partition
+  - fstype: the filesytem type of the root partition
+  - mountopts: an array of mount options for the root file system
+- params: an array of kernel parameters to pass (in addition to those for root)
 
-bootOrder=""
-bootNumber=0
+ASSUMPTIONS:
+- linux EFISTUB kernels only
+- no secondary bootloader (eg grub)
+- root filesystem mounts as rw
+- initramfs exists (eg no monolithic kernels)
+- initramfs and loader paths are named according to the kernel
 
-# order of these commands determines boot order
-create_entry arch_lts_native
-create_entry arch_lts
+"""
 
-efibootmgr -q -D
-efibootmgr -q -O
-efibootmgr -o $bootOrder
+import sys
+import json
+import re
+import subprocess as sp
+from shutil import which
+from itertools import chain
+
+EFIEXE = "efibootmgr"
+
+
+def call_efibootmgr(args):
+    """Call efibootmgr (quietly) with ARGS"""
+    return sp.run([EFIEXE, "-q", *args], check=True)
+
+
+def read_entries():
+    """Read boot entries from JSON file"""
+    if len(sys.argv) != 2:
+        print("must supply entry JSON as single argument")
+        sys.exit(1)
+    with open(sys.argv[1], encoding="utf-8") as file:
+        # hack to remove comments from (nonstandard) json
+        out = re.sub("//.*?\n", "", file.read())
+        return json.loads(re.sub("/\\*.*?\\*/", "", out))
+
+
+def delete_entry(bootnum):
+    """Remove the entry associated with BOOTNUM"""
+    call_efibootmgr(["-b", str(bootnum), "-B"])
+
+
+def insert_entry(bootnum, entry):
+    """Insert ENTRY at position BOOTNUM"""
+
+    def fmt_keyval(key, val):
+        return f"{key}={val}"
+
+    def fmt_flag_(flag, arg, quote=False):
+        return [f"-{flag}", f"'{arg}'" if quote else f"{arg}"]
+
+    def fmt_flag(flag, key, quote=False):
+        return fmt_flag_(flag, entry[key], quote)
+
+    kernel = entry["kernel"]
+    root = entry["root"]
+    unicode_args = " ".join(
+        [
+            fmt_keyval("root", root["path"]),
+            "rw",
+            fmt_keyval("rootfstype", root["fstype"]),
+            fmt_keyval("rootflags", ",".join(root["mountopts"])),
+            *entry["params"],
+            fmt_keyval("initrd", f"/initramfs-{kernel}.img"),
+        ]
+    )
+    args = [
+        fmt_flag_("b", bootnum),
+        ["-c"],
+        fmt_flag("L", "label"),
+        fmt_flag("d", "device"),
+        fmt_flag("p", "partition"),
+        fmt_flag_("l", f"/vmlinuz-{kernel}"),
+        fmt_flag_("u", unicode_args),
+    ]
+    call_efibootmgr([*chain(*args)])
+
+
+def update_entry(bootnum, entry):
+    """Update (delete and insert) ENTRY at position BOOTNUM"""
+    print(f"Updating entry '{entry['label']}'")
+    try:
+        delete_entry(bootnum)
+    except sp.CalledProcessError:
+        pass
+    insert_entry(bootnum, entry)
+
+
+def remove_dups():
+    """Remove duplicate boot entries if they exist"""
+    call_efibootmgr("-D")
+
+
+def set_order(entries):
+    """Set the boot order according to the order of ENTRIES"""
+    call_efibootmgr("-O")
+    order = ",".join([str(i) for i in range(0, len(entries))])
+    call_efibootmgr(order)
+
+
+def main():
+    """Update all EFI entries"""
+    if not which(EFIEXE):
+        print(f"{EFIEXE} not found")
+        sys.exit(1)
+    entries = read_entries()
+    for bootnum, entry in enumerate(entries):
+        update_entry(bootnum, entry)
+    remove_dups()
+    set_order(entries)
+
+
+main()
