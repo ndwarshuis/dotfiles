@@ -116,7 +116,7 @@ def set_order(entries):
     """Set the boot order according to the order of ENTRIES"""
     call_efibootmgr("-O")
     order = ",".join([str(i) for i in range(0, len(entries))])
-    call_efibootmgr(order)
+    call_efibootmgr(["-o", order])
 
 
 def main():
