@@ -22,21 +22,21 @@ data:
     xsane: {{ and $desktop (promptBool "xsane" false) }}
     vpn: {{ and $desktop (promptBool "vpn" false) }}
     seafile: {{ and $desktop (promptBool "seafile" false) }}
-    conky_alias: {{ and $desktop (promptString "conky" "none") }}
+    conky_alias: {{ if $desktop -}}{{ (promptString "conky" "none") }}{{ else }}none{{ end }}
   development:
 
     {{- /* emacs implies that most development options are true */}}
     emacs: {{ $emacs }}
-    ruby: {{ or $emacs promptBool "ruby" true }}
-    python: {{ or $emacs promptBool "python" true }}
-    rust: {{ or $emacs promptBool "rust" true }}
-    clojure: {{ or $emacs promptBool "clojure" true }}
-    latex: {{ or $emacs promptBool "LaTeX" true }}
-    r: {{ or $emacs promptBool "R" true }}
-    conda: {{ or $emacs promptBool "conda" true }}
+    ruby: {{ or $emacs (promptBool "ruby" true) }}
+    python: {{ or $emacs (promptBool "python" true) }}
+    rust: {{ or $emacs (promptBool "rust" true) }}
+    clojure: {{ or $emacs (promptBool "clojure" true) }}
+    latex: {{ or $emacs (promptBool "LaTeX" true) }}
+    r: {{ or $emacs (promptBool "R" true) }}
+    conda: {{ or $emacs (promptBool "conda" true) }}
 
     {{- /* these aren't implied by emacs */}}
-    matlab: {{ or $emacs promptBool "MATLAB" true }}
+    matlab: {{ or $emacs (promptBool "MATLAB" true) }}
     github: {{ promptBool "GitHub" true }}
   paths:
     config: {{ $xdg_config_home }}
