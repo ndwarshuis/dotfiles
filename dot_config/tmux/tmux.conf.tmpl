@@ -101,9 +101,9 @@ set -g message-style "fg=#ffffaa,bg=#666600"
 
 set -g pane-border-status off
 
-if-shell -b '[ "$(echo "$TMUX_VERSION >= 3.2" | bc)" = 1 ]' ' \
-  set -g copy-mode-current-match-style "fg=#000000,bg=#ffffff" \
-  set -g copy-mode-match-style "fg=#000000,bg=#aa00aa"'
+if-shell -b '[ "$(echo "$TMUX_VERSION >= 3.2" | bc)" = 1 ]' \
+  'set -g copy-mode-current-match-style "fg=#000000,bg=#ffffff"' \
+  'set -g copy-mode-match-style "fg=#000000,bg=#aa00aa"'
 
 # pressing F12 turns the current prefix key/keymap "OFF" and allows keypresses
 # to go to a nested session if running
