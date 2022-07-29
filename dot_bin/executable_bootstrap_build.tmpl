@@ -16,9 +16,17 @@ run_stack_in_dir () {
 
 export STACK_ROOT={{ .paths.stack }}
 
-# NOTE; all of these repos require X11 which in turn requires c libraries. In
-# this case these cannot simply be built using stack unless nix is also invoked.
+run_stack_in_dir ~/.config/rofi-extras \
+                 :current-output \
+                 :pinentry-rofi \
+                 :rofi-autorandr \
+                 :rofi-bt \
+                 :rofi-bw \
+                 :rofi-dev
+{{ if .features.vpn -}}
+run_stack_in_dir ~/.config/rofi-extras :rofi-evpn
+{{- end }}
 
-#run_stack_in_dir ~/.config/rofi-extras
-#run_stack_in_dir ~/.config/xmonad
-#run_stack_in_dir ~/.config/xman
+run_stack_in_dir ~/.config/xmonad
+
+run_stack_in_dir ~/.config/xman
