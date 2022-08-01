@@ -30,3 +30,8 @@ run_stack_in_dir ~/.config/rofi-extras :rofi-evpn
 run_stack_in_dir ~/.config/xmonad
 
 run_stack_in_dir ~/.config/xman
+
+{{ if ne .features.conky_alias "none" -}}
+## ASSUME luarocks is installed
+~/.config/conky/install_rocks
+{{- end }}
