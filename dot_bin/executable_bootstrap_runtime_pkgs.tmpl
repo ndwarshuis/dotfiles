@@ -1,0 +1,53 @@
+#! /bin/bash
+
+# Install all required packages for this user. It only needs to be run once
+# when setting up the HOME directory.
+
+# ASSUME
+# - git repos referenced here are pulled/updated
+
+conf_dir={{ .paths.config }}
+
+list_rofi_pkgs() {
+    args=(--autorandr --bitwarden --devices --bluetooth)
+    {{ if .features.vpn -}}
+    args+=(--expressvpn)
+    {{- end }}
+    "$conf_dir/rofi-extras/scripts/runtime_pkgs" "${args[@]}"
+}
+
+# notifications
+pkgs=(dunst papirus-icon-theme)
+
+# gtk
+pkgs+=(zuki-themes)
+
+# sleep enhancement
+pkgs+=(redshift)
+
+{{- if .features.seafile }}
+# seafile
+pkgs+=(seafile-client)
+{{- end }}
+
+# elegant terminal
+pkgs+=(rxvt-unicode urxvt-perls)
+
+# shell
+pkgs+=(zsh zsh-completions zsh-syntax-highlighting exa)
+
+# xmonad
+mapfile -t xmonad < <("$conf_dir/xmonad/scripts/runtime_pkgs")
+pkgs=("${pkgs[@]}" "${xmonad[@]}")
+
+# rofi extras
+mapfile -t rofix < <(list_rofi_pkgs)
+pkgs=("${pkgs[@]}" "${rofix[@]}")
+
+# xman
+pkgs+=(xcape)
+
+{{- if .development.emacs }}
+mapfile -t emacs < <("$conf_dir/xmonad/scripts/runtime_pkgs")
+pkgs=("${pkgs[@]}" "${emacs[@]}")
+{{- end }}

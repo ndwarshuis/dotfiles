@@ -1,0 +1,24 @@
+#! /bin/bash
+
+# Print list of make dependencies for this dotfiles configuration
+
+conf_dir={{ .paths.config }}
+
+pkgs=$(cat "$conf_dir/xmonad/make_pkgs")
+pkgs+="\n"
+pkgs+=$(cat "$conf_dir/rofi-extras/make_pkgs")
+pkgs+="\n"
+pkgs+=$(cat "$conf_dir/xman/make_pkgs")
+pkgs+="\n"
+
+{{- if ne .features.conky_alias "none" }}
+pkgs+=$(cat "$conf_dir/conky/make_pkgs")
+pkgs+="\n"
+{{- end }}
+
+{{- if .development.emacs }}
+pkgs+=$(cat "$conf_dir/emacs/make_pkgs")
+pkgs+="\n"
+{{- end}}
+
+echo -e "$pkgs" | sort | uniq
