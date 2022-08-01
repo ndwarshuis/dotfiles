@@ -67,13 +67,6 @@ run_yay() {
 run_makepkg() {
     ## these are all packages that have some personal customizations and/or are
     ## not in the AUR
-    ## TODO the clevo thingy requires a systemd file to turn on/off
-    {{ if .features.clevo -}}
-    call_makepkg "clevo-xsm-wmi-dkms"
-    {{- end }}
-    {{ if ne .features.conky_alias "none" -}}
-    call_makepkg "conky-lua"
-    {{- end }}
     call_makepkg "xkb-hypermode"
 }
 
