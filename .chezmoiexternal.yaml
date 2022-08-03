@@ -19,3 +19,7 @@
   type: git-repo
   url: https://github.com/ndwarshuis/universal-conky.git
 {{- end }}
+.local/share/zsh/plugins/zsh-syntax-highlighting:
+  type: git-repo
+  url: https://github.com/zsh-users/zsh-syntax-highlighting.git
+  clone.args: --branch 0.7.1

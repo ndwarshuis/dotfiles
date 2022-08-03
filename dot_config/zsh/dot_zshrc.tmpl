@@ -48,12 +48,10 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts' ignored-patterns '*(.|:)*' loopba
 ## --------------------------------------------------
 # syntax highlighting a la fish
 ## --------------------------------------------------
-for hlpath in zsh/plugins/zsh-syntax-highlighting zsh-syntax-highlighting; do
-	if [[ -e "/usr/share/$hlpath/zsh-syntax-highlighting.zsh" ]]; then
-		. "/usr/share/$hlpath/zsh-syntax-highlighting.zsh"
-		break
-	fi
-done
+hlpath="$XDG_DATA_HOME/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+if [[ -e "$hlpath" ]]; then
+    . "$hlpath"
+fi
 
 ## --------------------------------------------------
 # history
