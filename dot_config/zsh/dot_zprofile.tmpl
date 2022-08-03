@@ -1,6 +1,8 @@
 {{ if .desktop -}}
 initfile="$XDG_CONFIG_HOME/X11/xinitrc"
-logfile="$XDG_DATA_HOME/X11/xinit.log"
+logdir="$XDG_DATA_HOME/X11"
+logfile="$logdir/xinit.log"
+mkdir -p "$logdir"
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && \
     exec startx "$initfile" -- -keeptty > "$logfile" 2>&1
 {{- end }}
