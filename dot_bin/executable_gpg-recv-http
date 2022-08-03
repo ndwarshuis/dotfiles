@@ -1,5 +1,11 @@
 #!/bin/bash
 
-# WIP, idea is to use this get request to pull a key manually without using gpg itself...seems to work better
-curl -L -o test.key 'https://keyserver.ubuntu.com/pks/lookup?search=0xC5705533DA4F78D8664B5DC0575159689BEFB442&op=get'
+# Import gpg keys using https protocol
+#
+# usage:
+# gpg-recv-keys KEYHASH
 
+keypath=/tmp/this.key
+curl -L -o "$keypath" "https://keyserver.ubuntu.com/pks/lookup?search=0x$1&op=get"
+gpg --import "$keypath"
+rm -f "$keypath"
