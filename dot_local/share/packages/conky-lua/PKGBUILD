@@ -10,12 +10,12 @@ url='http://github.com/brndnmtthws/conky'
 license=('BSD' 'GPL3')
 arch=('i686' 'x86_64')
 options=('!emptydirs')
-makedepends=('cmake')
+makedepends=('cmake'
     # 'docbook2x'
     # 'docbook-xml'
     # 'docbook-xsl'
     # 'librsvg'
-    # 'libxinerama'
+    'libxinerama')
     # 'libxml2'
     # 'man-db'
     # 'perl-xml-libxml')
