@@ -51,3 +51,5 @@ pkgs+=(xcape)
 mapfile -t emacs < <("$conf_dir/xmonad/scripts/runtime_pkgs")
 pkgs=("${pkgs[@]}" "${emacs[@]}")
 {{- end }}
+
+echo "${pkgs[@]}" | tr ' ' '\n' | sort | uniq
