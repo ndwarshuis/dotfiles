@@ -44,12 +44,6 @@ layout:
       margins: [20, 10]
     - 10
     - columns:
-        - {blocks: [readwrite], width: 436}
-        - 20
-        - {blocks: [network], width: 436}
-      margins: [20, 10]
-    - 10
-    - columns:
         - {blocks: [pacman, 24, filesystem, 23, processor], width: 436}
       margins: [20, 10]
 
