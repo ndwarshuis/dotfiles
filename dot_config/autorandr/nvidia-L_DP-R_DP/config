@@ -1,0 +1,39 @@
+output HDMI-1
+off
+
+output HDMI-2
+off
+
+output HDMI-3
+off
+
+output DP-2
+off
+
+output DP-3
+off
+
+output DP-1-5
+off
+
+output DP-1-6
+off
+
+output DP-1-7
+off
+
+output DP-1-2
+mode 1920x1080
+pos 0x0
+x-prop-non_desktop 0
+
+output DP-1
+mode 1920x1080
+pos 1920x0
+primary
+x-prop-non_desktop 0
+
+output DP-1-4
+mode 1920x1080
+pos 3840x0
+x-prop-non_desktop 0
