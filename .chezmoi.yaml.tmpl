@@ -23,6 +23,7 @@ data:
     vpn: {{ and $desktop (promptBool "vpn" false) }}
     seafile: {{ and $desktop (promptBool "seafile" false) }}
     conky_alias: {{ if $desktop -}}{{ (promptString "conky" "none") }}{{ else }}none{{ end }}
+    rofi_alias: {{ if $desktop -}}{{ (promptString "rofi-alias" "none") }}{{ else }}none{{ end }}
   development:
 
     {{- /* emacs implies that most development options are true */}}
