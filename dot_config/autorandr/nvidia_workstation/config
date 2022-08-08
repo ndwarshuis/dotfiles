@@ -1,39 +1,45 @@
 output HDMI-1
 off
-
-output HDMI-2
-off
-
-output HDMI-3
-off
-
 output DP-2
 off
-
+output HDMI-2
+off
 output DP-3
 off
-
+output HDMI-3
+off
+output DP-1-0
+off
+output DP-1-1
+off
+output DP-1-3
+off
 output DP-1-5
 off
-
 output DP-1-6
 off
-
 output DP-1-7
 off
-
-output DP-1-2
+output DP-1-4
+crtc 4
 mode 1920x1080
 pos 0x0
+rate 59.93
 x-prop-non_desktop 0
-
 output DP-1
+crtc 0
 mode 1920x1080
 pos 1920x0
 primary
+rate 59.93
+x-prop-audio auto
+x-prop-broadcast_rgb Automatic
+x-prop-colorspace Default
+x-prop-max_bpc 12
 x-prop-non_desktop 0
-
-output DP-1-4
+output DP-1-2
+crtc 3
 mode 1920x1080
 pos 3840x0
+rate 59.93
 x-prop-non_desktop 0
