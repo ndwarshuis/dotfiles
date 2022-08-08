@@ -17,12 +17,12 @@ modules:
     show_clock: true
     show_gpu_util: true
     show_mem_util: true
-    show_vid_util: true
+    show_vid_util: false
   memory:
     show_stats: true
     show_swap: true
     show_plot: true
-    table_rows: 5
+    table_rows: 10
   power:
     battery: ''
     rapl_specs:
@@ -32,7 +32,7 @@ modules:
     core_padding: 0
     show_stats: false
     show_plot: true
-    table_rows: 5
+    table_rows: 10
   readwrite:
     devices: [sda, nvme0n1]
 
@@ -41,6 +41,12 @@ layout:
   panels:
     - columns:
         - {blocks: [system, 19, graphics, 16, memory], width: 436}
+      margins: [20, 10]
+    - 10
+    - columns:
+        - {blocks: [readwrite], width: 436}
+        - 20
+        - {blocks: [network], width: 436}
       margins: [20, 10]
     - 10
     - columns:
@@ -63,7 +69,7 @@ theme:
       name_chars: 8
       padding: [6, 15]
       header_padding: 20
-      row_spacing: 13
+      row_spacing: 16
     header:
       underline_offset: 26
       padding: 19
