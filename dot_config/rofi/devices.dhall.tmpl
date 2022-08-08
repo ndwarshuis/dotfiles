@@ -7,9 +7,19 @@ let cryptdir =
     "~/.crypt"
 {{- end }}
 
-let sshKey = "ssh"
+let sshKey =
+{{ if eq .features.rofi_alias "workstation" -}}
+    "ssh workstation"
+{{- else -}}
+    "ssh"
+{{- end }}
 
-let gpgKey = "gpg"
+let gpgKey =
+{{ if eq .features.rofi_alias "workstation" -}}
+    "gpg workstation"
+{{- else -}}
+    "gpg"
+{{- end }}
 
 let bwConfig =
       \(k : Text) ->
