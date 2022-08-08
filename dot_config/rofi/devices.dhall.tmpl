@@ -1,0 +1,97 @@
+let cryptdir = 
+{{ if eq .features.rofi_alias "laptop" -}}
+    "/mnt/data/Documents/.crypt"
+{{- else if eq .features.rofi_alias "workstation" -}}
+    "/mnt/data/.crypt"
+{{- else -}}
+    "~/.crypt"
+{{- end }}
+
+let sshKey = "ssh"
+
+let gpgKey = "gpg"
+
+let bwConfig =
+      \(k : Text) ->
+        PasswordConfig.PwdBW ({ bwKey = k, bwTries = +2 } : BitwardenConfig)
+
+let sshData =
+      \(r : Text) ->
+        DataConfig.SSHFSConfig
+          ({ sshfsRemote = r, sshfsPassword = None PasswordConfig } : SSHFSData)
+
+let sshfsTree =
+      \(m : Text) ->
+      \(l : Text) ->
+      \(r : Text) ->
+          { tcParent =
+                { deviceMount = { mpPath = m, mpLabel = Some l } : MountConfig
+                , deviceData = sshData r
+                }
+              : DeviceConfig
+          , tcChildren = [ "ssh" ]
+          }
+        : TreeConfig
+
+let crypt = \(b : Text) -> "${cryptdir}/${b}"
+
+let vcName = \(n : Text) -> "Veracrypt (${n})"
+
+let vcryptTree =
+      \(m : Text) ->
+      \(l : Optional Text) ->
+      \(v : Text) ->
+      \(k : Text) ->
+          { tcParent =
+                { deviceMount = { mpPath = m, mpLabel = l } : MountConfig
+                , deviceData =
+                    DataConfig.VeracryptConfig
+                      (   { vcVolume = crypt v
+                          , vcPassword = Some (bwConfig (vcName k))
+                          }
+                        : VeracryptData
+                      )
+                }
+              : DeviceConfig
+          , tcChildren = [] : List Text
+          }
+        : TreeConfig
+
+let defaultDevs =
+      { ssh =
+          vcryptTree "${env:HOME as Text}/.ssh" (Some "ssh") "ssh-config" sshKey
+      , gnupg =
+          vcryptTree "${env:GNUPGHOME as Text}" (None Text) "gpg-config" gpgKey
+      }
+
+let otherDevs =
+{{- if eq .features.rofi_alias "laptop" -}}
+      { accounts = vcryptTree "accounts" (None Text) "accounts" "accounts"
+      , ansible-pki =
+          vcryptTree "ansible-pki" (None Text) "ansible" "Ansible PKI"
+      , call_logs = vcryptTree "call-logs" (None Text) "call_logs" "ACR"
+      , ebm_snakemake =
+          sshfsTree "ebm_snakemake" "EBM" "nisaba:/aigenomics/EBM_dev/snakemake"
+      , music =
+          sshfsTree
+            "/mnt/data/Music"
+            "Music"
+            "portnoy4prez:/mnt/data/home/Music"
+      , videos =
+          sshfsTree
+            "/mnt/data/Videos"
+            "Videos"
+            "portnoy4prez:/mnt/data/home/Videos"
+      }
+{{- else if eq .features.rofi_alias "workstation" -}}
+      { ebm_snakemake =
+          sshfsTree "ebm_snakemake" "EBM" "nisaba:/aigenomics/EBM_dev/snakemake"
+      }
+{{- else -}}
+      {=}
+{{- end }}
+
+in  { scTmpPath = Some "/tmp/media/${env:LOGNAME as Text}"
+    , scVerbose = Some False
+    , scDevices = toMap (defaultDevs /\ otherDevs)
+    }

@@ -7,7 +7,7 @@ shift
 
 alias="gnupg"
 
-if rofi-dev -c "$XDG_CONFIG_HOME/rofi/devices.yml" -m "$alias"; then
+if rofi-dev -c "$XDG_CONFIG_HOME/rofi/devices.dhall" -m "$alias"; then
     "$bin" "$@"
 else
     echo "Could not mount $alias"
