@@ -65,6 +65,8 @@ theme:
     plot:
       seconds: 90
       ticks: [9, 4]
+      height: 56
+      spacing: 20
     table:
       name_chars: 8
       padding: [6, 15]
