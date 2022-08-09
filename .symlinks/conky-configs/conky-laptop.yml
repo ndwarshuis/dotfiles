@@ -70,7 +70,7 @@ theme:
       name_chars: 8
       padding: [6, 15]
       header_padding: 20
-      row_spacing: 13
+      row_spacing: 16
     header:
       underline_offset: 26
       padding: 19
