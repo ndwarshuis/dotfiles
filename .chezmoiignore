@@ -14,6 +14,9 @@
 
 {{ if eq .features.conky_alias "none" -}}
 .config/conky.yml
+.config/systemd/user/conky_pacman.service
+.config/systemd/user/conky_pacman.timer
+.config/systemd/user/timers.target.wants/conky_pacman.timer
 {{- end }}
 
 {{ if not .features.virtualbox -}}
