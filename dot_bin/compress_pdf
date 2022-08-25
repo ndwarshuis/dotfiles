@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Compress a pdf using ghostscript. I really don't understand what this is
+# doing but it seems to work well.
+
+gs -sDEVICE=pdfwrite \
+   -dCompatibilityLevel=1.4 \
+   -dPDFSETTINGS=/prepress \
+   -dNOPAUSE \
+   -dQUIET \
+   -dBATCH \
+   -sOutputFile="$2" \
+   "$1"
