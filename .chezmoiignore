@@ -1,5 +1,13 @@
 {{- if not .desktop }}
-.bin
+.bin/*
+
+!.bin/bootstrap_mamba
+!.bin/compress_pdf
+!.bin/efi-update
+!.bin/gpg-recv-http
+!.bin/ln-replace
+!.bin/ssh-def-keygen
+!.bin/tmuxctl
 
 .config/*
 !.config/gnupg
