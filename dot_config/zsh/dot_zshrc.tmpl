@@ -120,15 +120,7 @@ fi
 
 HOSTNAME=""
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    if exists hostnamectl; then
-        literal_hostname="$(hostnamectl hostname)"
-    else
-        literal_hostname="$(cat /etc/hostname)"
-    fi
-    if [ -n "$literal_hostname" ]; then
-        #HOSTNAME="@%M"
-        HOSTNAME="@$literal_hostname"
-    fi
+    HOSTNAME="@%M"
 fi	
 
 ## git prompt
