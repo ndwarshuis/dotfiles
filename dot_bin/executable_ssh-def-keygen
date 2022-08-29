@@ -1,0 +1,15 @@
+#! /bin/bash
+
+# generate nicely formatted ssh key pair
+
+if [ -z "$1" ]; then
+    echo "provide a name/path for the key pair"
+    exit 1
+fi
+
+ssh-keygen -C "$(whoami)@$(uname -n)-$(date -I)" \
+    -t ed25519 \
+    -N '' \
+    -f "$1"
+
+
