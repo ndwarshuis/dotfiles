@@ -6,6 +6,39 @@ bindkey -v
 bindkey -v '^?' backward-delete-char
 
 ## --------------------------------------------------
+## Helper functions
+## --------------------------------------------------
+
+exists () {
+    command -v "$1" &> /dev/null
+}
+
+alias_if_N () {
+    while [ "$1" != "--" ]; do
+         exists "$1" || return 1
+         shift
+    done
+    shift
+    for a in "$@"; do
+	alias "$a"
+    done
+}
+
+alias_if () {
+    alias_if_N "$1" -- "${@:2}"
+}
+
+alias_if_else () {
+    if ! alias_if_N "$1" -- "$2"; then
+        alias "$3"
+    fi
+}
+
+alias_if_sudo () {
+    alias_if_N "$1" -- "${@:2}"
+}
+
+## --------------------------------------------------
 # autocompletion
 ## --------------------------------------------------
 
@@ -48,6 +81,7 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts' ignored-patterns '*(.|:)*' loopba
 ## --------------------------------------------------
 # syntax highlighting a la fish
 ## --------------------------------------------------
+
 hlpath="$XDG_DATA_HOME/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 if [[ -e "$hlpath" ]]; then
     . "$hlpath"
@@ -79,14 +113,22 @@ bindkey '\e[B' down-line-or-beginning-search
 setopt prompt_subst
 
 if [[ ${EUID} -eq 0 ]]; then
-   	user_color="%F{red}"
+    user_color="%F{red}"
 else
-   	user_color="%F{cyan}"
+    user_color="%F{cyan}"
 fi
 
 HOSTNAME=""
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-	HOSTNAME="@%M"
+    if exists hostnamectl; then
+        literal_hostname="$(hostnamectl hostname)"
+    else
+        literal_hostname="$(cat /etc/hostname)"
+    fi
+    if [ -n "$literal_hostname" ]; then
+        #HOSTNAME="@%M"
+        HOSTNAME="@$literal_hostname"
+    fi
 fi	
 
 ## git prompt
@@ -184,39 +226,6 @@ export KEYTIMEOUT=1
 ## --------------------------------------------------
 
 precmd () { echo -ne "\033]0;urxvt: ${PWD}\007" }
-
-## --------------------------------------------------
-## Alias helper functions
-## --------------------------------------------------
-
-exists () {
-    command -v "$1" &> /dev/null
-}
-
-alias_if_N () {
-    while [ "$1" != "--" ]; do
-         exists "$1" || return 1
-         shift
-    done
-    shift
-    for a in "$@"; do
-	alias "$a"
-    done
-}
-
-alias_if () {
-    alias_if_N "$1" -- "${@:2}"
-}
-
-alias_if_else () {
-    if ! alias_if_N "$1" -- "$2"; then
-        alias "$3"
-    fi
-}
-
-alias_if_sudo () {
-    alias_if_N "$1" -- "${@:2}"
-}
 
 ## --------------------------------------------------
 ## Aliases 
