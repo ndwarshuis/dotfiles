@@ -124,22 +124,13 @@ bind -T off F12 \
   set -u window-status-current-style \;\
   refresh-client -S
 
-{{/* for bar position, local -> top, remote -> bottom */ -}}
-{{- /* TODO make this dynamic, in case I want to log into a desktop */ -}}
-{{- if .desktop }}
-set -g status-position top
-set -g status-right ""
-set -g status-right-length 0
-{{- else }}
-
 down="#($XDG_CONFIG_HOME/tmux/plugins/network down)"
 up="#($XDG_CONFIG_HOME/tmux/plugins/network up)"
 net="NET(↑/↓): $up $down"
 cpu="CPU: #($XDG_CONFIG_HOME/tmux/plugins/cpu_perc)"
 mem="RAM: #($XDG_CONFIG_HOME/tmux/plugins/mem_perc)"
 
-set -g status-position bottom
-set -g status-right-length 64
-set -g status-right "$net $status_sep $cpu $status_sep $mem "
-
-{{- end }}
+# version 2.6 doesn't support brackets :/
+if-shell -b '[ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]'\
+  'set -g status-position bottom; set -g status-right-length 64; set -g status-right "$net $status_sep $cpu $status_sep $mem "' \
+  'set -g status-position top; set -g status-right ""; set -g status-right-length 0'
