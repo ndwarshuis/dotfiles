@@ -33,7 +33,7 @@ let memory =
         , show_plot = True
         , table_rows = 10
         , geometry = C.MemGeo::{
-          , plot = C.PlotGeo_::{ height = 120, ticks_y = 10 }
+          , plot = C.PlotGeo::{ height = 120, ticks_y = 10 }
           }
         }
 
@@ -46,7 +46,7 @@ let processor =
         , show_plot = True
         , table_rows = 10
         , geometry = C.ProcGeo::{
-          , plot = C.PlotGeo_::{ height = 120, ticks_y = 10 }
+          , plot = C.PlotGeo::{ height = 120, ticks_y = 10 }
           }
         }
 
