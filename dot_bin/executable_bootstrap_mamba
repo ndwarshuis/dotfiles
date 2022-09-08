@@ -1,6 +1,18 @@
 #! /bin/bash
 
 # locally install mamba for this user
+#
+# USAGE: bootstrap_mamba [VERSION]
+#
+# where VERSION is something like 'X.Y.Z-A' corresponding to a tagged release
+
+if [ -z "$1" ]; then
+    echo "Installing latest version of mambaforge"
+    subdir=latest/download
+else
+    echo "Installing version $1 of mambaforge"
+    subdir="download/$1"
+fi
 
 bin_path=~/.local/bin/mamba_installer.sh
 mamba_root=$XDG_DATA_HOME/mambaforge
@@ -9,9 +21,8 @@ mamba_root=$XDG_DATA_HOME/mambaforge
 mkdir -p $XDG_DATA_HOME/conda/{pkgs,envs}
 
 # TODO configure version
-#curl -L -O "https://github.com/conda-forge/miniforge/releases/download/4.13.0-1/Mambaforge-$(uname)-$(uname -m).sh"
-curl -L -o "$bin_path" "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+curl -L -o "$bin_path" "https://github.com/conda-forge/miniforge/releases/$subdir/Mambaforge-$(uname)-$(uname -m).sh"
 
 bash "$bin_path" -p "$mamba_root" -b -f
 
-rm -f "$bin_path"
+#rm -f "$bin_path"
